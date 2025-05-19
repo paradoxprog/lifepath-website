@@ -31,6 +31,13 @@
       color: #111827;
       margin-bottom: 12px;
     }
+    h4 { /* Style for the new dynamic suggestions heading */
+        font-size: 17px;
+        color: #1f2937;
+        margin-bottom: 8px;
+        margin-top: 0;
+    }
+
 
     .box {
       background: white;
@@ -84,11 +91,60 @@
       white-space: pre-wrap;
       min-height: 60px;
     }
+    #dynamicInterestSuggestions { /* Specific styling for dynamic suggestions pre */
+        background: #eef2ff; /* A light indigo background */
+        border-left: 4px solid #4f46e5; /* Indigo border */
+        color: #3730a3; /* Darker indigo text */
+        min-height: 80px; /* Ensure some space */
+        padding: 12px;
+    }
 
-    #infoMessage, #answerFeedback {
+
+    #infoMessage, #interestsMessage, #answerFeedback {
       font-size: 16px;
       color: #374151;
-      margin-top: -8px;
+      margin-top: -8px; 
+      margin-bottom: 10px; 
+    }
+    
+    .instructions {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 20px;
+      margin-top: -5px;
+    }
+    .interest-category {
+      margin-bottom: 25px;
+    }
+    .interest-category h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2563eb; 
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 6px;
+    }
+    #interestsContainer label {
+      display: block;
+      margin-bottom: 10px; 
+      font-weight: 400; 
+      font-size: 15px;
+      cursor: pointer;
+    }
+    #interestsContainer input[type="checkbox"] {
+      width: auto; 
+      margin-right: 10px; 
+      vertical-align: middle;
+      margin-top: -2px; 
+      margin-bottom: 0;
+    }
+    #otherInterests { 
+        margin-top: 5px;
+    }
+    label[for="otherInterests"] { 
+        font-weight: 600;
+        font-size: 15px;
+        color: #111827;
     }
 
     .toast {
@@ -140,7 +196,7 @@
       font-weight: 600;
       transition: width 0.6s ease;
     }
-
+    
     @media (max-width: 600px) {
       body {
         padding: 20px 10px;
@@ -150,10 +206,15 @@
         font-size: 24px;
       }
 
-      h2 {
+      h2, h4 { /* Include h4 in responsive sizing */
         font-size: 18px;
       }
-
+      .interest-category h3 {
+        font-size: 17px;
+      }
+      #interestsContainer label, label[for="otherInterests"] {
+        font-size: 14px;
+      }
       input, select, textarea, button {
         font-size: 15px;
       }
@@ -187,20 +248,102 @@
 </div>
 
 <div class="box">
-  <h2>2️⃣ Career Suggestions</h2>
+  <h2>2️⃣ Find Your Interests</h2>
+  <p class="instructions">Select the areas that genuinely excite you. Careers related to your selections will appear below as you choose.</p>
+  <div id="interestsContainer">
+
+    <div class="interest-category">
+      <h3>🧪 STEM & Analytics</h3>
+      <label><input type="checkbox" name="interest" value="Solving Complex Problems"> Solving Complex Problems</label>
+      <label><input type="checkbox" name="interest" value="Mathematics & Statistics"> Mathematics & Statistics</label>
+      <label><input type="checkbox" name="interest" value="Coding & Software Development"> Coding & Software Development</label>
+      <label><input type="checkbox" name="interest" value="Scientific Research & Experiments"> Scientific Research & Experiments</label>
+      <label><input type="checkbox" name="interest" value="Analyzing Data & Trends"> Analyzing Data & Trends</label>
+      <label><input type="checkbox" name="interest" value="Emerging Technologies (AI, Blockchain)"> Emerging Technologies (AI, Blockchain)</label>
+      <label><input type="checkbox" name="interest" value="Engineering & Building"> Engineering & Building</label>
+      <label><input type="checkbox" name="interest" value="Environmental Science & Sustainability"> Environmental Science & Sustainability</label>
+    </div>
+
+    <div class="interest-category">
+      <h3>🎨 Creative & Design</h3>
+      <label><input type="checkbox" name="interest" value="Visual Arts (Drawing, Painting, Sculpture)"> Visual Arts (Drawing, Painting, Sculpture)</label>
+      <label><input type="checkbox" name="interest" value="Graphic Design & Digital Illustration"> Graphic Design & Digital Illustration</label>
+      <label><input type="checkbox" name="interest" value="Writing (Fiction, Non-fiction, Poetry)"> Writing (Fiction, Non-fiction, Poetry)</label>
+      <label><input type="checkbox" name="interest" value="Music (Playing, Composing, Production)"> Music (Playing, Composing, Production)</label>
+      <label><input type="checkbox" name="interest" value="Performing Arts (Acting, Dance)"> Performing Arts (Acting, Dance)</label>
+      <label><input type="checkbox" name="interest" value="Fashion & Apparel Design"> Fashion & Apparel Design</label>
+      <label><input type="checkbox" name="interest" value="Filmmaking & Video Production"> Filmmaking & Video Production</label>
+      <label><input type="checkbox" name="interest" value="Photography"> Photography</label>
+      <label><input type="checkbox" name="interest" value="UI/UX Design & Product Design"> UI/UX Design & Product Design</label>
+    </div>
+
+    <div class="interest-category">
+      <h3>💼 Business & Leadership</h3>
+      <label><input type="checkbox" name="interest" value="Entrepreneurship & Startups"> Entrepreneurship & Startups</label>
+      <label><input type="checkbox" name="interest" value="Leading & Managing Teams"> Leading & Managing Teams</label>
+      <label><input type="checkbox" name="interest" value="Strategic Planning & Business Development"> Strategic Planning & Business Development</label>
+      <label><input type="checkbox" name="interest" value="Marketing, Advertising & Branding"> Marketing, Advertising & Branding</label>
+      <label><input type="checkbox" name="interest" value="Finance, Investing & Economics"> Finance, Investing & Economics</label>
+      <label><input type="checkbox" name="interest" value="Public Speaking & Presentations"> Public Speaking & Presentations</label>
+      <label><input type="checkbox" name="interest" value="Negotiation & Sales"> Negotiation & Sales</label>
+      <label><input type="checkbox" name="interest" value="Project Management"> Project Management</label>
+    </div>
+
+    <div class="interest-category">
+      <h3>🤝 Social Sciences & Humanities</h3>
+      <label><input type="checkbox" name="interest" value="Psychology & Human Behavior"> Psychology & Human Behavior</label>
+      <label><input type="checkbox" name="interest" value="Teaching & Education"> Teaching & Education</label>
+      <label><input type="checkbox" name="interest" value="Community Service & Volunteering"> Community Service & Volunteering</label>
+      <label><input type="checkbox" name="interest" value="Social Work & Counseling"> Social Work & Counseling</label>
+      <label><input type="checkbox" name="interest" value="History & Archaeology"> History & Archaeology</label>
+      <label><input type="checkbox" name="interest" value="Philosophy & Ethics"> Philosophy & Ethics</label>
+      <label><input type="checkbox" name="interest" value="Languages & Linguistics"> Languages & Linguistics</label>
+      <label><input type="checkbox" name="interest" value="Journalism & Media Studies"> Journalism & Media Studies</label>
+    </div>
+    
+    <div class="interest-category">
+      <h3>🌱 Health, Wellness & Lifestyle</h3>
+      <label><input type="checkbox" name="interest" value="Healthcare & Medicine (Interest in field)"> Healthcare & Medicine (Interest in field)</label>
+      <label><input type="checkbox" name="interest" value="Nutrition & Dietetics"> Nutrition & Dietetics</label>
+      <label><input type="checkbox" name="interest" value="Sports & Physical Fitness"> Sports & Physical Fitness</label>
+      <label><input type="checkbox" name="interest" value="Mental Health & Wellbeing"> Mental Health & Wellbeing</label>
+      <label><input type="checkbox" name="interest" value="Nature, Outdoors & Adventure"> Nature, Outdoors & Adventure</label>
+      <label><input type="checkbox" name="interest" value="Cooking & Culinary Arts"> Cooking & Culinary Arts</label>
+      <label><input type="checkbox" name="interest" value="Travel & Cultural Exploration"> Travel & Cultural Exploration</label>
+      <label><input type="checkbox" name="interest" value="DIY & Craftsmanship"> DIY & Craftsmanship</label>
+    </div>
+
+    <div class="interest-category">
+      <h3>✍️ Other Interests</h3>
+      <label for="otherInterests">If your interests aren't listed, please specify them (comma-separated):</label>
+      <input type="text" id="otherInterests" placeholder="e.g., Astrophysics, Ancient History, Podcasting">
+    </div>
+  </div>
+  
+  <div id="dynamicSuggestionsBox" style="margin-top: 20px; margin-bottom: 20px;">
+      <h4>✨ Careers related to your selected interests:</h4>
+      <pre id="dynamicInterestSuggestions">Select some interests to see related career ideas here.</pre>
+  </div>
+
+  <button onclick="saveUserInterests()">Save My Interests</button>
+  <p id="interestsMessage"></p>
+</div>
+
+<div class="box">
+  <h2>3️⃣ Career Suggestions</h2>
   <button onclick="showCareerSuggestions()">Show My Best-Fit Careers</button>
   <pre id="careerSuggestions"></pre>
 </div>
 
 <div class="box">
-  <h2>3️⃣ Pick a Career & Get Roadmap</h2>
+  <h2>4️⃣ Pick a Career & Get Roadmap</h2>
   <select id="careerDropdown"></select>
   <button onclick="selectCareer()">Confirm Career</button>
   <pre id="careerRoadmap"></pre>
 </div>
 
 <div class="box">
-  <h2>4️⃣ Daily Real-World Challenge</h2>
+  <h2>5️⃣ Daily Real-World Challenge</h2>
   <button onclick="getDailyChallenge()">Get a New Challenge</button>
   <pre id="dailyChallenge"></pre>
   <textarea id="challengeAnswer" rows="4" placeholder="Write your response here..."></textarea>
@@ -216,67 +359,129 @@
     studyLevel: '',
     stream: '',
     careerIdea: '',
+    interests: [], 
     suggestedCareers: [],
     chosenCareer: ''
   };
 
   const careerOptions = {
-    'Science': ['Doctor', 'Engineer', 'Data Scientist', 'Psychologist'],
-    'Commerce': ['Accountant', 'Marketing Manager', 'Entrepreneur', 'Economist'],
-    'Arts': ['Journalist', 'Graphic Designer', 'Writer', 'Social Worker'],
-    'Technology': ['Software Engineer', 'AI Specialist', 'Data Scientist', 'Cybersecurity Expert'],
-    'Business': ['Entrepreneur', 'Business Analyst', 'Project Manager', 'Consultant'],
-    'Creative Arts': ['Artist', 'Photographer', 'Film Maker', 'Fashion Designer'],
-    'Medical': ['Doctor', 'Surgeon', 'Pharmacist', 'Nurse'],
-    'Finance': ['Financial Analyst', 'Investment Banker', 'Accountant', 'CFO'],
-    'Law': ['Lawyer', 'Legal Advisor', 'Judge', 'Corporate Counsel'],
-    'Media': ['Journalist', 'TV Anchor', 'Content Creator', 'PR Specialist'],
-    'Sports': ['Athlete', 'Sports Coach', 'Sports Analyst', 'Fitness Trainer']
+    'Science': ['Doctor', 'Engineer', 'Data Scientist', 'Psychologist', 'Researcher', 'Environmental Scientist'],
+    'Commerce': ['Accountant', 'Marketing Manager', 'Entrepreneur', 'Economist', 'Financial Analyst', 'HR Manager'],
+    'Arts': ['Journalist', 'Graphic Designer', 'Writer', 'Social Worker', 'Historian', 'Linguist'],
+    'Technology': ['Software Engineer', 'AI Specialist', 'Data Scientist', 'Cybersecurity Expert', 'Cloud Engineer', 'UI/UX Designer'],
+    'Business': ['Entrepreneur', 'Business Analyst', 'Project Manager', 'Consultant', 'HR Manager', 'Marketing Manager'],
+    'Creative Arts': ['Artist', 'Photographer', 'Film Maker', 'Fashion Designer', 'Animator', 'Writer', 'Graphic Designer'],
+    'Medical': ['Doctor', 'Surgeon', 'Pharmacist', 'Nurse', 'Medical Researcher', 'Dietitian'],
+    'Finance': ['Financial Analyst', 'Investment Banker', 'Accountant', 'CFO', 'Actuary', 'Economist'],
+    'Law': ['Lawyer', 'Legal Advisor', 'Judge', 'Corporate Counsel', 'Paralegal'],
+    'Media': ['Journalist', 'TV Anchor', 'Content Creator', 'PR Specialist', 'Filmmaker', 'Photographer'],
+    'Sports': ['Athlete', 'Sports Coach', 'Sports Analyst', 'Fitness Trainer', 'Sports Manager']
   };
 
-  const generalCareers = ['Entrepreneur', 'Graphic Designer', 'Writer', 'Social Worker', 'Psychologist'];
+  const generalCareers = ['Entrepreneur', 'Graphic Designer', 'Writer', 'Social Worker', 'Psychologist', 'Project Manager', 'Content Creator', 'Consultant', 'Teacher/Educator'];
+  
+  const interestToCareerMap = {
+    "Solving Complex Problems": ["Engineer", "Data Scientist", "Researcher", "Consultant", "AI Specialist", "Business Analyst"],
+    "Mathematics & Statistics": ["Data Scientist", "Economist", "Actuary", "Researcher", "Financial Analyst"],
+    "Coding & Software Development": ["Software Engineer", "AI Specialist", "Data Scientist", "Cloud Engineer", "UI/UX Designer", "Cybersecurity Expert"],
+    "Scientific Research & Experiments": ["Researcher", "Medical Researcher", "Environmental Scientist", "Doctor", "Pharmacist"],
+    "Analyzing Data & Trends": ["Data Scientist", "Business Analyst", "Financial Analyst", "Marketing Manager", "Economist", "Sports Analyst"],
+    "Emerging Technologies (AI, Blockchain)": ["AI Specialist", "Software Engineer", "Cloud Engineer", "Consultant", "Researcher", "Cybersecurity Expert"],
+    "Engineering & Building": ["Engineer", "Project Manager", "Cloud Engineer", "Architect"],
+    "Environmental Science & Sustainability": ["Environmental Scientist", "Researcher", "Consultant", "Conservationist"],
+    "Visual Arts (Drawing, Painting, Sculpture)": ["Artist", "Graphic Designer", "Animator", "Illustrator"],
+    "Graphic Design & Digital Illustration": ["Graphic Designer", "UI/UX Designer", "Animator", "Content Creator", "Illustrator"],
+    "Writing (Fiction, Non-fiction, Poetry)": ["Writer", "Journalist", "Content Creator", "Marketing Manager", "Editor"],
+    "Music (Playing, Composing, Production)": ["Musician", "Music Producer", "Sound Engineer", "DJ"],
+    "Performing Arts (Acting, Dance)": ["Actor", "Dancer", "Performer", "Choreographer"],
+    "Fashion & Apparel Design": ["Fashion Designer", "Textile Designer", "Stylist"],
+    "Filmmaking & Video Production": ["Film Maker", "Video Editor", "Content Creator", "Photographer", "Cinematographer"],
+    "Photography": ["Photographer", "Content Creator", "Journalist", "Photo Editor"],
+    "UI/UX Design & Product Design": ["UI/UX Designer", "Product Designer", "Graphic Designer", "Software Engineer"],
+    "Entrepreneurship & Startups": ["Entrepreneur", "Business Analyst", "Marketing Manager", "Consultant", "Venture Capitalist"],
+    "Leading & Managing Teams": ["Project Manager", "HR Manager", "Marketing Manager", "Entrepreneur", "CEO"],
+    "Strategic Planning & Business Development": ["Business Analyst", "Consultant", "Marketing Manager", "Entrepreneur", "Strategist"],
+    "Marketing, Advertising & Branding": ["Marketing Manager", "Content Creator", "PR Specialist", "Graphic Designer", "Brand Manager", "SEO Specialist"],
+    "Finance, Investing & Economics": ["Financial Analyst", "Investment Banker", "Economist", "Accountant", "Actuary", "CFO", "Stockbroker"],
+    "Public Speaking & Presentations": ["Consultant", "Marketing Manager", "Teacher/Educator", "PR Specialist", "TV Anchor", "Motivational Speaker"],
+    "Negotiation & Sales": ["Sales Manager", "Marketing Manager", "Entrepreneur", "Investment Banker", "Real Estate Agent"],
+    "Project Management": ["Project Manager", "Business Analyst", "Engineer", "Consultant", "Operations Manager"],
+    "Psychology & Human Behavior": ["Psychologist", "Social Worker", "HR Manager", "Consultant", "Researcher", "Therapist", "Counselor"],
+    "Teaching & Education": ["Teacher/Educator", "Linguist", "Professor", "Instructional Designer", "Corporate Trainer"],
+    "Community Service & Volunteering": ["Social Worker", "NGO Manager", "Community Organizer", "Activist"],
+    "Social Work & Counseling": ["Social Worker", "Psychologist", "Counselor", "Therapist"],
+    "History & Archaeology": ["Historian", "Archaeologist", "Museum Curator", "Researcher", "Archivist"],
+    "Philosophy & Ethics": ["Philosopher", "Ethics Officer", "Researcher", "Writer", "Policy Advisor"],
+    "Languages & Linguistics": ["Linguist", "Translator", "Interpreter", "Teacher/Educator", "Writer", "Speech Therapist"],
+    "Journalism & Media Studies": ["Journalist", "Content Creator", "PR Specialist", "Media Analyst", "TV Anchor", "Editor", "Reporter"],
+    "Healthcare & Medicine (Interest in field)": ["Doctor", "Nurse", "Pharmacist", "Medical Researcher", "Hospital Administrator", "Surgeon", "Dentist"],
+    "Nutrition & Dietetics": ["Dietitian", "Nutritionist", "Wellness Coach", "Food Scientist"],
+    "Sports & Physical Fitness": ["Athlete", "Sports Coach", "Fitness Trainer", "Sports Analyst", "Physiotherapist", "Sports Manager"],
+    "Mental Health & Wellbeing": ["Psychologist", "Counselor", "Social Worker", "Wellness Coach", "Therapist", "Psychiatrist"],
+    "Nature, Outdoors & Adventure": ["Environmental Scientist", "Adventure Guide", "Park Ranger", "Travel Blogger", "Geologist", "Forester"],
+    "Cooking & Culinary Arts": ["Chef", "Culinary Artist", "Food Critic", "Caterer", "Pastry Chef", "Baker"],
+    "Travel & Cultural Exploration": ["Travel Agent", "Travel Blogger", "Tour Guide", "Cultural Anthropologist", "Flight Attendant", "Hotel Manager"],
+    "DIY & Craftsmanship": ["Artisan", "Craftsperson", "Designer", "Small Business Owner (Crafts)", "Jewelry Maker", "Carpenter"]
+  };
 
-  const careerRoadmaps = {
-    'Doctor': `1️⃣ Clear NEET.\n2️⃣ Complete MBBS.\n3️⃣ Do Internship.\n4️⃣ Specialize via PG.\n5️⃣ Practice or join a hospital.`,
-    'Engineer': `1️⃣ Clear JEE/Entrance.\n2️⃣ Complete B.Tech/BE.\n3️⃣ Build projects.\n4️⃣ Intern during college.\n5️⃣ Get job or pursue M.Tech.`,
-    'Data Scientist': `1️⃣ Learn Python/R.\n2️⃣ Understand Statistics.\n3️⃣ Learn ML tools.\n4️⃣ Work on datasets.\n5️⃣ Build projects & certifications.`,
-    'Psychologist': `1️⃣ Complete BA/BSc in Psychology.\n2️⃣ Do MA/MSc in Psychology.\n3️⃣ Practice under supervision.\n4️⃣ Clear licensing.\n5️⃣ Start independent practice.`,
-    'Accountant': `1️⃣ Complete B.Com.\n2️⃣ Pursue CA/CPA.\n3️⃣ Work in audit or accounts.\n4️⃣ Keep up with financial laws.\n5️⃣ Move up to CFO.`,
-    'Marketing Manager': `1️⃣ Complete BBA/MBA.\n2️⃣ Learn digital marketing.\n3️⃣ Work on real campaigns.\n4️⃣ Build leadership skills.\n5️⃣ Manage marketing teams.`,
-    'Entrepreneur': `1️⃣ Identify a problem to solve.\n2️⃣ Build business plan.\n3️⃣ Gather funds.\n4️⃣ Launch product/service.\n5️⃣ Scale business.`,
-    'Economist': `1️⃣ Do BA in Economics.\n2️⃣ Pursue MA/PhD.\n3️⃣ Work in research/policy.\n4️⃣ Publish papers.\n5️⃣ Consult or join think tanks.`,
-    'Journalist': `1️⃣ Do BA in Journalism.\n2️⃣ Intern at media houses.\n3️⃣ Build writing/reporting skills.\n4️⃣ Cover stories.\n5️⃣ Move to editor roles.`,
-    'Graphic Designer': `1️⃣ Learn design tools.\n2️⃣ Build portfolio.\n3️⃣ Freelance/intern.\n4️⃣ Work in agencies.\n5️⃣ Start own design firm.`,
-    'Writer': `1️⃣ Build strong language skills.\n2️⃣ Write blogs/articles.\n3️⃣ Get published.\n4️⃣ Market your writing.\n5️⃣ Write books or screenplays.`,
-    'Social Worker': `1️⃣ Do BSW/MSW.\n2️⃣ Volunteer for NGOs.\n3️⃣ Handle social cases.\n4️⃣ Advocate for policy changes.\n5️⃣ Lead social programs.`,
-    'Software Engineer': `1️⃣ Learn coding languages.\n2️⃣ Build projects.\n3️⃣ Get internship.\n4️⃣ Work in tech companies.\n5️⃣ Keep updating skills.`,
-    'AI Specialist': `1️⃣ Learn Python, ML, Deep Learning.\n2️⃣ Complete AI certifications.\n3️⃣ Build AI projects.\n4️⃣ Work in AI firms.\n5️⃣ Research in AI.`,
-    'Cybersecurity Expert': `1️⃣ Learn networking & security.\n2️⃣ Do certifications (CEH, CISSP).\n3️⃣ Work in security teams.\n4️⃣ Handle threats.\n5️⃣ Consult independently.`,
-    'Business Analyst': `1️⃣ Complete BBA/MBA.\n2️⃣ Learn data analysis.\n3️⃣ Work in business teams.\n4️⃣ Handle projects.\n5️⃣ Lead business insights.`,
-    'Project Manager': `1️⃣ Learn project management tools.\n2️⃣ Get certified (PMP).\n3️⃣ Manage small projects.\n4️⃣ Lead teams.\n5️⃣ Handle large projects.`,
-    'Consultant': `1️⃣ Do MBA or specialize.\n2️⃣ Intern in firms.\n3️⃣ Solve business problems.\n4️⃣ Handle multiple clients.\n5️⃣ Become industry expert.`,
-    'Artist': `1️⃣ Learn art techniques.\n2️⃣ Build a portfolio.\n3️⃣ Exhibit work.\n4️⃣ Sell art pieces.\n5️⃣ Become an art curator.`,
-    'Photographer': `1️⃣ Learn photography basics.\n2️⃣ Buy pro equipment.\n3️⃣ Build online portfolio.\n4️⃣ Do shoots.\n5️⃣ Work freelance.`,
-    'Film Maker': `1️⃣ Learn film direction.\n2️⃣ Make short films.\n3️⃣ Work as assistant.\n4️⃣ Create feature films.\n5️⃣ Win awards.`,
-    'Fashion Designer': `1️⃣ Learn fashion design.\n2️⃣ Build a portfolio.\n3️⃣ Intern with designers.\n4️⃣ Launch your label.\n5️⃣ Join fashion weeks.`,
-    'Surgeon': `1️⃣ Clear NEET.\n2️⃣ Complete MBBS.\n3️⃣ Crack MS/MCh entrance.\n4️⃣ Specialize as surgeon.\n5️⃣ Join hospitals/start clinic.`,
-    'Pharmacist': `1️⃣ Complete B.Pharm.\n2️⃣ Get license.\n3️⃣ Work in pharma retail/hospitals.\n4️⃣ Manage pharmacy.\n5️⃣ Become pharma consultant.`,
-    'Nurse': `1️⃣ Complete BSc Nursing.\n2️⃣ Get certified.\n3️⃣ Work in hospitals.\n4️⃣ Handle patient care.\n5️⃣ Move to head nurse.`,
-    'Financial Analyst': `1️⃣ Do B.Com/BBA.\n2️⃣ Learn financial modeling.\n3️⃣ Get CFA.\n4️⃣ Analyze market data.\n5️⃣ Become finance manager.`,
-    'Investment Banker': `1️⃣ Do MBA Finance.\n2️⃣ Intern in banks.\n3️⃣ Handle deals.\n4️⃣ Build client network.\n5️⃣ Lead mergers/acquisitions.`,
-    'CFO': `1️⃣ Start as accountant.\n2️⃣ Work in finance teams.\n3️⃣ Become finance manager.\n4️⃣ Lead finance strategy.\n5️⃣ Move to CFO role.`,
-    'Lawyer': `1️⃣ Do BA LLB.\n2️⃣ Intern with law firms.\n3️⃣ Clear Bar Council exam.\n4️⃣ Practice in courts.\n5️⃣ Lead legal cases.`,
-    'Legal Advisor': `1️⃣ Become a lawyer.\n2️⃣ Work with corporates.\n3️⃣ Draft legal documents.\n4️⃣ Advise on legal issues.\n5️⃣ Lead legal strategy.`,
-    'Judge': `1️⃣ Become a lawyer.\n2️⃣ Clear judicial services exam.\n3️⃣ Serve as magistrate.\n4️⃣ Get promoted.\n5️⃣ Lead as high court/judge.`,
-    'Corporate Counsel': `1️⃣ Become a lawyer.\n2️⃣ Join corporate firms.\n3️⃣ Handle legal compliance.\n4️⃣ Manage contracts.\n5️⃣ Become head legal.`,
-    'TV Anchor': `1️⃣ Learn mass comm.\n2️⃣ Intern in TV channels.\n3️⃣ Build speaking skills.\n4️⃣ Host shows.\n5️⃣ Lead as news anchor.`,
-    'Content Creator': `1️⃣ Pick niche content.\n2️⃣ Build audience.\n3️⃣ Monetize content.\n4️⃣ Partner with brands.\n5️⃣ Grow into influencer.`,
-    'PR Specialist': `1️⃣ Learn PR & Mass Comm.\n2️⃣ Intern in PR agencies.\n3️⃣ Handle clients.\n4️⃣ Manage media relations.\n5️⃣ Become PR head.`,
-    'Athlete': `1️⃣ Train in sport.\n2️⃣ Join state/national teams.\n3️⃣ Win championships.\n4️⃣ Endorse brands.\n5️⃣ Coach/train juniors.`,
-    'Sports Coach': `1️⃣ Be an athlete.\n2️⃣ Learn coaching.\n3️⃣ Get certified.\n4️⃣ Coach school/club teams.\n5️⃣ Coach national teams.`,
-    'Sports Analyst': `1️⃣ Play/know sports.\n2️⃣ Learn analytics tools.\n3️⃣ Analyze matches.\n4️⃣ Provide expert commentary.\n5️⃣ Join media teams.`,
-    'Fitness Trainer': `1️⃣ Learn fitness courses.\n2️⃣ Get certified.\n3️⃣ Train clients.\n4️⃣ Build gym/online brand.\n5️⃣ Lead fitness events.`
-
+  const careerRoadmaps = { 
+    'Doctor': `1️⃣ Clear NEET.\n2️⃣ Complete MBBS.\n3️⃣ Do Internship.\n4️⃣ Specialize via PG (MD/MS).\n5️⃣ Practice or join a hospital.`,
+    'Engineer': `1️⃣ Clear JEE/State CET/Entrance.\n2️⃣ Complete B.Tech/BE in chosen field.\n3️⃣ Build practical projects & portfolio.\n4️⃣ Intern during college.\n5️⃣ Get job or pursue M.Tech/MBA.`,
+    'Data Scientist': `1️⃣ Strong foundation in Math & Stats.\n2️⃣ Learn Python/R & SQL.\n3️⃣ Master ML algorithms & tools.\n4️⃣ Work on real-world datasets & projects.\n5️⃣ Build portfolio, consider certifications.`,
+    'Psychologist': `1️⃣ Complete BA/BSc in Psychology.\n2️⃣ Do MA/MSc in Psychology.\n3️⃣ Gain supervised practical experience.\n4️⃣ Clear licensing exams.\n5️⃣ Start practice or join institutions.`,
+    'Accountant': `1️⃣ Complete B.Com or BBA (Finance).\n2️⃣ Pursue CA, CPA, ACCA, CMA.\n3️⃣ Gain experience in audit, tax.\n4️⃣ Stay updated with financial regulations.\n5️⃣ Progress to Finance Manager, CFO.`,
+    'Marketing Manager': `1️⃣ Complete BBA/MBA in Marketing.\n2️⃣ Learn digital marketing skills.\n3️⃣ Gain experience with campaigns.\n4️⃣ Develop analytical & strategic skills.\n5️⃣ Manage marketing teams.`,
+    'Entrepreneur': `1️⃣ Identify a problem & develop a solution.\n2️⃣ Create a detailed business plan.\n3️⃣ Secure funding.\n4️⃣ Build a team & launch.\n5️⃣ Iterate, adapt, and scale.`,
+    'Economist': `1️⃣ Complete BA/BSc in Economics.\n2️⃣ Pursue MA/MSc or PhD.\n3️⃣ Develop strong analytical skills.\n4️⃣ Work in research, government, or finance.\n5️⃣ Publish papers & consult.`,
+    'Journalist': `1️⃣ Complete BA/MA in Journalism.\n2️⃣ Intern at media houses.\n3️⃣ Develop writing & reporting skills.\n4️⃣ Build a portfolio.\n5️⃣ Specialize & rise to editor roles.`,
+    'Graphic Designer': `1️⃣ Learn design principles & software.\n2️⃣ Build a strong portfolio.\n3️⃣ Pursue B.Des or specialized courses.\n4️⃣ Freelance, intern, or join agencies.\n5️⃣ Stay updated with trends.`,
+    'Writer': `1️⃣ Master language & grammar.\n2️⃣ Write consistently (blogs, articles).\n3️⃣ Seek feedback & get published.\n4️⃣ Build an online presence.\n5️⃣ Specialize & pursue larger projects.`,
+    'Social Worker': `1️⃣ Complete BSW or MSW.\n2️⃣ Gain field experience (NGOs).\n3️⃣ Develop counseling & advocacy skills.\n4️⃣ Work in NGOs, hospitals, schools.\n5️⃣ Advocate for policy changes.`,
+    'Software Engineer': `1️⃣ Learn programming languages.\n2️⃣ Understand data structures, algorithms.\n3️⃣ Build projects & contribute to open source.\n4️⃣ Get internships.\n5️⃣ Continuously learn new tech.`,
+    'AI Specialist': `1️⃣ Strong Math, CS, & Programming base.\n2️⃣ Learn ML, Deep Learning, NLP.\n3️⃣ Specialized courses or Masters/PhD.\n4️⃣ Build complex AI projects.\n5️⃣ Work in AI research or tech firms.`,
+    'Cybersecurity Expert': `1️⃣ Networking, OS, & security fundamentals.\n2️⃣ Learn threats & mitigation.\n3️⃣ Pursue certifications (CEH, CISSP).\n4️⃣ Gain experience in SOC, pen-testing.\n5️⃣ Stay updated with cyber threats.`,
+    'Business Analyst': `1️⃣ BBA/MBA or relevant degree.\n2️⃣ Develop analytical & communication skills.\n3️⃣ Learn data analysis tools (SQL, Excel).\n4️⃣ Gain experience in requirements gathering.\n5️⃣ Liaison between business & tech teams.`,
+    'Project Manager': `1️⃣ Learn PM methodologies (Agile, Waterfall).\n2️⃣ Get certified (PMP, PRINCE2).\n3️⃣ Gain experience with small projects.\n4️⃣ Develop leadership & organization skills.\n5️⃣ Manage larger, complex projects.`,
+    'Consultant': `1️⃣ Excel academically (MBA often preferred).\n2️⃣ Develop analytical & presentation skills.\n3️⃣ Gain industry or domain expertise.\n4️⃣ Intern or join consulting firms.\n5️⃣ Solve diverse client business problems.`,
+    'Artist': `1️⃣ Master techniques in chosen medium.\n2️⃣ Develop a unique artistic style & portfolio.\n3️⃣ Formal training (BFA/MFA) or self-learn.\n4️⃣ Exhibit work in galleries, art fairs.\n5️⃣ Network; potentially teach or curate.`,
+    'Photographer': `1️⃣ Learn photography fundamentals.\n2️⃣ Master photo editing software.\n3️⃣ Build a professional portfolio by niche.\n4️⃣ Invest in quality equipment.\n5️⃣ Market services online, network.`,
+    'Film Maker': `1️⃣ Learn storytelling, scriptwriting, direction.\n2️⃣ Create short films & showreel.\n3️⃣ Gain experience on film sets.\n4️⃣ Network & pitch projects.\n5️⃣ Secure funding & manage production.`,
+    'Fashion Designer': `1️⃣ Study fashion design (B.Des/diploma).\n2️⃣ Master sketching, pattern making, sewing.\n3️⃣ Build a strong, unique portfolio.\n4️⃣ Intern with designers/fashion houses.\n5️⃣ Launch label or work for brands.`,
+    'Surgeon': `1️⃣ Clear NEET (high rank).\n2️⃣ Complete MBBS.\n3️⃣ Crack PG entrance for MS.\n4️⃣ Complete MS residency; optionally MCh.\n5️⃣ Join hospitals or private practice.`,
+    'Pharmacist': `1️⃣ Complete D.Pharm or B.Pharm.\n2️⃣ Register with Pharmacy Council (license).\n3️⃣ Work in retail/hospital pharmacies.\n4️⃣ M.Pharm for specialization.\n5️⃣ Roles from dispensing to research.`,
+    'Nurse': `1️⃣ Complete BSc Nursing or GNM.\n2️⃣ Register with State Nursing Council.\n3️⃣ Work in hospitals, clinics.\n4️⃣ Specialize (MSc Nursing).\n5️⃣ Advance to supervisor/educator.`,
+    'Financial Analyst': `1️⃣ B.Com/BBA (Finance) or Economics.\n2️⃣ Strong analytical skills; financial modeling.\n3️⃣ Pursue CFA certification.\n4️⃣ Analyze data, create forecasts.\n5️⃣ Work in banks, investment firms.`,
+    'Investment Banker': `1️⃣ Top academics (MBA Finance, CA/CFA).\n2️⃣ Intern in investment banks.\n3️⃣ Skills in modeling, valuation, deals.\n4️⃣ Work on M&A, IPOs, capital raising.\n5️⃣ Build network, progress to senior roles.`,
+    'CFO': `1️⃣ Strong accounting/finance background.\n2️⃣ Extensive experience in finance roles.\n3️⃣ Progress through finance leadership.\n4️⃣ Develop strategic & leadership skills.\n5️⃣ Oversee all company financial activities.`,
+    'Lawyer': `1️⃣ Complete LLB (3 or 5 years).\n2️⃣ Pass All India Bar Examination (AIBE).\n3️⃣ Intern with law firms/advocates.\n4️⃣ Specialize in an area of law.\n5️⃣ Practice in courts or join firms.`,
+    'Legal Advisor': `1️⃣ Qualified lawyer (LLB + AIBE).\n2️⃣ Gain experience in a specific legal field.\n3️⃣ Work with corporations, government.\n4️⃣ Draft documents, provide legal opinions.\n5️⃣ Focus on preventative legal strategy.`,
+    'Judge': `1️⃣ Qualified lawyer with practice experience.\n2️⃣ Clear Judicial Services Examination.\n3️⃣ Serve as magistrate/civil judge.\n4️⃣ Promotion based on seniority/performance.\n5️⃣ Elevation to higher courts.`,
+    'Corporate Counsel': `1️⃣ Qualified lawyer (LLB + AIBE).\n2️⃣ Experience in corporate law, compliance.\n3️⃣ Join a company's legal department.\n4️⃣ Handle compliance, contracts, litigation.\n5️⃣ Progress to General Counsel.`,
+    'TV Anchor': `1️⃣ Mass Comm. or Journalism degree.\n2️⃣ Excellent communication & on-camera skills.\n3️⃣ Intern/work at TV channels.\n4️⃣ Build showreel & network.\n5️⃣ Host shows, report news.`,
+    'PR Specialist': `1️⃣ PR, Mass Comm., or Marketing degree.\n2️⃣ Strong writing & networking skills.\n3️⃣ Intern/work in PR agencies.\n4️⃣ Manage media relations, press releases.\n5️⃣ Build positive public image.`,
+    'Athlete': `1️⃣ Early training & exceptional talent.\n2️⃣ Compete at local, state, national levels.\n3️⃣ Professional coaching/sports academies.\n4️⃣ Maintain peak physical & mental fitness.\n5️⃣ Aim for international events, endorsements.`,
+    'Sports Coach': `1️⃣ Former athlete with deep sport knowledge.\n2️⃣ Obtain coaching certifications.\n3️⃣ Gain experience at various levels.\n4️⃣ Develop training & strategy skills.\n5️⃣ Continuously learn coaching techniques.`,
+    'Sports Analyst': `1️⃣ Deep knowledge of sports & statistics.\n2️⃣ Develop analytical skills, learn tools.\n3️⃣ Background in journalism or stats helpful.\n4️⃣ Provide insights for media/teams.\n5️⃣ Build analysis portfolio & network.`,
+    'Fitness Trainer': `1️⃣ Certifications (ACE, NASM).\n2️⃣ Knowledge in exercise science, nutrition.\n3️⃣ Gain experience training clients.\n4️⃣ Build client base & market services.\n5️⃣ Specialize (strength, yoga, Pilates).`,
+    'Researcher': `1️⃣ Strong academic background.\n2️⃣ Masters/PhD for advanced roles.\n3️⃣ Develop critical thinking & research skills.\n4️⃣ Conduct experiments, analyze data, publish.\n5️⃣ Work in universities, R&D.`,
+    'Historian': `1️⃣ BA/MA in History; PhD for academia.\n2️⃣ Strong research, writing, analytical skills.\n3️⃣ Specialize in a period/region/theme.\n4️⃣ Archival research, interpret sources.\n5️⃣ Teach, work in museums/archives.`,
+    'Cloud Engineer': `1️⃣ IT infrastructure, networking, OS basics.\n2️⃣ Learn cloud platforms (AWS, Azure, GCP).\n3️⃣ Obtain cloud certifications.\n4️⃣ Skills in automation, scripting, DevOps.\n5️⃣ Design, deploy, manage cloud apps.`,
+    'HR Manager': `1️⃣ HR, Business Admin, or Psychology degree.\n2️⃣ Experience in HR functions.\n3️⃣ Strong interpersonal & problem-solving skills.\n4️⃣ Understand labor laws & HR practices.\n5️⃣ Lead HR teams & strategy.`,
+    'Animator': `1️⃣ Study animation (BFA, B.Des, courses).\n2️⃣ Master animation software & principles.\n3️⃣ Skills in drawing, storytelling.\n4️⃣ Create strong portfolio/showreel.\n5️⃣ Work in studios, gaming, freelance.`,
+    'Medical Researcher': `1️⃣ MBBS or PhD in biomedical science.\n2️⃣ Strong research & experimental design skills.\n3️⃣ Conduct trials, lab research, studies.\n4️⃣ Secure grants, publish findings.\n5️⃣ Work in universities, pharma.`,
+    'Actuary': `1️⃣ Strong math/stats background.\n2️⃣ Pass rigorous professional exams.\n3️⃣ Skills in risk assessment, modeling.\n4️⃣ Work in insurance, pension funds.\n5️⃣ Analyze & manage financial risks.`,
+    'Paralegal': `1️⃣ Paralegal Studies or Law diploma/degree.\n2️⃣ Strong organizational & research skills.\n3️⃣ Assist lawyers: documents, research.\n4️⃣ Work in law firms, corporate legal.\n5️⃣ Support legal proceedings.`,
+    'UI/UX Designer': `1️⃣ Learn design principles, user research.\n2️⃣ Master design tools (Figma, Sketch, XD).\n3️⃣ Build a portfolio of UI/UX projects.\n4️⃣ Understand user psychology, accessibility.\n5️⃣ Iterate designs based on feedback.`,
+    'Environmental Scientist': `1️⃣ Environmental Science or related degree.\n2️⃣ Conduct fieldwork, collect & analyze data.\n3️⃣ Understand environmental regulations.\n4️⃣ Develop solutions for env. problems.\n5️⃣ Work for agencies, consultancies, NGOs.`,
+    'Dietitian': `1️⃣ BSc in Nutrition & Dietetics.\n2️⃣ Internship & Registered Dietitian (RD) exam.\n3️⃣ Medical nutrition therapy for patients.\n4️⃣ Create meal plans, educate on health.\n5️⃣ Work in hospitals, clinics, private practice.`,
+    'Linguist': `1️⃣ BA/MA in Linguistics.\n2️⃣ Expertise in phonetics, syntax, etc.\n3️⃣ Research language structure/use.\n4️⃣ Apply in AI, translation, education.\n5️⃣ Document endangered languages.`,
+    'Teacher/Educator': `1️⃣ Teaching degree & certification.\n2️⃣ Strong pedagogical skills.\n3️⃣ Create engaging lesson plans.\n4️⃣ Foster inclusive classroom.\n5️⃣ Assess student progress.`,
+    'Sports Manager': `1️⃣ Sports Management or Business degree.\n2️⃣ Internships in sports organizations.\n3️⃣ Skills in marketing, finance, operations.\n4️⃣ Build industry network.\n5️⃣ Manage teams, events, or athletes.`,
+    'Architect': `1️⃣ Bachelor of Architecture (B.Arch).\n2️⃣ Internships & register with Council.\n3️⃣ Master design software & codes.\n4️⃣ Develop strong design portfolio.\n5️⃣ Oversee projects (concept to construction).`,
+    'Illustrator': `1️⃣ Develop strong drawing & digital art skills.\n2️⃣ Build a portfolio in a specific style/niche.\n3️⃣ Courses in illustration or fine arts.\n4️⃣ Freelance or work for publishers, agencies.\n5️⃣ Market your work online & network.`,
+    'Editor': `1️⃣ Strong command of grammar & style.\n2️⃣ Degree in English, Journalism, or related.\n3️⃣ Experience in copyediting, proofreading.\n4️⃣ Develop an eye for detail & consistency.\n5️⃣ Work for publishers, media, or freelance.`,
+    'Musician': `1️⃣ Master chosen instrument/vocals.\n2️⃣ Study music theory & performance.\n3️⃣ Perform regularly, collaborate with others.\n4️⃣ Record music & build online presence.\n5️⃣ Understand music business basics.`,
+     'Product Designer': `1️⃣ Degree in Design, Engineering, or HCI.\n2️⃣ Skills in user research, prototyping, UI/UX.\n3️⃣ Proficiency in design & prototyping tools.\n4️⃣ Build a portfolio of product design projects.\n5️⃣ Understand manufacturing or software dev processes.`
   };
 
   const careerChallenges = {
@@ -318,7 +523,95 @@
     'Athlete': ["Win despite injuries.", "Train during off-seasons.", "Handle defeat gracefully."],
     'Sports Coach': ["Motivate a losing team.", "Devise last-minute strategies.", "Manage difficult players."],
     'Sports Analyst': ["Predict match outcomes.", "Present analysis live.", "Handle unexpected game shifts."],
-    'Fitness Trainer': ["Retain long-term clients.", "Handle injuries in sessions.", "Stay updated with fitness trends."]
+    'Fitness Trainer': ["Retain long-term clients.", "Handle injuries in sessions.", "Stay updated with fitness trends."],
+    'Researcher': ["Develop a novel hypothesis for an unsolved problem.", "Secure funding for a research project against stiff competition.", "Disseminate complex research findings to a lay audience effectively."],
+    'Environmental Scientist': ["Propose a solution to mitigate local water pollution.", "Conduct an environmental impact assessment for a new development.", "Balance conservation goals with economic development needs."],
+    'HR Manager': ["Resolve a complex employee grievance issue fairly.", "Design a new employee onboarding program to improve retention.", "Develop a strategy to improve diversity and inclusion in the workplace."],
+    'Historian': ["Interpret a newly discovered primary source document.", "Write a compelling historical narrative for a public audience.", "Defend your historical interpretation against differing scholarly opinions."],
+    'Linguist': ["Document an endangered language before it disappears.", "Analyze the linguistic patterns in a large dataset of text.", "Develop a new method for teaching second language acquisition."],
+    'Cloud Engineer': ["Migrate a legacy application to a cloud-native architecture.", "Optimize cloud infrastructure costs without sacrificing performance.", "Troubleshoot a major service outage in a distributed cloud environment."],
+    'UI/UX Designer': ["Redesign a complex app to improve user engagement by 20%.", "Conduct user testing and iterate on a prototype based on feedback.", "Advocate for user-centered design principles in a product team."],
+    'Animator': ["Create a compelling 30-second animation for a new product launch.", "Animate a character to express complex emotions without dialogue.", "Collaborate with a team to meet a tight animation project deadline."],
+    'Medical Researcher': ["Design a clinical trial for a new experimental drug.", "Analyze complex biomedical data to identify disease markers.", "Write a grant proposal to fund innovative medical research."],
+    'Dietitian': ["Create a specialized meal plan for a patient with multiple dietary restrictions.", "Educate a community group on healthy eating on a budget.", "Debunk common nutrition myths with evidence-based information."],
+    'Actuary': ["Assess the financial risk of a new insurance product.", "Model the long-term financial impact of climate change on investments.", "Explain complex actuarial calculations to non-technical stakeholders."],
+    'Paralegal': ["Draft a complex legal document with meticulous accuracy under a tight deadline.", "Organize and manage evidence for a major court case.", "Conduct thorough legal research to support a lawyer's argument."],
+    'Sports Manager': ["Negotiate a multi-million dollar contract for a star athlete.", "Develop a marketing strategy to increase a sports team's fan base.", "Manage the logistics and budget for a major sporting event."],
+    'Teacher/Educator': ["Design an engaging lesson plan for a difficult curriculum topic.", "Manage a classroom with diverse learning needs effectively.", "Inspire a disengaged student to develop a passion for learning."],
+    'Architect': ["Design an innovative and sustainable building for a challenging urban site.", "Present your architectural vision convincingly to a client and review board.", "Oversee the construction phase, ensuring design integrity and resolving on-site issues."],
+    'Conservationist': ["Develop a strategy to protect an endangered species and its habitat.", "Secure community support and funding for a local conservation project.", "Balance ecological preservation with the needs of local human populations."],
+    'Illustrator': ["Create a series of illustrations for a children's book that captures its unique tone.", "Develop a distinctive visual style for a new brand identity.", "Meet a tight deadline for editorial illustrations for a magazine."],
+    'Editor': ["Edit a complex manuscript to improve clarity, coherence, and impact while preserving the author's voice.", "Manage the editorial workflow for a publication, ensuring quality and timeliness.", "Provide constructive feedback to writers that helps them improve their craft."],
+    'Musician': ["Compose and perform an original piece that resonates with a diverse audience.", "Master a challenging new instrument or musical technique.", "Navigate the business side of music, including promotion and bookings."],
+    'Music Producer': ["Transform a raw demo into a polished, radio-ready track.", "Define the unique sound for an emerging artist's album.", "Manage studio time and diverse artistic personalities to complete a project on budget."],
+    'Sound Engineer': ["Achieve the perfect live sound mix for a band in a challenging venue.", "Design and implement the sound effects for a feature film or video game.", "Troubleshoot complex audio system failures under pressure."],
+    'DJ': ["Curate and mix a seamless set that keeps a diverse crowd energized for hours.", "Adapt your music selection in real-time based on the audience's reaction.", "Build a unique brand and following as a DJ in a competitive market."],
+    'Actor': ["Deliver a compelling and emotionally resonant performance for a challenging role.", "Master a difficult accent or physical skill required for a part.", "Navigate the audition process and handle rejection with resilience."],
+    'Dancer': ["Learn and perfect complex choreography for a lead role in a production.", "Convey a story or emotion purely through movement and expression.", "Maintain peak physical condition and prevent injuries throughout a demanding performance schedule."],
+    'Performer': ["Create and deliver a captivating solo show that engages the audience from start to finish.", "Improvise effectively when unexpected issues arise during a live performance.", "Adapt your performance style for different venues and audiences."],
+    'Choreographer': ["Create an original and innovative dance piece for a company of dancers.", "Effectively teach and communicate your choreographic vision to performers.", "Secure funding and manage the production aspects of a new dance work."],
+    'Textile Designer': ["Develop a new and innovative textile pattern that is both aesthetically pleasing and manufacturable.", "Select sustainable materials and processes for a new textile collection.", "Collaborate with fashion designers to create custom textiles for their garments."],
+    'Stylist': ["Create a unique and impactful fashion look for a celebrity for a red carpet event.", "Develop the visual concept and style the wardrobe for a major advertising campaign.", "Advise individual clients on how to build a wardrobe that reflects their personal style and needs."],
+    'Video Editor': ["Craft a compelling narrative from hours of raw footage for a documentary.", "Edit a fast-paced music video with precise timing and visual rhythm.", "Incorporate complex visual effects and color grading to enhance a video project."],
+    'Cinematographer': ["Develop a unique visual style that enhances the storytelling of a film script.", "Effectively light and shoot a challenging scene with limited resources.", "Collaborate with the director to translate their vision into compelling imagery."],
+    'Photo Editor': ["Curate and select the most impactful images from a large photoshoot.", "Retouch and enhance photographs to a high professional standard while maintaining authenticity.", "Manage a high volume of image editing work under tight deadlines for a publication."],
+    'Product Designer': ["Identify an unmet user need and design an innovative product solution.", "Create and test interactive prototypes to refine a product's usability and desirability.", "Collaborate with engineers and marketers to bring a product from concept to launch."],
+    'Venture Capitalist': ["Identify a startup with high growth potential from hundreds of pitches.", "Conduct due diligence and negotiate investment terms with entrepreneurs.", "Provide strategic guidance to portfolio companies to help them succeed."],
+    'CEO': ["Develop and communicate a compelling long-term vision for the company.", "Lead an organization through a period of significant change or crisis.", "Make high-stakes decisions that impact the company's future and its employees."],
+    'Strategist': ["Analyze market trends and competitive landscape to identify strategic opportunities.", "Develop a comprehensive business strategy to achieve long-term growth.", "Advise senior leadership on critical strategic choices and their implications."],
+    'Brand Manager': ["Develop and execute a marketing strategy to build a strong brand identity and increase market share.", "Manage a brand's reputation through crises and evolving consumer sentiment.", "Analyze brand performance metrics and adapt strategies accordingly."],
+    'SEO Specialist': ["Develop and implement an SEO strategy to significantly increase organic website traffic.", "Conduct in-depth keyword research and competitor analysis to identify opportunities.", "Adapt to search engine algorithm changes to maintain and improve rankings."],
+    'Stockbroker': ["Analyze market conditions and company performance to advise clients on stock investments.", "Execute trades accurately and efficiently in a fast-paced environment.", "Build and maintain strong relationships with clients based on trust and performance."],
+    'Motivational Speaker': ["Craft and deliver a powerful speech that inspires and motivates a large audience.", "Develop a unique personal brand and message that resonates with people.", "Handle challenging questions from the audience with grace and insight."],
+    'Sales Manager': ["Lead and motivate a sales team to consistently exceed targets.", "Develop and implement an effective sales strategy for a new product or market.", "Negotiate and close high-value deals with key clients."],
+    'Real Estate Agent': ["Successfully market and sell a property in a competitive market.", "Negotiate the best possible deal for a client, whether buying or selling.", "Build a strong network of clients and contacts through excellent service."],
+    'Operations Manager': ["Optimize a complex operational process to improve efficiency and reduce costs.", "Manage a large team to ensure smooth day-to-day operations.", "Develop and implement a contingency plan for potential operational disruptions."],
+    'Therapist': ["Help a client navigate complex emotional trauma and develop coping mechanisms.", "Maintain strong ethical boundaries while providing empathetic support.", "Facilitate a group therapy session addressing sensitive issues."],
+    'Counselor': ["Guide a student through academic and personal challenges to achieve their goals.", "Provide crisis intervention and support for an individual in acute distress.", "Develop a wellness program for an organization to support employee mental health."],
+    'Professor': ["Design and teach an engaging university course that inspires critical thinking.", "Conduct original research and publish influential scholarly work in your field.", "Mentor students and guide them in their academic and career development."],
+    'Instructional Designer': ["Create an effective and engaging e-learning module for adult learners.", "Apply learning theories to design training materials that achieve specific outcomes.", "Evaluate the effectiveness of training programs and make data-driven improvements."],
+    'Corporate Trainer': ["Deliver dynamic and impactful training sessions to corporate employees.", "Develop customized training programs to address specific organizational needs.", "Assess training effectiveness and demonstrate ROI to stakeholders."],
+    'NGO Manager': ["Develop a sustainable fundraising strategy for a non-profit organization.", "Lead a team to implement impactful community development projects with limited resources.", "Advocate for policy changes to address the root causes of social issues."],
+    'Community Organizer': ["Mobilize community members to take collective action on an important local issue.", "Build coalitions and partnerships with diverse stakeholders to achieve common goals.", "Develop and lead a grassroots campaign to effect social change."],
+    'Activist': ["Raise public awareness and galvanize support for a critical social or environmental cause.", "Organize a peaceful protest or direct action campaign to challenge injustice.", "Navigate legal and political challenges while advocating for systemic change."],
+    'Archaeologist': ["Lead an archaeological excavation and meticulously document all findings.", "Analyze artifacts to reconstruct past human behavior and societies.", "Preserve and protect a significant archaeological site from threats."],
+    'Museum Curator': ["Develop and curate an engaging and informative museum exhibition.", "Research and acquire new artifacts for the museum's collection.", "Write compelling interpretive text for exhibits that connects with diverse audiences."],
+    'Archivist': ["Preserve and organize historical records and documents for future generations.", "Develop a digitization strategy to improve access to archival collections.", "Assist researchers in navigating and utilizing archival materials effectively."],
+    'Philosopher': ["Develop a coherent philosophical argument to address a complex ethical or metaphysical question.", "Critically analyze and engage with the works of other philosophers.", "Teach philosophical concepts in a way that is accessible and stimulating to students."],
+    'Ethics Officer': ["Develop and implement an ethics and compliance program for an organization.", "Investigate and resolve allegations of unethical conduct.", "Provide guidance to employees on navigating complex ethical dilemmas."],
+    'Policy Advisor': ["Analyze complex policy issues and provide evidence-based recommendations to government officials.", "Draft clear and effective policy documents and legislation.", "Navigate the political landscape to advocate for specific policy outcomes."],
+    'Translator': ["Accurately translate complex technical or literary texts while preserving nuance and style.", "Provide simultaneous interpretation for high-level international meetings.", "Specialize in a specific domain (e.g., legal, medical) requiring expert terminology."],
+    'Interpreter': ["Provide accurate real-time oral interpretation between two languages in a high-pressure setting.", "Facilitate clear communication in critical situations like medical consultations or legal proceedings.", "Master cultural nuances to ensure effective cross-cultural communication."],
+    'Speech Therapist': ["Diagnose and treat a child's complex speech or language disorder.", "Help an adult recover communication abilities after a stroke or brain injury.", "Develop and implement individualized therapy plans based on patient needs."],
+    'Media Analyst': ["Analyze media coverage to assess public perception of a brand or issue.", "Track and interpret trends in media consumption and digital engagement.", "Provide strategic recommendations based on media intelligence to an organization."],
+    'Reporter': ["Investigate and uncover a significant news story through diligent research and interviews.", "Write a compelling and accurate news report under a tight deadline.", "Protect sources and navigate ethical challenges in pursuit of the truth."],
+    'Hospital Administrator': ["Optimize hospital operations to improve patient care quality and efficiency.", "Manage a hospital's budget and financial performance effectively.", "Lead a diverse team of healthcare professionals and support staff."],
+    'Dentist': ["Perform a complex dental procedure with precision and care.", "Diagnose and treat a patient's urgent dental emergency.", "Build trust and alleviate anxiety for patients with dental phobias."],
+    'Nutritionist': ["Develop a personalized nutrition plan for an athlete to optimize performance.", "Educate a community on the link between diet and chronic disease prevention.", "Analyze food products and provide guidance on healthy dietary choices."],
+    'Wellness Coach': ["Help a client identify and achieve their personal health and wellness goals.", "Develop a holistic wellness program incorporating fitness, nutrition, and stress management.", "Motivate and support clients through lifestyle changes and setbacks."],
+    'Food Scientist': ["Develop an innovative new food product that meets consumer demand and safety standards.", "Improve the nutritional value or shelf life of an existing food product.", "Troubleshoot and solve a quality control issue in food manufacturing."],
+    'Physiotherapist': ["Develop a rehabilitation plan for a patient recovering from a serious injury or surgery.", "Use manual therapy techniques to alleviate a patient's chronic pain.", "Educate patients on injury prevention and self-management strategies."],
+    'Adventure Guide': ["Safely lead a group on a challenging trek or expedition in a remote wilderness area.", "Provide first aid and manage emergencies in an outdoor setting.", "Share knowledge of local flora, fauna, and geography to enhance the group's experience."],
+    'Park Ranger': ["Protect natural resources and enforce park regulations within a designated area.", "Provide educational programs and interpretive talks to park visitors.", "Respond to emergencies, including search and rescue operations or wildlife encounters."],
+    'Geologist': ["Conduct fieldwork to map rock formations and identify mineral or energy resources.", "Analyze geological data to assess risks such as earthquakes or landslides.", "Advise on geological factors for construction or environmental projects."],
+    'Forester': ["Develop a sustainable forest management plan that balances timber production with ecological health.", "Monitor forest health and implement strategies to combat disease or pests.", "Oversee reforestation efforts and manage forest fire prevention."],
+    'Chef': ["Create an innovative and critically acclaimed menu for a fine dining restaurant.", "Lead a busy kitchen team to deliver high-quality food consistently under pressure.", "Manage food costs and inventory effectively while maintaining culinary excellence."],
+    'Culinary Artist': ["Design and prepare visually stunning and delicious dishes for a special event.", "Experiment with new ingredients and techniques to push culinary boundaries.", "Teach a cooking class, inspiring others to explore their creativity in the kitchen."],
+    'Food Critic': ["Write an insightful and unbiased review of a new restaurant or culinary trend.", "Evaluate a dish based on taste, presentation, creativity, and technique.", "Maintain anonymity and objectivity while conducting restaurant reviews."],
+    'Caterer': ["Plan and execute the food and beverage service for a large-scale event flawlessly.", "Develop a diverse menu that meets various dietary needs and client preferences.", "Manage logistics, staffing, and a budget for multiple catering jobs simultaneously."],
+    'Pastry Chef': ["Create intricate and delicious pastries, desserts, and breads for a high-end bakery or restaurant.", "Develop new and seasonal dessert menus that delight customers.", "Manage the production and quality control of a busy pastry kitchen."],
+    'Baker': ["Master the art and science of baking a wide variety of breads and baked goods.", "Develop a signature recipe that becomes a local favorite.", "Manage a small bakery business, including production, sales, and customer service."],
+    'Travel Agent': ["Design a complex, multi-destination itinerary that perfectly matches a client's dream vacation.", "Find the best travel deals and navigate complex booking systems efficiently.", "Provide exceptional customer service and troubleshoot travel disruptions for clients."],
+    'Travel Blogger': ["Create engaging and informative content (articles, photos, videos) about your travel experiences.", "Build a loyal online audience and monetize your travel blog effectively.", "Partner with tourism brands while maintaining authenticity and editorial independence."],
+    'Tour Guide': ["Lead an engaging and informative tour of a historical site or city, bringing its stories to life.", "Manage a diverse group of tourists and adapt your tour to their interests and needs.", "Handle unexpected situations or difficult questions from tourists professionally."],
+    'Cultural Anthropologist': ["Conduct immersive ethnographic fieldwork in a different cultural setting.", "Analyze cultural practices and belief systems to understand human diversity.", "Communicate your research findings in a way that promotes cross-cultural understanding."],
+    'Flight Attendant': ["Ensure passenger safety and comfort during a flight, including emergency situations.", "Provide excellent customer service to a diverse range of passengers in a confined space.", "Work effectively as part of a cabin crew team, often across different time zones."],
+    'Hotel Manager': ["Oversee all operations of a hotel to ensure guest satisfaction and profitability.", "Lead and motivate a large team of hotel staff across different departments.", "Handle guest complaints and resolve issues promptly and professionally."],
+    'Artisan': ["Create unique, high-quality handcrafted items using specialized skills and traditional techniques.", "Develop a distinctive artistic style that sets your work apart.", "Market and sell your artisanal products through fairs, online platforms, or a personal studio."],
+    'Craftsperson': ["Master a specific craft (e.g., woodworking, pottery, metalworking) to produce functional and beautiful objects.", "Design and create custom pieces based on client specifications.", "Manage a small craft business, including sourcing materials, production, and sales."],
+    'Jewelry Maker': ["Design and create unique pieces of jewelry using precious metals, gemstones, or other materials.", "Master intricate jewelry-making techniques such as soldering, stone setting, and polishing.", "Develop a brand and market your jewelry collection to target customers."],
+    'Carpenter': ["Construct, install, or repair wooden structures and fittings with precision and skill.", "Interpret blueprints and technical drawings to execute complex carpentry projects.", "Select appropriate wood types and materials for different applications."],
+    'Designer': ["Conceptualize and create visually appealing and functional designs for various products or media.", "Utilize design software and tools effectively to bring ideas to life.", "Collaborate with clients or teams to meet design objectives and iterate on feedback."]
   };
 
   function saveUserInfo() {
@@ -334,35 +627,171 @@
     showToast('Info saved successfully!', 'success');
   }
 
+  function updateDynamicSuggestions() {
+    const currentSelectedInterests = [];
+    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
+        currentSelectedInterests.push(checkbox.value);
+    });
+    const otherInterestsText = document.getElementById('otherInterests').value.trim();
+    if (otherInterestsText) {
+        otherInterestsText.split(',').forEach(interest => {
+            const trimmedInterest = interest.trim();
+            if (trimmedInterest) currentSelectedInterests.push(trimmedInterest); 
+        });
+    }
+
+    const dynamicSuggestionsOutput = document.getElementById('dynamicInterestSuggestions');
+    if (currentSelectedInterests.length === 0) {
+        dynamicSuggestionsOutput.textContent = 'Select some interests to see related career ideas here.';
+        return;
+    }
+
+    let suggestedCareersFromInterests = new Set();
+    let interestContribution = {}; 
+
+    currentSelectedInterests.forEach(interest => {
+        if (interestToCareerMap[interest]) {
+            interestToCareerMap[interest].forEach(career => {
+                suggestedCareersFromInterests.add(career);
+                interestContribution[career] = (interestContribution[career] || 0) + 1;
+            });
+        }
+    });
+
+    if (suggestedCareersFromInterests.size === 0) {
+        dynamicSuggestionsOutput.textContent = 'No specific career suggestions for these interests yet. Explore more or add details in "Other Interests"!\n\n(Final suggestions in Step 3 will consider your stream and study level.)';
+        return;
+    }
+
+    let sortedSuggestions = Array.from(suggestedCareersFromInterests).sort((a, b) => {
+        const countA = interestContribution[a] || 0;
+        const countB = interestContribution[b] || 0;
+        if (countB !== countA) {
+            return countB - countA; 
+        }
+        return a.localeCompare(b); 
+    });
+    
+    const topN = 5; 
+    let outputText = "";
+    if (sortedSuggestions.length > 0) {
+        outputText = "Consider these based on your current selections:\n";
+        sortedSuggestions.slice(0, topN).forEach(career => {
+            outputText += `- ${career}\n`;
+        });
+        if (sortedSuggestions.length > topN) {
+            outputText += `\n...and ${sortedSuggestions.length - topN} more.`;
+        }
+    } else {
+        outputText = "No specific career suggestions for these interests yet. Explore more!";
+    }
+    outputText += "\n\n(Final suggestions in Step 3 will also consider your stream and study level.)";
+    dynamicSuggestionsOutput.textContent = outputText;
+  }
+
+
+  function saveUserInterests() {
+    const selectedInterests = [];
+    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
+      selectedInterests.push(checkbox.value);
+    });
+    const otherInterestsText = document.getElementById('otherInterests').value.trim();
+    if (otherInterestsText) {
+      otherInterestsText.split(',').forEach(interest => {
+        const trimmedInterest = interest.trim(); 
+        if (trimmedInterest) selectedInterests.push(trimmedInterest);
+      });
+    }
+    user.interests = selectedInterests;
+    // Call dynamic suggestions update here as well, in case "Other interests" field was the last thing edited.
+    updateDynamicSuggestions(); 
+
+    if (user.interests.length === 0) {
+        document.getElementById('interestsMessage').textContent = 'No interests selected. Please select some for better suggestions.';
+        showToast('No interests selected.', 'error');
+    } else {
+        document.getElementById('interestsMessage').textContent = `✅ Saved ${user.interests.length} interest(s): ${user.interests.slice(0,3).join(', ')}` + (user.interests.length > 3 ? '...' : '');
+        showToast('Interests saved successfully!', 'success');
+    }
+  }
+
   function showCareerSuggestions() {
-    if (!user.studyLevel || !user.stream) return showToast('Save your info first.', 'error');
-    let baseCareers = careerOptions[user.stream] || [];
-    let combinedCareers = [...new Set([...baseCareers, ...generalCareers])];
+    if (!user.studyLevel || !user.stream) {
+      return showToast('Please save your info in Step 1 first.', 'error');
+    }
+    if (user.interests.length === 0) {
+      // Although dynamic suggestions are there, saving interests is still a good checkpoint
+      // and this ensures the `user.interests` array used here is populated.
+      return showToast('Please save your interests in Step 2 first by clicking "Save My Interests".', 'error');
+    }
+
+    let potentialCareers = new Set();
+
+    if (user.stream && careerOptions[user.stream]) {
+      careerOptions[user.stream].forEach(career => potentialCareers.add(career));
+    }
+
+    user.interests.forEach(interest => {
+      if (interestToCareerMap[interest]) {
+        interestToCareerMap[interest].forEach(career => potentialCareers.add(career));
+      } else { 
+        if (interest.length < 30 && !interest.includes(" ")) { 
+            potentialCareers.add(interest); // Add custom interests from saved list
+        }
+      }
+    });
+    
+    if (potentialCareers.size < 7) { 
+        generalCareers.forEach(career => potentialCareers.add(career));
+    }
+    
+    let suggestedList = Array.from(potentialCareers);
+
     if (user.careerIdea) {
       const ci = user.careerIdea;
-      if (!combinedCareers.includes(ci)) combinedCareers.unshift(ci);
-      else combinedCareers = [ci, ...combinedCareers.filter(c => c !== ci)];
+      const ciLower = ci.toLowerCase();
+      // Check if it's already there effectively (case-insensitive)
+      let found = false;
+      suggestedList.forEach(c => { if(c.toLowerCase() === ciLower) found = true; });
+      
+      if(!found) { // Add if not effectively present
+          potentialCareers.add(ci); 
+      }
+      suggestedList = Array.from(potentialCareers); 
+      
+      suggestedList = suggestedList.filter(c => c.toLowerCase() !== ciLower);
+      suggestedList.unshift(ci); 
     }
-    combinedCareers = combinedCareers.sort(() => 0.5 - Math.random());
-    user.suggestedCareers = combinedCareers.slice(0, 3);
-    document.getElementById('careerSuggestions').textContent =
-      '✨ Based on your info, top careers for you:\n- ' + user.suggestedCareers.join('\n- ');
+    
+    const numberOfSuggestions = Math.min(suggestedList.length, 5); 
+    user.suggestedCareers = suggestedList.slice(0, numberOfSuggestions);
 
-    // Populate dropdown
+    if (user.suggestedCareers.length === 0) {
+        user.suggestedCareers = generalCareers.slice(0,3); 
+         document.getElementById('careerSuggestions').textContent =
+        'Could not find specific suggestions. Here are some general ideas:\n- ' + user.suggestedCareers.join('\n- ');
+    } else {
+        document.getElementById('careerSuggestions').textContent =
+        '✨ Based on your profile & interests, top careers for you:\n- ' + user.suggestedCareers.join('\n- ');
+    }
+
     let dropdownHTML = '<option value="">-- Choose your career --</option>';
     user.suggestedCareers.forEach(career => {
-      dropdownHTML += `<option value="${career}">${career}</option>`;
+      const careerKey = career; 
+      dropdownHTML += `<option value="${careerKey}">${career}</option>`;
     });
     document.getElementById('careerDropdown').innerHTML = dropdownHTML;
+    if (user.suggestedCareers.length > 0) {
+        showToast('Career suggestions updated!', 'success');
+    }
   }
 
   function selectCareer() {
     const choice = document.getElementById('careerDropdown').value;
     if (!choice) return showToast('Pick a career first.', 'error');
     user.chosenCareer = choice;
-    document.getElementById('careerRoadmap').textContent = careerRoadmaps[choice] || 'No roadmap available.';
+    document.getElementById('careerRoadmap').textContent = careerRoadmaps[choice] || 'No specific roadmap available for "' + choice + '". Consider researching its typical path.';
     showToast(`Career set to ${choice}`, 'success');
-    // Clear challenge & feedback
     document.getElementById('dailyChallenge').textContent = '';
     document.getElementById('challengeAnswer').value = '';
     document.getElementById('answerFeedback').textContent = '';
@@ -373,7 +802,10 @@
   function getDailyChallenge() {
     if (!user.chosenCareer) return showToast('Select a career first.', 'error');
     const list = careerChallenges[user.chosenCareer];
-    if (!list) return document.getElementById('dailyChallenge').textContent = 'No challenge available.';
+    if (!list || list.length === 0) { 
+        document.getElementById('dailyChallenge').textContent = 'No specific challenge available for "' + user.chosenCareer + '". Try selecting another suggested career.';
+        return;
+    }
     const challenge = list[Math.floor(Math.random() * list.length)];
     const challengeElem = document.getElementById('dailyChallenge');
     challengeElem.style.opacity = 0;
@@ -382,7 +814,6 @@
       challengeElem.style.opacity = 1;
     }, 250);
 
-    // Clear previous answers & feedback
     document.getElementById('challengeAnswer').value = '';
     document.getElementById('answerFeedback').textContent = '';
     document.getElementById('scoreBar').style.width = '0%';
@@ -392,11 +823,12 @@
   function submitChallengeAnswer() {
     const answer = document.getElementById('challengeAnswer').value.trim();
     if (!answer) return showToast('Write your response first.', 'error');
-    let score = 0, ans = answer.toLowerCase();
+    let score = 0; 
+    const ansLower = answer.toLowerCase(); 
     if (answer.length > 50) score += 40;
-    if (ans.includes('plan') || ans.includes('strategy')) score += 30;
-    if (ans.includes('team') || ans.includes('solution')) score += 20;
-    if (ans.includes('risk') || ans.includes('improve')) score += 10;
+    if (ansLower.includes('plan') || ansLower.includes('strategy') || ansLower.includes('approach')) score += 30;
+    if (ansLower.includes('team') || ansLower.includes('solution') || ansLower.includes('collaborate')) score += 20;
+    if (ansLower.includes('risk') || ansLower.includes('improve') || ansLower.includes('analyze')) score += 10;
     if (score > 100) score = 100;
     let msg = '';
     if (score >= 80) msg = `🌟 Excellent! Scored ${score}/100. Smart & clear plan.`;
@@ -407,7 +839,6 @@
     document.getElementById('scoreBar').textContent = score + '%';
   }
 
-  // Toast message helper
   function showToast(message, type = 'info') {
     const toast = document.createElement('div');
     toast.className = 'toast ' + type;
@@ -415,6 +846,19 @@
     document.body.appendChild(toast);
     setTimeout(() => toast.remove(), 2500);
   }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('input[name="interest"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateDynamicSuggestions);
+    });
+    const otherInterestsInput = document.getElementById('otherInterests');
+    if (otherInterestsInput) { 
+        otherInterestsInput.addEventListener('input', updateDynamicSuggestions);
+    }
+    // Initial call to set the placeholder or initial state if any interests were pre-checked (not current case)
+    updateDynamicSuggestions(); 
+  });
+
 </script>
 <footer style="
   text-align: center;
