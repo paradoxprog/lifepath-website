@@ -4,7 +4,7 @@ LifePath is a personal growth website designed to guide users on their journey t
 
 ## 🌐 Live Demo
 
-**Check it out live:** [LifePath Website](https://your-vercel-link.com) (Replace with your actual Vercel link)
+**Check it out live:** [LifePath Website](https://lifepath-website.vercel.app/)
 
 ## 📁 Project Structure
 
