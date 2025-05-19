@@ -25,7 +25,7 @@ LifePath is a personal growth website designed to guide users on their journey t
 1. Clone this repository:
 
    ```bash
-   git clone https://github.com/paradoxprog/lifepathwebsite.git
+   git clone https://github.com/paradoxprog/lifepath-website.git
    ```
 2. Open the `index.html` file in your browser to view the homepage.
 
