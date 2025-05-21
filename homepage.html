@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>LifePath AI | Welcome</title>
+  <style>
+    /* Reset */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; /* Changed from center to flex-start */
+      align-items: center;
+    }
+    :root {
+      --primary-color: #2c7be5;
+      --primary-hover: #155ab6;
+      --bg-color: #f4f6f8;
+      --text-color: #333;
+      --card-bg: #fff;
+      --shadow-color: rgba(0,0,0,0.1);
+      --input-bg: #fff;
+      --input-border: #ccc;
+    }
+    body.dark {
+      --bg-color: #121212;
+      --text-color: #e0e0e0;
+      --card-bg: #1e1e1e;
+      --shadow-color: rgba(0,0,0,0.7);
+      --input-bg: #2a2a2a;
+      --input-border: #444;
+    }
+    header {
+      width: 100%;
+      max-width: 900px; /* Kept header width */
+      background-color: var(--card-bg);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      box-shadow: 0 2px 8px var(--shadow-color);
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+    header img {
+      height: 100px; /* Assuming lifepath-logo.jpeg exists */
+      margin-right: 15px;
+      user-select: none;
+    }
+    header h1 {
+      flex-grow: 1;
+      font-size: 26px;
+      color: var(--text-color);
+      user-select: none;
+    }
+    /* Removed nav a styles as nav links are removed */
+    main {
+      width: 100%;
+      max-width: 700px; /* Adjusted for button layout */
+      padding: 40px 20px; /* Increased padding */
+      margin: 40px auto; /* Increased margin */
+      background-color: var(--card-bg);
+      border-radius: 12px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      overflow: hidden;
+      text-align: center; /* Center the options container */
+    }
+    h2 { /* For a welcome message */
+      text-align: center;
+      margin-bottom: 30px;
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--text-color);
+    }
+    p.subtitle { /* For a brief instruction */
+        font-size: 18px;
+        line-height: 1.6;
+        margin-bottom: 40px;
+        color: var(--text-color);
+        opacity: 0.9;
+    }
+
+    .options-container {
+        display: flex;
+        flex-direction: column; /* Stack buttons on small screens */
+        align-items: center;
+        gap: 20px; /* Space between buttons */
+    }
+
+    .option-button {
+        display: block; /* Make buttons take full width of container or set width */
+        width: 80%; /* Adjust width as needed */
+        max-width: 320px; /* Max width for very large buttons */
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 18px 25px;
+        border-radius: 10px;
+        font-size: 18px; /* Slightly adjusted */
+        font-weight: 600; /* Slightly adjusted */
+        text-decoration: none;
+        transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease;
+        box-shadow: 0 3px 8px var(--shadow-color);
+        text-align: center;
+    }
+
+    .option-button:hover {
+        background-color: var(--primary-hover);
+        transform: translateY(-3px);
+        box-shadow: 0 6px 12px var(--shadow-color);
+    }
+    
+    /* Improved dark mode toggle - from original index.html */
+    .toggle-dark {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+      border-radius: 30px;
+      background-color: var(--input-border);
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      vertical-align: middle;
+      margin-left: 15px; /* Keep margin if needed next to other items */
+      border: none;
+    }
+    .toggle-dark:hover {
+      background-color: var(--primary-hover);
+    }
+    .toggle-dark input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+      position: absolute;
+      left: -9999px;
+    }
+    .toggle-thumb {
+      position: absolute;
+      top: 2px;
+      left: 2px;
+      width: 22px;
+      height: 22px;
+      background-color: var(--primary-color); /* Thumb color in light mode */
+      border-radius: 50%;
+      transition: left 0.3s ease, background-color 0.3s ease;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    body.dark .toggle-thumb {
+        background-color: #f0f0f0; /* Thumb color in dark mode for contrast */
+    }
+    .toggle-dark input:checked + .toggle-thumb {
+      left: 26px; /* Position when checked */
+    }
+    body.dark .toggle-dark input:checked + .toggle-thumb {
+        background-color: var(--primary-color); /* Thumb color when checked in dark mode */
+    }
+    body.light .toggle-dark input:checked + .toggle-thumb { /* Explicitly for light mode when checked */
+         background-color: #f0f0f0;
+    }
+
+
+    footer { /* Basic footer styling */
+        width: 100%;
+        text-align: center;
+        padding: 20px 0;
+        margin-top: auto; /* Pushes footer to bottom if content is short */
+        background-color: var(--card-bg);
+        box-shadow: 0 -2px 8px var(--shadow-color);
+        color: var(--text-color);
+        font-size: 14px;
+    }
+
+    /* Responsive */
+    @media (max-width: 520px) {
+      main {
+        margin: 20px 15px; /* Adjusted margin */
+        padding: 30px 15px; /* Adjusted padding */
+      }
+      header {
+        padding: 10px 15px;
+      }
+      header h1 {
+        font-size: 22px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      p.subtitle {
+        font-size: 16px;
+      }
+      .option-button {
+        font-size: 16px;
+        padding: 15px 20px;
+        width: 90%;
+      }
+    }
+
+    @media (min-width: 600px) { /* For wider screens, buttons side-by-side */
+        .options-container {
+            flex-direction: row;
+            justify-content: center;
+        }
+        .option-button {
+            width: auto; /* Allow button to size based on content and padding */
+            min-width: 220px; /* Ensure a minimum width */
+        }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <img src="lifepath-logo.jpeg" alt="LifePath Logo" /> <h1>LifePath AI</h1>
+  <label class="toggle-dark" for="darkToggle" aria-label="Toggle dark mode">
+    <input type="checkbox" id="darkToggle" />
+    <span class="toggle-thumb"></span>
+  </label>
+</header>
+
+<main>
+  <h2>Welcome to Your Future Path!</h2>
+  <p class="subtitle">Choose an option below to start your journey of discovery and growth with LifePath AI.</p>
+  <div class="options-container">
+    <a href="begmain.html" class="option-button">🚀 Career Guidance Tool</a>
+    <a href="findit.html" class="option-button">💡 Find Your Interests</a>
+  </div>
+</main>
+
+<footer>
+  &copy; 2025 All rights reserved to LifePath AI
+</footer>
+
+<script>
+  // Dark mode toggle script from original index.html
+  const darkToggle = document.getElementById('darkToggle');
+
+  function applyDarkMode(isDark) {
+    if (isDark) {
+      document.body.classList.add('dark');
+      document.body.classList.remove('light');
+      darkToggle.checked = true;
+      localStorage.setItem('darkMode', 'enabled');
+    } else {
+      document.body.classList.remove('dark');
+      document.body.classList.add('light');
+      darkToggle.checked = false;
+      localStorage.removeItem('darkMode'); // Or set to 'disabled'
+    }
+  }
+
+  // Initialize toggle state from localStorage on page load
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const storedMode = localStorage.getItem('darkMode');
+
+  if (storedMode === 'enabled') {
+    applyDarkMode(true);
+  } else if (storedMode === 'disabled') {
+    applyDarkMode(false);
+  } else { // If no stored preference, use system preference
+    applyDarkMode(prefersDark);
+  }
+  
+
+  darkToggle.addEventListener('change', () => {
+    applyDarkMode(darkToggle.checked);
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>LifePath AI – Interests Section</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <style>
+    /* Styles relevant to this section from main.html */
+    * {
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f3f4f6; /* Consistent background */
+      margin: 0;
+      padding: 20px; /* Padding for standalone view */
+      max-width: 960px; /* Consistent max-width */
+      margin: auto; /* Center content */
+      color: #2c3e50;
+    }
+    h2 {
+      font-size: 22px;
+      color: #111827;
+      margin-bottom: 12px;
+    }
+    h4 {
+      font-size: 17px;
+      color: #1f2937;
+      margin-bottom: 8px;
+      margin-top: 0;
+    }
+    .box {
+      background: white;
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+      margin-bottom: 30px;
+      transition: transform 0.2s ease;
+    }
+    .box:hover {
+      transform: translateY(-3px);
+    }
+    input[type="text"], input[type="checkbox"], button {
+      font-size: 16px; /* Simplified from original for brevity */
+    }
+    input[type="text"] {
+        width: 100%;
+        padding: 12px;
+        margin-top: 10px;
+        margin-bottom: 16px;
+        border: 1px solid #d1d5db;
+        border-radius: 10px;
+    }
+    input[type="text"]:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #3b82f6, #2563eb);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #2563eb, #1d4ed8);
+      transform: translateY(-1px);
+    }
+    pre {
+      background: #f9fafb;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid #e5e7eb;
+      font-size: 15px;
+      white-space: pre-wrap;
+      min-height: 60px;
+    }
+    #dynamicInterestSuggestions {
+      background: #eef2ff;
+      border-left: 4px solid #4f46e5;
+      color: #3730a3;
+      min-height: 80px;
+      padding: 12px;
+    }
+    #interestsMessage {
+      font-size: 16px;
+      color: #374151;
+      margin-top: -8px;
+      margin-bottom: 10px;
+    }
+    .instructions {
+      font-size: 15px;
+      color: #555;
+      margin-bottom: 20px;
+      margin-top: -5px;
+    }
+    .interest-category {
+      margin-bottom: 25px;
+    }
+    .interest-category h3 {
+      font-size: 18px;
+      font-weight: 600;
+      color: #2563eb;
+      margin-bottom: 12px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 6px;
+    }
+    #interestsContainer label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 400;
+      font-size: 15px;
+      cursor: pointer;
+    }
+    #interestsContainer input[type="checkbox"] {
+      width: auto;
+      margin-right: 10px;
+      vertical-align: middle;
+      margin-top: -2px;
+      margin-bottom: 0;
+    }
+    #otherInterests {
+      margin-top: 5px;
+    }
+    label[for="otherInterests"] {
+      font-weight: 600;
+      font-size: 15px;
+      color: #111827;
+    }
+    .toast { /* Common toast styles */
+      position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%);
+      background: #2c3e50; color: white; padding: 14px 20px; border-radius: 10px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.2); z-index: 1000; font-size: 15px;
+      opacity: 0.95; animation: fadeinout 2.5s forwards;
+    }
+    .toast.error { background: #e11d48; }
+    .toast.success { background: #16a34a; }
+    @keyframes fadeinout {
+      0% {opacity: 0;} 10% {opacity: 0.95;}
+      90% {opacity: 0.95;} 100% {opacity: 0;}
+    }
+     @media (max-width: 600px) {
+      h2, h4 { font-size: 18px; }
+      .interest-category h3 { font-size: 17px; }
+      #interestsContainer label, label[for="otherInterests"] { font-size: 14px;}
+      input, select, textarea, button { font-size: 15px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="box">
+  <h2>Find Your Interests</h2>
+  <p class="instructions">Select the areas that genuinely excite you. Careers related to your selections will appear below as you choose.</p>
+  <div id="interestsContainer">
+    <div class="interest-category">
+      <h3>🧪 STEM & Analytics</h3>
+      <label><input type="checkbox" name="interest" value="Solving Complex Problems"> Solving Complex Problems</label>
+      <label><input type="checkbox" name="interest" value="Mathematics & Statistics"> Mathematics & Statistics</label>
+      <label><input type="checkbox" name="interest" value="Coding & Software Development"> Coding & Software Development</label>
+      <label><input type="checkbox" name="interest" value="Scientific Research & Experiments"> Scientific Research & Experiments</label>
+      <label><input type="checkbox" name="interest" value="Analyzing Data & Trends"> Analyzing Data & Trends</label>
+      <label><input type="checkbox" name="interest" value="Emerging Technologies (AI, Blockchain)"> Emerging Technologies (AI, Blockchain)</label>
+      <label><input type="checkbox" name="interest" value="Engineering & Building"> Engineering & Building</label>
+      <label><input type="checkbox" name="interest" value="Environmental Science & Sustainability"> Environmental Science & Sustainability</label>
+    </div>
+    <div class="interest-category">
+      <h3>🎨 Creative & Design</h3>
+      <label><input type="checkbox" name="interest" value="Visual Arts (Drawing, Painting, Sculpture)"> Visual Arts (Drawing, Painting, Sculpture)</label>
+      <label><input type="checkbox" name="interest" value="Graphic Design & Digital Illustration"> Graphic Design & Digital Illustration</label>
+      <label><input type="checkbox" name="interest" value="Writing (Fiction, Non-fiction, Poetry)"> Writing (Fiction, Non-fiction, Poetry)</label>
+      <label><input type="checkbox" name="interest" value="Music (Playing, Composing, Production)"> Music (Playing, Composing, Production)</label>
+      <label><input type="checkbox" name="interest" value="Performing Arts (Acting, Dance)"> Performing Arts (Acting, Dance)</label>
+      <label><input type="checkbox" name="interest" value="Fashion & Apparel Design"> Fashion & Apparel Design</label>
+      <label><input type="checkbox" name="interest" value="Filmmaking & Video Production"> Filmmaking & Video Production</label>
+      <label><input type="checkbox" name="interest" value="Photography"> Photography</label>
+      <label><input type="checkbox" name="interest" value="UI/UX Design & Product Design"> UI/UX Design & Product Design</label>
+    </div>
+    <div class="interest-category">
+      <h3>💼 Business & Leadership</h3>
+      <label><input type="checkbox" name="interest" value="Entrepreneurship & Startups"> Entrepreneurship & Startups</label>
+      <label><input type="checkbox" name="interest" value="Leading & Managing Teams"> Leading & Managing Teams</label>
+      <label><input type="checkbox" name="interest" value="Strategic Planning & Business Development"> Strategic Planning & Business Development</label>
+      <label><input type="checkbox" name="interest" value="Marketing, Advertising & Branding"> Marketing, Advertising & Branding</label>
+      <label><input type="checkbox" name="interest" value="Finance, Investing & Economics"> Finance, Investing & Economics</label>
+      <label><input type="checkbox" name="interest" value="Public Speaking & Presentations"> Public Speaking & Presentations</label>
+      <label><input type="checkbox" name="interest" value="Negotiation & Sales"> Negotiation & Sales</label>
+      <label><input type="checkbox" name="interest" value="Project Management"> Project Management</label>
+    </div>
+    <div class="interest-category">
+      <h3>🤝 Social Sciences & Humanities</h3>
+      <label><input type="checkbox" name="interest" value="Psychology & Human Behavior"> Psychology & Human Behavior</label>
+      <label><input type="checkbox" name="interest" value="Teaching & Education"> Teaching & Education</label>
+      <label><input type="checkbox" name="interest" value="Community Service & Volunteering"> Community Service & Volunteering</label>
+      <label><input type="checkbox" name="interest" value="Social Work & Counseling"> Social Work & Counseling</label>
+      <label><input type="checkbox" name="interest" value="History & Archaeology"> History & Archaeology</label>
+      <label><input type="checkbox" name="interest" value="Philosophy & Ethics"> Philosophy & Ethics</label>
+      <label><input type="checkbox" name="interest" value="Languages & Linguistics"> Languages & Linguistics</label>
+      <label><input type="checkbox" name="interest" value="Journalism & Media Studies"> Journalism & Media Studies</label>
+    </div>
+    <div class="interest-category">
+      <h3>🌱 Health, Wellness & Lifestyle</h3>
+      <label><input type="checkbox" name="interest" value="Healthcare & Medicine (Interest in field)"> Healthcare & Medicine (Interest in field)</label>
+      <label><input type="checkbox" name="interest" value="Nutrition & Dietetics"> Nutrition & Dietetics</label>
+      <label><input type="checkbox" name="interest" value="Sports & Physical Fitness"> Sports & Physical Fitness</label>
+      <label><input type="checkbox" name="interest" value="Mental Health & Wellbeing"> Mental Health & Wellbeing</label>
+      <label><input type="checkbox" name="interest" value="Nature, Outdoors & Adventure"> Nature, Outdoors & Adventure</label>
+      <label><input type="checkbox" name="interest" value="Cooking & Culinary Arts"> Cooking & Culinary Arts</label>
+      <label><input type="checkbox" name="interest" value="Travel & Cultural Exploration"> Travel & Cultural Exploration</label>
+      <label><input type="checkbox" name="interest" value="DIY & Craftsmanship"> DIY & Craftsmanship</label>
+    </div>
+    <div class="interest-category">
+      <h3>✍️ Other Interests</h3>
+      <label for="otherInterests">If your interests aren't listed, please specify them (comma-separated):</label>
+      <input type="text" id="otherInterests" placeholder="e.g., Astrophysics, Ancient History, Podcasting">
+    </div>
+  </div>
+  
+  <div id="dynamicSuggestionsBox" style="margin-top: 20px; margin-bottom: 20px;">
+      <h4>✨ Careers related to your selected interests:</h4>
+      <pre id="dynamicInterestSuggestions">Select some interests to see related career ideas here.</pre>
+  </div>
+
+  <button onclick="saveUserInterests()">Save My Interests</button>
+  <p id="interestsMessage"></p>
+</div>
+
+<script>
+  // Assume 'user' object is defined globally or passed appropriately
+  // Example: const user = { interests: [] };
+  // Ensure 'showToast' function is also available globally or passed.
+
+  const interestToCareerMap = {
+    "Solving Complex Problems": ["Engineer", "Data Scientist", "Researcher", "Consultant", "AI Specialist", "Business Analyst"],
+    "Mathematics & Statistics": ["Data Scientist", "Economist", "Actuary", "Researcher", "Financial Analyst"],
+    "Coding & Software Development": ["Software Engineer", "AI Specialist", "Data Scientist", "Cloud Engineer", "UI/UX Designer", "Cybersecurity Expert"],
+    "Scientific Research & Experiments": ["Researcher", "Medical Researcher", "Environmental Scientist", "Doctor", "Pharmacist"],
+    "Analyzing Data & Trends": ["Data Scientist", "Business Analyst", "Financial Analyst", "Marketing Manager", "Economist", "Sports Analyst"],
+    "Emerging Technologies (AI, Blockchain)": ["AI Specialist", "Software Engineer", "Cloud Engineer", "Consultant", "Researcher", "Cybersecurity Expert"],
+    "Engineering & Building": ["Engineer", "Project Manager", "Cloud Engineer", "Architect"],
+    "Environmental Science & Sustainability": ["Environmental Scientist", "Researcher", "Consultant", "Conservationist"],
+    "Visual Arts (Drawing, Painting, Sculpture)": ["Artist", "Graphic Designer", "Animator", "Illustrator"],
+    "Graphic Design & Digital Illustration": ["Graphic Designer", "UI/UX Designer", "Animator", "Content Creator", "Illustrator"],
+    "Writing (Fiction, Non-fiction, Poetry)": ["Writer", "Journalist", "Content Creator", "Marketing Manager", "Editor"],
+    "Music (Playing, Composing, Production)": ["Musician", "Music Producer", "Sound Engineer", "DJ"],
+    "Performing Arts (Acting, Dance)": ["Actor", "Dancer", "Performer", "Choreographer"],
+    "Fashion & Apparel Design": ["Fashion Designer", "Textile Designer", "Stylist"],
+    "Filmmaking & Video Production": ["Film Maker", "Video Editor", "Content Creator", "Photographer", "Cinematographer"],
+    "Photography": ["Photographer", "Content Creator", "Journalist", "Photo Editor"],
+    "UI/UX Design & Product Design": ["UI/UX Designer", "Product Designer", "Graphic Designer", "Software Engineer"],
+    "Entrepreneurship & Startups": ["Entrepreneur", "Business Analyst", "Marketing Manager", "Consultant", "Venture Capitalist"],
+    "Leading & Managing Teams": ["Project Manager", "HR Manager", "Marketing Manager", "Entrepreneur", "CEO"],
+    "Strategic Planning & Business Development": ["Business Analyst", "Consultant", "Marketing Manager", "Entrepreneur", "Strategist"],
+    "Marketing, Advertising & Branding": ["Marketing Manager", "Content Creator", "PR Specialist", "Graphic Designer", "Brand Manager", "SEO Specialist"],
+    "Finance, Investing & Economics": ["Financial Analyst", "Investment Banker", "Economist", "Accountant", "Actuary", "CFO", "Stockbroker"],
+    "Public Speaking & Presentations": ["Consultant", "Marketing Manager", "Teacher/Educator", "PR Specialist", "TV Anchor", "Motivational Speaker"],
+    "Negotiation & Sales": ["Sales Manager", "Marketing Manager", "Entrepreneur", "Investment Banker", "Real Estate Agent"],
+    "Project Management": ["Project Manager", "Business Analyst", "Engineer", "Consultant", "Operations Manager"],
+    "Psychology & Human Behavior": ["Psychologist", "Social Worker", "HR Manager", "Consultant", "Researcher", "Therapist", "Counselor"],
+    "Teaching & Education": ["Teacher/Educator", "Linguist", "Professor", "Instructional Designer", "Corporate Trainer"],
+    "Community Service & Volunteering": ["Social Worker", "NGO Manager", "Community Organizer", "Activist"],
+    "Social Work & Counseling": ["Social Worker", "Psychologist", "Counselor", "Therapist"],
+    "History & Archaeology": ["Historian", "Archaeologist", "Museum Curator", "Researcher", "Archivist"],
+    "Philosophy & Ethics": ["Philosopher", "Ethics Officer", "Researcher", "Writer", "Policy Advisor"],
+    "Languages & Linguistics": ["Linguist", "Translator", "Interpreter", "Teacher/Educator", "Writer", "Speech Therapist"],
+    "Journalism & Media Studies": ["Journalist", "Content Creator", "PR Specialist", "Media Analyst", "TV Anchor", "Editor", "Reporter"],
+    "Healthcare & Medicine (Interest in field)": ["Doctor", "Nurse", "Pharmacist", "Medical Researcher", "Hospital Administrator", "Surgeon", "Dentist"],
+    "Nutrition & Dietetics": ["Dietitian", "Nutritionist", "Wellness Coach", "Food Scientist"],
+    "Sports & Physical Fitness": ["Athlete", "Sports Coach", "Fitness Trainer", "Sports Analyst", "Physiotherapist", "Sports Manager"],
+    "Mental Health & Wellbeing": ["Psychologist", "Counselor", "Social Worker", "Wellness Coach", "Therapist", "Psychiatrist"],
+    "Nature, Outdoors & Adventure": ["Environmental Scientist", "Adventure Guide", "Park Ranger", "Travel Blogger", "Geologist", "Forester"],
+    "Cooking & Culinary Arts": ["Chef", "Culinary Artist", "Food Critic", "Caterer", "Pastry Chef", "Baker"],
+    "Travel & Cultural Exploration": ["Travel Agent", "Travel Blogger", "Tour Guide", "Cultural Anthropologist", "Flight Attendant", "Hotel Manager"],
+    "DIY & Craftsmanship": ["Artisan", "Craftsperson", "Designer", "Small Business Owner (Crafts)", "Jewelry Maker", "Carpenter"]
+  };
+
+  function updateDynamicSuggestions() {
+    const currentSelectedInterests = [];
+    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
+        currentSelectedInterests.push(checkbox.value);
+    });
+    const otherInterestsText = document.getElementById('otherInterests').value.trim();
+    if (otherInterestsText) {
+        otherInterestsText.split(',').forEach(interest => {
+            const trimmedInterest = interest.trim();
+            if (trimmedInterest) currentSelectedInterests.push(trimmedInterest); 
+        });
+    }
+
+    const dynamicSuggestionsOutput = document.getElementById('dynamicInterestSuggestions');
+    if (currentSelectedInterests.length === 0) {
+        dynamicSuggestionsOutput.textContent = 'Select some interests to see related career ideas here.';
+        return;
+    }
+
+    let suggestedCareersFromInterests = new Set();
+    let interestContribution = {}; 
+
+    currentSelectedInterests.forEach(interest => {
+        if (interestToCareerMap[interest]) {
+            interestToCareerMap[interest].forEach(career => {
+                suggestedCareersFromInterests.add(career);
+                interestContribution[career] = (interestContribution[career] || 0) + 1;
+            });
+        }
+    });
+
+    if (suggestedCareersFromInterests.size === 0) {
+        dynamicSuggestionsOutput.textContent = 'No specific career suggestions for these interests yet. Explore more or add details in "Other Interests"!\n\n(Final suggestions in Step 3 will consider your stream and study level.)';
+        return;
+    }
+
+    let sortedSuggestions = Array.from(suggestedCareersFromInterests).sort((a, b) => {
+        const countA = interestContribution[a] || 0;
+        const countB = interestContribution[b] || 0;
+        if (countB !== countA) {
+            return countB - countA; 
+        }
+        return a.localeCompare(b); 
+    });
+    
+    const topN = 5; 
+    let outputText = "";
+    if (sortedSuggestions.length > 0) {
+        outputText = "Consider these based on your current selections:\n";
+        sortedSuggestions.slice(0, topN).forEach(career => {
+            outputText += `- ${career}\n`;
+        });
+        if (sortedSuggestions.length > topN) {
+            outputText += `\n...and ${sortedSuggestions.length - topN} more.`;
+        }
+    } else {
+        outputText = "No specific career suggestions for these interests yet. Explore more!";
+    }
+    outputText += "\n\n(Final suggestions in Step 3 will also consider your stream and study level.)";
+    dynamicSuggestionsOutput.textContent = outputText;
+  }
+
+  function saveUserInterests() {
+    // This function assumes 'user' is a globally accessible object.
+    // e.g., if (!window.user) window.user = { interests: [] };
+    if (typeof user === 'undefined') {
+        console.error("User object is not defined. Interests cannot be saved.");
+        if (typeof showToast === 'function') showToast("Error: User object not found.", "error");
+        return;
+    }
+
+    const selectedInterests = [];
+    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
+      selectedInterests.push(checkbox.value);
+    });
+    const otherInterestsText = document.getElementById('otherInterests').value.trim();
+    if (otherInterestsText) {
+      otherInterestsText.split(',').forEach(interest => {
+        const trimmedInterest = interest.trim(); 
+        if (trimmedInterest) selectedInterests.push(trimmedInterest);
+      });
+    }
+    user.interests = selectedInterests; // Save to the global/shared user object
+    updateDynamicSuggestions(); 
+
+    const interestsMessageEl = document.getElementById('interestsMessage');
+    if (user.interests.length === 0) {
+        if(interestsMessageEl) interestsMessageEl.textContent = 'No interests selected. Please select some for better suggestions.';
+        if (typeof showToast === 'function') showToast('No interests selected.', 'error');
+    } else {
+        if(interestsMessageEl) interestsMessageEl.textContent = `✅ Saved ${user.interests.length} interest(s): ${user.interests.slice(0,3).join(', ')}` + (user.interests.length > 3 ? '...' : '');
+        if (typeof showToast === 'function') showToast('Interests saved successfully!', 'success');
+    }
+  }
+  
+  // Placeholder for showToast if not defined globally - for standalone testing
+  if (typeof showToast === 'undefined') {
+    function showToast(message, type = 'info') {
+        console.log(`Toast (${type}): ${message}`);
+        const toast = document.createElement('div');
+        toast.className = 'toast ' + type;
+        toast.textContent = message;
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2500);
+    }
+  }
+  // Placeholder for user object if not defined globally - for standalone testing
+  if (typeof user === 'undefined') {
+    var user = {
+        studyLevel: '',
+        stream: '',
+        careerIdea: '',
+        interests: [], 
+        suggestedCareers: [],
+        chosenCareer: ''
+    };
+  }
+
+
+  document.addEventListener('DOMContentLoaded', () => {
+    document.querySelectorAll('input[name="interest"]').forEach(checkbox => {
+        checkbox.addEventListener('change', updateDynamicSuggestions);
+    });
+    const otherInterestsInput = document.getElementById('otherInterests');
+    if (otherInterestsInput) { 
+        otherInterestsInput.addEventListener('input', updateDynamicSuggestions);
+    }
+    updateDynamicSuggestions(); 
+  });
+</script>
+
+</body>
+</html>
