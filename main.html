@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>LifePath AI – Career & Growth Guide</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
   <style>
@@ -10,213 +11,153 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background: #f3f4f6;
+      font-family: 'Poppins', sans-serif; /* */
+      background: #f3f4f6; /* */
       margin: 0;
-      padding: 30px 20px;
-      max-width: 960px;
-      margin: auto;
-      color: #2c3e50;
+      padding: 30px 20px; /* */
+      max-width: 960px; /* */
+      margin: auto; /* */
+      color: #2c3e50; /* */
     }
 
     h1 {
-      text-align: center;
-      font-size: 32px;
-      color: #1f2937;
-      margin-bottom: 20px;
+      text-align: center; /* */
+      font-size: 32px; /* */
+      color: #1f2937; /* */
+      margin-bottom: 20px; /* */
     }
 
     h2 {
-      font-size: 22px;
-      color: #111827;
-      margin-bottom: 12px;
+      font-size: 22px; /* */
+      color: #111827; /* */
+      margin-bottom: 12px; /* */
     }
-    h4 { /* Style for the new dynamic suggestions heading */
-        font-size: 17px;
-        color: #1f2937;
-        margin-bottom: 8px;
-        margin-top: 0;
-    }
-
-
+    
     .box {
-      background: white;
-      border-radius: 16px;
-      padding: 24px;
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
-      margin-bottom: 30px;
-      transition: transform 0.2s ease;
+      background: white; /* */
+      border-radius: 16px; /* */
+      padding: 24px; /* */
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05); /* */
+      margin-bottom: 30px; /* */
+      transition: transform 0.2s ease; /* */
     }
 
     .box:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px); /* */
     }
 
     input, select, textarea, button {
-      width: 100%;
-      padding: 12px;
-      margin-top: 10px;
-      margin-bottom: 16px;
-      border: 1px solid #d1d5db;
-      border-radius: 10px;
-      font-size: 16px;
+      width: 100%; /* */
+      padding: 12px; /* */
+      margin-top: 10px; /* */
+      margin-bottom: 16px; /* */
+      border: 1px solid #d1d5db; /* */
+      border-radius: 10px; /* */
+      font-size: 16px; /* */
     }
 
     input:focus, select:focus, textarea:focus {
-      outline: none;
-      border-color: #3b82f6;
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+      outline: none; /* */
+      border-color: #3b82f6; /* */
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3); /* */
     }
 
     button {
-      background: linear-gradient(135deg, #3b82f6, #2563eb);
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-weight: 600;
-      transition: background 0.3s ease, transform 0.2s ease;
+      background: linear-gradient(135deg, #3b82f6, #2563eb); /* */
+      color: white; /* */
+      border: none; /* */
+      cursor: pointer; /* */
+      font-weight: 600; /* */
+      transition: background 0.3s ease, transform 0.2s ease; /* */
     }
 
     button:hover {
-      background: linear-gradient(135deg, #2563eb, #1d4ed8);
-      transform: translateY(-1px);
+      background: linear-gradient(135deg, #2563eb, #1d4ed8); /* */
+      transform: translateY(-1px); /* */
     }
 
     pre {
-      background: #f9fafb;
-      padding: 14px;
-      border-radius: 10px;
-      border: 1px solid #e5e7eb;
-      font-size: 15px;
-      white-space: pre-wrap;
-      min-height: 60px;
-    }
-    #dynamicInterestSuggestions { /* Specific styling for dynamic suggestions pre */
-        background: #eef2ff; /* A light indigo background */
-        border-left: 4px solid #4f46e5; /* Indigo border */
-        color: #3730a3; /* Darker indigo text */
-        min-height: 80px; /* Ensure some space */
-        padding: 12px;
+      background: #f9fafb; /* */
+      padding: 14px; /* */
+      border-radius: 10px; /* */
+      border: 1px solid #e5e7eb; /* */
+      font-size: 15px; /* */
+      white-space: pre-wrap; /* */
+      min-height: 60px; /* */
+      line-height: 1.5; /* */
     }
 
-
-    #infoMessage, #interestsMessage, #answerFeedback {
-      font-size: 16px;
-      color: #374151;
-      margin-top: -8px; 
-      margin-bottom: 10px; 
+    #infoMessage, #answerFeedback { /* */
+      font-size: 16px; /* */
+      color: #374151; /* */
+      margin-top: -8px;  /* */
+      margin-bottom: 10px; /* */
     }
     
-    .instructions {
-      font-size: 15px;
-      color: #555;
-      margin-bottom: 20px;
-      margin-top: -5px;
-    }
-    .interest-category {
-      margin-bottom: 25px;
-    }
-    .interest-category h3 {
-      font-size: 18px;
-      font-weight: 600;
-      color: #2563eb; 
-      margin-bottom: 12px;
-      border-bottom: 2px solid #e5e7eb;
-      padding-bottom: 6px;
-    }
-    #interestsContainer label {
-      display: block;
-      margin-bottom: 10px; 
-      font-weight: 400; 
-      font-size: 15px;
-      cursor: pointer;
-    }
-    #interestsContainer input[type="checkbox"] {
-      width: auto; 
-      margin-right: 10px; 
-      vertical-align: middle;
-      margin-top: -2px; 
-      margin-bottom: 0;
-    }
-    #otherInterests { 
-        margin-top: 5px;
-    }
-    label[for="otherInterests"] { 
-        font-weight: 600;
-        font-size: 15px;
-        color: #111827;
+    .toast { /* */
+      position: fixed; /* */
+      bottom: 30px; /* */
+      left: 50%; /* */
+      transform: translateX(-50%); /* */
+      background: #2c3e50; /* */
+      color: white; /* */
+      padding: 14px 20px; /* */
+      border-radius: 10px; /* */
+      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2); /* */
+      z-index: 1000; /* */
+      font-size: 15px; /* */
+      opacity: 0.95; /* */
+      animation: fadeinout 2.5s forwards; /* */
     }
 
-    .toast {
-      position: fixed;
-      bottom: 30px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #2c3e50;
-      color: white;
-      padding: 14px 20px;
-      border-radius: 10px;
-      box-shadow: 0 5px 12px rgba(0, 0, 0, 0.2);
-      z-index: 1000;
-      font-size: 15px;
-      opacity: 0.95;
-      animation: fadeinout 2.5s forwards;
+    .toast.error { /* */
+      background: #e11d48; /* */
     }
 
-    .toast.error {
-      background: #e11d48;
+    .toast.success { /* */
+      background: #16a34a; /* */
     }
 
-    .toast.success {
-      background: #16a34a;
+    @keyframes fadeinout { /* */
+      0% {opacity: 0;} /* */
+      10% {opacity: 0.95;} /* */
+      90% {opacity: 0.95;} /* */
+      100% {opacity: 0;} /* */
     }
 
-    @keyframes fadeinout {
-      0% {opacity: 0;}
-      10% {opacity: 0.95;}
-      90% {opacity: 0.95;}
-      100% {opacity: 0;}
+    #scoreContainer { /* */
+      background: #e5e7eb; /* */
+      border-radius: 8px; /* */
+      overflow: hidden; /* */
+      height: 24px; /* */
+      margin-top: 8px; /* */
     }
 
-    #scoreContainer {
-      background: #e5e7eb;
-      border-radius: 8px;
-      overflow: hidden;
-      height: 24px;
-      margin-top: 8px;
-    }
-
-    #scoreBar {
-      background: linear-gradient(to right, #10b981, #6ee7b7);
-      color: white;
-      text-align: center;
-      height: 24px;
-      width: 0%;
-      line-height: 24px;
-      font-weight: 600;
-      transition: width 0.6s ease;
+    #scoreBar { /* */
+      background: linear-gradient(to right, #10b981, #6ee7b7); /* */
+      color: white; /* */
+      text-align: center; /* */
+      height: 24px; /* */
+      width: 0%; /* */
+      line-height: 24px; /* */
+      font-weight: 600; /* */
+      transition: width 0.6s ease; /* */
     }
     
-    @media (max-width: 600px) {
-      body {
-        padding: 20px 10px;
+    @media (max-width: 600px) { /* */
+      body { /* */
+        padding: 20px 10px; /* */
       }
 
-      h1 {
-        font-size: 24px;
+      h1 { /* */
+        font-size: 24px; /* */
       }
 
-      h2, h4 { /* Include h4 in responsive sizing */
-        font-size: 18px;
+      h2 { /* */
+        font-size: 18px; /* */
       }
-      .interest-category h3 {
-        font-size: 17px;
-      }
-      #interestsContainer label, label[for="otherInterests"] {
-        font-size: 14px;
-      }
-      input, select, textarea, button {
-        font-size: 15px;
+      input, select, textarea, button { /* */
+        font-size: 15px; /* */
       }
     }
   </style>
@@ -233,125 +174,33 @@
     <option value="Science">Science</option>
     <option value="Commerce">Commerce</option>
     <option value="Arts">Arts</option>
-    <option value="Technology">Technology</option>
-    <option value="Business">Business</option>
-    <option value="Creative Arts">Creative Arts</option>
-    <option value="Medical">Medical</option>
-    <option value="Finance">Finance</option>
-    <option value="Law">Law</option>
-    <option value="Media">Media</option>
-    <option value="Sports">Sports</option>
-  </select>
+    <option value="Technology">Technology</option> <option value="Business">Business</option> <option value="Creative Arts">Creative Arts</option> <option value="Medical">Medical</option> <option value="Finance">Finance</option> <option value="Law">Law</option> <option value="Media">Media</option> <option value="Sports">Sports</option> </select>
   <input id="careerIdea" type="text" placeholder="Do you already have a career in mind? (optional)" />
   <button onclick="saveUserInfo()">Save My Info</button>
   <p id="infoMessage"></p>
 </div>
 
 <div class="box">
-  <h2>2️⃣ Find Your Interests</h2>
-  <p class="instructions">Select the areas that genuinely excite you. Careers related to your selections will appear below as you choose.</p>
-  <div id="interestsContainer">
-
-    <div class="interest-category">
-      <h3>🧪 STEM & Analytics</h3>
-      <label><input type="checkbox" name="interest" value="Solving Complex Problems"> Solving Complex Problems</label>
-      <label><input type="checkbox" name="interest" value="Mathematics & Statistics"> Mathematics & Statistics</label>
-      <label><input type="checkbox" name="interest" value="Coding & Software Development"> Coding & Software Development</label>
-      <label><input type="checkbox" name="interest" value="Scientific Research & Experiments"> Scientific Research & Experiments</label>
-      <label><input type="checkbox" name="interest" value="Analyzing Data & Trends"> Analyzing Data & Trends</label>
-      <label><input type="checkbox" name="interest" value="Emerging Technologies (AI, Blockchain)"> Emerging Technologies (AI, Blockchain)</label>
-      <label><input type="checkbox" name="interest" value="Engineering & Building"> Engineering & Building</label>
-      <label><input type="checkbox" name="interest" value="Environmental Science & Sustainability"> Environmental Science & Sustainability</label>
-    </div>
-
-    <div class="interest-category">
-      <h3>🎨 Creative & Design</h3>
-      <label><input type="checkbox" name="interest" value="Visual Arts (Drawing, Painting, Sculpture)"> Visual Arts (Drawing, Painting, Sculpture)</label>
-      <label><input type="checkbox" name="interest" value="Graphic Design & Digital Illustration"> Graphic Design & Digital Illustration</label>
-      <label><input type="checkbox" name="interest" value="Writing (Fiction, Non-fiction, Poetry)"> Writing (Fiction, Non-fiction, Poetry)</label>
-      <label><input type="checkbox" name="interest" value="Music (Playing, Composing, Production)"> Music (Playing, Composing, Production)</label>
-      <label><input type="checkbox" name="interest" value="Performing Arts (Acting, Dance)"> Performing Arts (Acting, Dance)</label>
-      <label><input type="checkbox" name="interest" value="Fashion & Apparel Design"> Fashion & Apparel Design</label>
-      <label><input type="checkbox" name="interest" value="Filmmaking & Video Production"> Filmmaking & Video Production</label>
-      <label><input type="checkbox" name="interest" value="Photography"> Photography</label>
-      <label><input type="checkbox" name="interest" value="UI/UX Design & Product Design"> UI/UX Design & Product Design</label>
-    </div>
-
-    <div class="interest-category">
-      <h3>💼 Business & Leadership</h3>
-      <label><input type="checkbox" name="interest" value="Entrepreneurship & Startups"> Entrepreneurship & Startups</label>
-      <label><input type="checkbox" name="interest" value="Leading & Managing Teams"> Leading & Managing Teams</label>
-      <label><input type="checkbox" name="interest" value="Strategic Planning & Business Development"> Strategic Planning & Business Development</label>
-      <label><input type="checkbox" name="interest" value="Marketing, Advertising & Branding"> Marketing, Advertising & Branding</label>
-      <label><input type="checkbox" name="interest" value="Finance, Investing & Economics"> Finance, Investing & Economics</label>
-      <label><input type="checkbox" name="interest" value="Public Speaking & Presentations"> Public Speaking & Presentations</label>
-      <label><input type="checkbox" name="interest" value="Negotiation & Sales"> Negotiation & Sales</label>
-      <label><input type="checkbox" name="interest" value="Project Management"> Project Management</label>
-    </div>
-
-    <div class="interest-category">
-      <h3>🤝 Social Sciences & Humanities</h3>
-      <label><input type="checkbox" name="interest" value="Psychology & Human Behavior"> Psychology & Human Behavior</label>
-      <label><input type="checkbox" name="interest" value="Teaching & Education"> Teaching & Education</label>
-      <label><input type="checkbox" name="interest" value="Community Service & Volunteering"> Community Service & Volunteering</label>
-      <label><input type="checkbox" name="interest" value="Social Work & Counseling"> Social Work & Counseling</label>
-      <label><input type="checkbox" name="interest" value="History & Archaeology"> History & Archaeology</label>
-      <label><input type="checkbox" name="interest" value="Philosophy & Ethics"> Philosophy & Ethics</label>
-      <label><input type="checkbox" name="interest" value="Languages & Linguistics"> Languages & Linguistics</label>
-      <label><input type="checkbox" name="interest" value="Journalism & Media Studies"> Journalism & Media Studies</label>
-    </div>
-    
-    <div class="interest-category">
-      <h3>🌱 Health, Wellness & Lifestyle</h3>
-      <label><input type="checkbox" name="interest" value="Healthcare & Medicine (Interest in field)"> Healthcare & Medicine (Interest in field)</label>
-      <label><input type="checkbox" name="interest" value="Nutrition & Dietetics"> Nutrition & Dietetics</label>
-      <label><input type="checkbox" name="interest" value="Sports & Physical Fitness"> Sports & Physical Fitness</label>
-      <label><input type="checkbox" name="interest" value="Mental Health & Wellbeing"> Mental Health & Wellbeing</label>
-      <label><input type="checkbox" name="interest" value="Nature, Outdoors & Adventure"> Nature, Outdoors & Adventure</label>
-      <label><input type="checkbox" name="interest" value="Cooking & Culinary Arts"> Cooking & Culinary Arts</label>
-      <label><input type="checkbox" name="interest" value="Travel & Cultural Exploration"> Travel & Cultural Exploration</label>
-      <label><input type="checkbox" name="interest" value="DIY & Craftsmanship"> DIY & Craftsmanship</label>
-    </div>
-
-    <div class="interest-category">
-      <h3>✍️ Other Interests</h3>
-      <label for="otherInterests">If your interests aren't listed, please specify them (comma-separated):</label>
-      <input type="text" id="otherInterests" placeholder="e.g., Astrophysics, Ancient History, Podcasting">
-    </div>
-  </div>
-  
-  <div id="dynamicSuggestionsBox" style="margin-top: 20px; margin-bottom: 20px;">
-      <h4>✨ Careers related to your selected interests:</h4>
-      <pre id="dynamicInterestSuggestions">Select some interests to see related career ideas here.</pre>
-  </div>
-
-  <button onclick="saveUserInterests()">Save My Interests</button>
-  <p id="interestsMessage"></p>
-</div>
-
-<div class="box">
-  <h2>3️⃣ Career Suggestions</h2>
+  <h2>2️⃣ Career Suggestions</h2>
   <button onclick="showCareerSuggestions()">Show My Best-Fit Careers</button>
   <pre id="careerSuggestions"></pre>
 </div>
 
 <div class="box">
-  <h2>4️⃣ Pick a Career & Get Roadmap</h2>
+  <h2>3️⃣ Pick a Career & Get Roadmap</h2>
   <select id="careerDropdown"></select>
   <button onclick="selectCareer()">Confirm Career</button>
   <pre id="careerRoadmap"></pre>
 </div>
 
 <div class="box">
-  <h2>5️⃣ Daily Real-World Challenge</h2>
+  <h2>4️⃣ Daily Real-World Challenge</h2>
   <button onclick="getDailyChallenge()">Get a New Challenge</button>
   <pre id="dailyChallenge"></pre>
   <textarea id="challengeAnswer" rows="4" placeholder="Write your response here..."></textarea>
   <button onclick="submitChallengeAnswer()">Submit Answer</button>
   <p id="answerFeedback"></p>
-  <div id="scoreContainer">
-    <div id="scoreBar">0%</div>
-  </div>
+  <div id="scoreContainer"> <div id="scoreBar">0%</div> </div>
 </div>
 
 <script>
@@ -359,12 +208,12 @@
     studyLevel: '',
     stream: '',
     careerIdea: '',
-    interests: [], 
+    // interests: [], // Removed as per requirement
     suggestedCareers: [],
     chosenCareer: ''
   };
 
-  const careerOptions = {
+  const careerOptions = { // From comprehensive main.html
     'Science': ['Doctor', 'Engineer', 'Data Scientist', 'Psychologist', 'Researcher', 'Environmental Scientist'],
     'Commerce': ['Accountant', 'Marketing Manager', 'Entrepreneur', 'Economist', 'Financial Analyst', 'HR Manager'],
     'Arts': ['Journalist', 'Graphic Designer', 'Writer', 'Social Worker', 'Historian', 'Linguist'],
@@ -378,54 +227,12 @@
     'Sports': ['Athlete', 'Sports Coach', 'Sports Analyst', 'Fitness Trainer', 'Sports Manager']
   };
 
-  const generalCareers = ['Entrepreneur', 'Graphic Designer', 'Writer', 'Social Worker', 'Psychologist', 'Project Manager', 'Content Creator', 'Consultant', 'Teacher/Educator'];
+  const generalCareers = ['Entrepreneur', 'Graphic Designer', 'Writer', 'Social Worker', 'Psychologist', 'Project Manager', 'Content Creator', 'Consultant', 'Teacher/Educator']; //
   
-  const interestToCareerMap = {
-    "Solving Complex Problems": ["Engineer", "Data Scientist", "Researcher", "Consultant", "AI Specialist", "Business Analyst"],
-    "Mathematics & Statistics": ["Data Scientist", "Economist", "Actuary", "Researcher", "Financial Analyst"],
-    "Coding & Software Development": ["Software Engineer", "AI Specialist", "Data Scientist", "Cloud Engineer", "UI/UX Designer", "Cybersecurity Expert"],
-    "Scientific Research & Experiments": ["Researcher", "Medical Researcher", "Environmental Scientist", "Doctor", "Pharmacist"],
-    "Analyzing Data & Trends": ["Data Scientist", "Business Analyst", "Financial Analyst", "Marketing Manager", "Economist", "Sports Analyst"],
-    "Emerging Technologies (AI, Blockchain)": ["AI Specialist", "Software Engineer", "Cloud Engineer", "Consultant", "Researcher", "Cybersecurity Expert"],
-    "Engineering & Building": ["Engineer", "Project Manager", "Cloud Engineer", "Architect"],
-    "Environmental Science & Sustainability": ["Environmental Scientist", "Researcher", "Consultant", "Conservationist"],
-    "Visual Arts (Drawing, Painting, Sculpture)": ["Artist", "Graphic Designer", "Animator", "Illustrator"],
-    "Graphic Design & Digital Illustration": ["Graphic Designer", "UI/UX Designer", "Animator", "Content Creator", "Illustrator"],
-    "Writing (Fiction, Non-fiction, Poetry)": ["Writer", "Journalist", "Content Creator", "Marketing Manager", "Editor"],
-    "Music (Playing, Composing, Production)": ["Musician", "Music Producer", "Sound Engineer", "DJ"],
-    "Performing Arts (Acting, Dance)": ["Actor", "Dancer", "Performer", "Choreographer"],
-    "Fashion & Apparel Design": ["Fashion Designer", "Textile Designer", "Stylist"],
-    "Filmmaking & Video Production": ["Film Maker", "Video Editor", "Content Creator", "Photographer", "Cinematographer"],
-    "Photography": ["Photographer", "Content Creator", "Journalist", "Photo Editor"],
-    "UI/UX Design & Product Design": ["UI/UX Designer", "Product Designer", "Graphic Designer", "Software Engineer"],
-    "Entrepreneurship & Startups": ["Entrepreneur", "Business Analyst", "Marketing Manager", "Consultant", "Venture Capitalist"],
-    "Leading & Managing Teams": ["Project Manager", "HR Manager", "Marketing Manager", "Entrepreneur", "CEO"],
-    "Strategic Planning & Business Development": ["Business Analyst", "Consultant", "Marketing Manager", "Entrepreneur", "Strategist"],
-    "Marketing, Advertising & Branding": ["Marketing Manager", "Content Creator", "PR Specialist", "Graphic Designer", "Brand Manager", "SEO Specialist"],
-    "Finance, Investing & Economics": ["Financial Analyst", "Investment Banker", "Economist", "Accountant", "Actuary", "CFO", "Stockbroker"],
-    "Public Speaking & Presentations": ["Consultant", "Marketing Manager", "Teacher/Educator", "PR Specialist", "TV Anchor", "Motivational Speaker"],
-    "Negotiation & Sales": ["Sales Manager", "Marketing Manager", "Entrepreneur", "Investment Banker", "Real Estate Agent"],
-    "Project Management": ["Project Manager", "Business Analyst", "Engineer", "Consultant", "Operations Manager"],
-    "Psychology & Human Behavior": ["Psychologist", "Social Worker", "HR Manager", "Consultant", "Researcher", "Therapist", "Counselor"],
-    "Teaching & Education": ["Teacher/Educator", "Linguist", "Professor", "Instructional Designer", "Corporate Trainer"],
-    "Community Service & Volunteering": ["Social Worker", "NGO Manager", "Community Organizer", "Activist"],
-    "Social Work & Counseling": ["Social Worker", "Psychologist", "Counselor", "Therapist"],
-    "History & Archaeology": ["Historian", "Archaeologist", "Museum Curator", "Researcher", "Archivist"],
-    "Philosophy & Ethics": ["Philosopher", "Ethics Officer", "Researcher", "Writer", "Policy Advisor"],
-    "Languages & Linguistics": ["Linguist", "Translator", "Interpreter", "Teacher/Educator", "Writer", "Speech Therapist"],
-    "Journalism & Media Studies": ["Journalist", "Content Creator", "PR Specialist", "Media Analyst", "TV Anchor", "Editor", "Reporter"],
-    "Healthcare & Medicine (Interest in field)": ["Doctor", "Nurse", "Pharmacist", "Medical Researcher", "Hospital Administrator", "Surgeon", "Dentist"],
-    "Nutrition & Dietetics": ["Dietitian", "Nutritionist", "Wellness Coach", "Food Scientist"],
-    "Sports & Physical Fitness": ["Athlete", "Sports Coach", "Fitness Trainer", "Sports Analyst", "Physiotherapist", "Sports Manager"],
-    "Mental Health & Wellbeing": ["Psychologist", "Counselor", "Social Worker", "Wellness Coach", "Therapist", "Psychiatrist"],
-    "Nature, Outdoors & Adventure": ["Environmental Scientist", "Adventure Guide", "Park Ranger", "Travel Blogger", "Geologist", "Forester"],
-    "Cooking & Culinary Arts": ["Chef", "Culinary Artist", "Food Critic", "Caterer", "Pastry Chef", "Baker"],
-    "Travel & Cultural Exploration": ["Travel Agent", "Travel Blogger", "Tour Guide", "Cultural Anthropologist", "Flight Attendant", "Hotel Manager"],
-    "DIY & Craftsmanship": ["Artisan", "Craftsperson", "Designer", "Small Business Owner (Crafts)", "Jewelry Maker", "Carpenter"]
-  };
+  // interestToCareerMap is removed as "Find Your Interests" is excluded
 
-  const careerRoadmaps = { 
-    'Doctor': `1️⃣ Clear NEET.\n2️⃣ Complete MBBS.\n3️⃣ Do Internship.\n4️⃣ Specialize via PG (MD/MS).\n5️⃣ Practice or join a hospital.`,
+  const careerRoadmaps = { // From comprehensive main.html
+   'Doctor': `1️⃣ Clear NEET.\n2️⃣ Complete MBBS.\n3️⃣ Do Internship.\n4️⃣ Specialize via PG (MD/MS).\n5️⃣ Practice or join a hospital.`,
     'Engineer': `1️⃣ Clear JEE/State CET/Entrance.\n2️⃣ Complete B.Tech/BE in chosen field.\n3️⃣ Build practical projects & portfolio.\n4️⃣ Intern during college.\n5️⃣ Get job or pursue M.Tech/MBA.`,
     'Data Scientist': `1️⃣ Strong foundation in Math & Stats.\n2️⃣ Learn Python/R & SQL.\n3️⃣ Master ML algorithms & tools.\n4️⃣ Work on real-world datasets & projects.\n5️⃣ Build portfolio, consider certifications.`,
     'Psychologist': `1️⃣ Complete BA/BSc in Psychology.\n2️⃣ Do MA/MSc in Psychology.\n3️⃣ Gain supervised practical experience.\n4️⃣ Clear licensing exams.\n5️⃣ Start practice or join institutions.`,
@@ -482,9 +289,10 @@
     'Editor': `1️⃣ Strong command of grammar & style.\n2️⃣ Degree in English, Journalism, or related.\n3️⃣ Experience in copyediting, proofreading.\n4️⃣ Develop an eye for detail & consistency.\n5️⃣ Work for publishers, media, or freelance.`,
     'Musician': `1️⃣ Master chosen instrument/vocals.\n2️⃣ Study music theory & performance.\n3️⃣ Perform regularly, collaborate with others.\n4️⃣ Record music & build online presence.\n5️⃣ Understand music business basics.`,
      'Product Designer': `1️⃣ Degree in Design, Engineering, or HCI.\n2️⃣ Skills in user research, prototyping, UI/UX.\n3️⃣ Proficiency in design & prototyping tools.\n4️⃣ Build a portfolio of product design projects.\n5️⃣ Understand manufacturing or software dev processes.`
+    // Add any other roadmaps from main.html here
   };
 
-  const careerChallenges = {
+  const careerChallenges = { // From comprehensive main.html
     'Doctor': ["Handle a patient with conflicting symptoms.", "Decide priority cases in ER.", "Explain complex diagnosis in simple terms."],
     'Engineer': ["Design a solution for a real-world problem.", "Debug complex code under a deadline.", "Work with a multidisciplinary team."],
     'Data Scientist': ["Clean messy datasets effectively.", "Explain ML model outcomes to a non-tech client.", "Deploy a data model into production."],
@@ -611,263 +419,139 @@
     'Craftsperson': ["Master a specific craft (e.g., woodworking, pottery, metalworking) to produce functional and beautiful objects.", "Design and create custom pieces based on client specifications.", "Manage a small craft business, including sourcing materials, production, and sales."],
     'Jewelry Maker': ["Design and create unique pieces of jewelry using precious metals, gemstones, or other materials.", "Master intricate jewelry-making techniques such as soldering, stone setting, and polishing.", "Develop a brand and market your jewelry collection to target customers."],
     'Carpenter': ["Construct, install, or repair wooden structures and fittings with precision and skill.", "Interpret blueprints and technical drawings to execute complex carpentry projects.", "Select appropriate wood types and materials for different applications."],
-    'Designer': ["Conceptualize and create visually appealing and functional designs for various products or media.", "Utilize design software and tools effectively to bring ideas to life.", "Collaborate with clients or teams to meet design objectives and iterate on feedback."]
+    'Designer': ["Conceptualize and create visually appealing and functional designs for various products or media.", "Utilize design software and tools effectively to bring ideas to life.", "Collaborate with clients or teams to meet design objectives and iterate on feedback."]//
+    // Add any other challenges from main.html here
   };
 
-  function saveUserInfo() {
+  function saveUserInfo() { // Function from comprehensive main.html
     const study = document.getElementById('studyLevel').value.trim();
     const stream = document.getElementById('stream').value;
     const careerIdea = document.getElementById('careerIdea').value.trim();
-    if (!study || !stream) return showToast('Please fill your study level and stream.', 'error');
+    if (!study || !stream) return showToast('Please fill your study level and stream.', 'error'); //
     user.studyLevel = study;
     user.stream = stream;
     user.careerIdea = careerIdea;
     document.getElementById('infoMessage').textContent =
-      `✅ Saved! Studying: "${study}", Stream: "${stream}"` + (careerIdea ? `, Dream: "${careerIdea}"` : '');
-    showToast('Info saved successfully!', 'success');
+      `✅ Saved! Studying: "${study}", Stream: "${stream}"` + (careerIdea ? `, Dream: "${careerIdea}"` : ''); //
+    showToast('Info saved successfully!', 'success'); //
   }
 
-  function updateDynamicSuggestions() {
-    const currentSelectedInterests = [];
-    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
-        currentSelectedInterests.push(checkbox.value);
-    });
-    const otherInterestsText = document.getElementById('otherInterests').value.trim();
-    if (otherInterestsText) {
-        otherInterestsText.split(',').forEach(interest => {
-            const trimmedInterest = interest.trim();
-            if (trimmedInterest) currentSelectedInterests.push(trimmedInterest); 
-        });
-    }
-
-    const dynamicSuggestionsOutput = document.getElementById('dynamicInterestSuggestions');
-    if (currentSelectedInterests.length === 0) {
-        dynamicSuggestionsOutput.textContent = 'Select some interests to see related career ideas here.';
-        return;
-    }
-
-    let suggestedCareersFromInterests = new Set();
-    let interestContribution = {}; 
-
-    currentSelectedInterests.forEach(interest => {
-        if (interestToCareerMap[interest]) {
-            interestToCareerMap[interest].forEach(career => {
-                suggestedCareersFromInterests.add(career);
-                interestContribution[career] = (interestContribution[career] || 0) + 1;
-            });
-        }
-    });
-
-    if (suggestedCareersFromInterests.size === 0) {
-        dynamicSuggestionsOutput.textContent = 'No specific career suggestions for these interests yet. Explore more or add details in "Other Interests"!\n\n(Final suggestions in Step 3 will consider your stream and study level.)';
-        return;
-    }
-
-    let sortedSuggestions = Array.from(suggestedCareersFromInterests).sort((a, b) => {
-        const countA = interestContribution[a] || 0;
-        const countB = interestContribution[b] || 0;
-        if (countB !== countA) {
-            return countB - countA; 
-        }
-        return a.localeCompare(b); 
-    });
+  function showCareerSuggestions() { // Adapted logic, similar to original begmain.html, using new data
+    if (!user.studyLevel || !user.stream) return showToast('Save your info first.', 'error'); //
     
-    const topN = 5; 
-    let outputText = "";
-    if (sortedSuggestions.length > 0) {
-        outputText = "Consider these based on your current selections:\n";
-        sortedSuggestions.slice(0, topN).forEach(career => {
-            outputText += `- ${career}\n`;
-        });
-        if (sortedSuggestions.length > topN) {
-            outputText += `\n...and ${sortedSuggestions.length - topN} more.`;
-        }
-    } else {
-        outputText = "No specific career suggestions for these interests yet. Explore more!";
-    }
-    outputText += "\n\n(Final suggestions in Step 3 will also consider your stream and study level.)";
-    dynamicSuggestionsOutput.textContent = outputText;
-  }
+    let baseCareers = careerOptions[user.stream] || []; //
+    let combinedCareers = [...new Set([...baseCareers, ...generalCareers])]; //
 
+    if (user.careerIdea) { //
+      const ci = user.careerIdea; //
+      const ciLower = ci.toLowerCase(); //
 
-  function saveUserInterests() {
-    const selectedInterests = [];
-    document.querySelectorAll('input[name="interest"]:checked').forEach((checkbox) => {
-      selectedInterests.push(checkbox.value);
-    });
-    const otherInterestsText = document.getElementById('otherInterests').value.trim();
-    if (otherInterestsText) {
-      otherInterestsText.split(',').forEach(interest => {
-        const trimmedInterest = interest.trim(); 
-        if (trimmedInterest) selectedInterests.push(trimmedInterest);
-      });
-    }
-    user.interests = selectedInterests;
-    // Call dynamic suggestions update here as well, in case "Other interests" field was the last thing edited.
-    updateDynamicSuggestions(); 
-
-    if (user.interests.length === 0) {
-        document.getElementById('interestsMessage').textContent = 'No interests selected. Please select some for better suggestions.';
-        showToast('No interests selected.', 'error');
-    } else {
-        document.getElementById('interestsMessage').textContent = `✅ Saved ${user.interests.length} interest(s): ${user.interests.slice(0,3).join(', ')}` + (user.interests.length > 3 ? '...' : '');
-        showToast('Interests saved successfully!', 'success');
-    }
-  }
-
-  function showCareerSuggestions() {
-    if (!user.studyLevel || !user.stream) {
-      return showToast('Please save your info in Step 1 first.', 'error');
-    }
-    if (user.interests.length === 0) {
-      // Although dynamic suggestions are there, saving interests is still a good checkpoint
-      // and this ensures the `user.interests` array used here is populated.
-      return showToast('Please save your interests in Step 2 first by clicking "Save My Interests".', 'error');
-    }
-
-    let potentialCareers = new Set();
-
-    if (user.stream && careerOptions[user.stream]) {
-      careerOptions[user.stream].forEach(career => potentialCareers.add(career));
-    }
-
-    user.interests.forEach(interest => {
-      if (interestToCareerMap[interest]) {
-        interestToCareerMap[interest].forEach(career => potentialCareers.add(career));
-      } else { 
-        if (interest.length < 30 && !interest.includes(" ")) { 
-            potentialCareers.add(interest); // Add custom interests from saved list
-        }
-      }
-    });
-    
-    if (potentialCareers.size < 7) { 
-        generalCareers.forEach(career => potentialCareers.add(career));
-    }
-    
-    let suggestedList = Array.from(potentialCareers);
-
-    if (user.careerIdea) {
-      const ci = user.careerIdea;
-      const ciLower = ci.toLowerCase();
-      // Check if it's already there effectively (case-insensitive)
-      let found = false;
-      suggestedList.forEach(c => { if(c.toLowerCase() === ciLower) found = true; });
+      // Check if careerIdea is already present (case-insensitive)
+      let found = combinedCareers.some(c => c.toLowerCase() === ciLower); //
       
-      if(!found) { // Add if not effectively present
-          potentialCareers.add(ci); 
+      if(!found) { //
+          combinedCareers.unshift(ci); // Add to beginning if not found //
+      } else {
+          // Move to beginning if found
+          combinedCareers = combinedCareers.filter(c => c.toLowerCase() !== ciLower); //
+          combinedCareers.unshift(ci); //
       }
-      suggestedList = Array.from(potentialCareers); 
-      
-      suggestedList = suggestedList.filter(c => c.toLowerCase() !== ciLower);
-      suggestedList.unshift(ci); 
     }
     
-    const numberOfSuggestions = Math.min(suggestedList.length, 5); 
-    user.suggestedCareers = suggestedList.slice(0, numberOfSuggestions);
+    // Suggest a limited number of careers, e.g., 5, can be randomized or sorted
+    // For simplicity, using slice on the potentially reordered list.
+    const numberOfSuggestions = Math.min(combinedCareers.length, 5); //
+    user.suggestedCareers = combinedCareers.slice(0, numberOfSuggestions); //
 
-    if (user.suggestedCareers.length === 0) {
-        user.suggestedCareers = generalCareers.slice(0,3); 
+
+    if (user.suggestedCareers.length === 0) { //
+        user.suggestedCareers = generalCareers.slice(0,3);  // Fallback to general careers //
          document.getElementById('careerSuggestions').textContent =
-        'Could not find specific suggestions. Here are some general ideas:\n- ' + user.suggestedCareers.join('\n- ');
+        'Could not find specific suggestions. Here are some general ideas:\n- ' + user.suggestedCareers.join('\n- '); //
     } else {
         document.getElementById('careerSuggestions').textContent =
-        '✨ Based on your profile & interests, top careers for you:\n- ' + user.suggestedCareers.join('\n- ');
+        '✨ Based on your profile & interests, top careers for you:\n- ' + user.suggestedCareers.join('\n- '); //
     }
 
-    let dropdownHTML = '<option value="">-- Choose your career --</option>';
-    user.suggestedCareers.forEach(career => {
-      const careerKey = career; 
-      dropdownHTML += `<option value="${careerKey}">${career}</option>`;
+    let dropdownHTML = '<option value="">-- Choose your career --</option>'; //
+    user.suggestedCareers.forEach(career => { //
+      dropdownHTML += `<option value="${career}">${career}</option>`; //
     });
-    document.getElementById('careerDropdown').innerHTML = dropdownHTML;
-    if (user.suggestedCareers.length > 0) {
-        showToast('Career suggestions updated!', 'success');
+    document.getElementById('careerDropdown').innerHTML = dropdownHTML; //
+    if (user.suggestedCareers.length > 0) { //
+        showToast('Career suggestions updated!', 'success'); //
     }
   }
 
-  function selectCareer() {
-    const choice = document.getElementById('careerDropdown').value;
-    if (!choice) return showToast('Pick a career first.', 'error');
-    user.chosenCareer = choice;
-    document.getElementById('careerRoadmap').textContent = careerRoadmaps[choice] || 'No specific roadmap available for "' + choice + '". Consider researching its typical path.';
-    showToast(`Career set to ${choice}`, 'success');
-    document.getElementById('dailyChallenge').textContent = '';
-    document.getElementById('challengeAnswer').value = '';
-    document.getElementById('answerFeedback').textContent = '';
-    document.getElementById('scoreBar').style.width = '0%';
-    document.getElementById('scoreBar').textContent = '0%';
+  function selectCareer() { // Function from comprehensive main.html
+    const choice = document.getElementById('careerDropdown').value; //
+    if (!choice) return showToast('Pick a career first.', 'error'); //
+    user.chosenCareer = choice; //
+    document.getElementById('careerRoadmap').textContent = careerRoadmaps[choice] || 'No specific roadmap available for "' + choice + '". Consider researching its typical path.'; //
+    showToast(`Career set to ${choice}`, 'success'); //
+    document.getElementById('dailyChallenge').textContent = ''; //
+    document.getElementById('challengeAnswer').value = ''; //
+    document.getElementById('answerFeedback').textContent = ''; //
+    document.getElementById('scoreBar').style.width = '0%'; //
+    document.getElementById('scoreBar').textContent = '0%'; //
   }
 
-  function getDailyChallenge() {
-    if (!user.chosenCareer) return showToast('Select a career first.', 'error');
-    const list = careerChallenges[user.chosenCareer];
-    if (!list || list.length === 0) { 
-        document.getElementById('dailyChallenge').textContent = 'No specific challenge available for "' + user.chosenCareer + '". Try selecting another suggested career.';
+  function getDailyChallenge() { // Function from comprehensive main.html
+    if (!user.chosenCareer) return showToast('Select a career first.', 'error'); //
+    const list = careerChallenges[user.chosenCareer]; //
+    if (!list || list.length === 0) {  //
+        document.getElementById('dailyChallenge').textContent = 'No specific challenge available for "' + user.chosenCareer + '". Try selecting another suggested career.'; //
         return;
     }
-    const challenge = list[Math.floor(Math.random() * list.length)];
-    const challengeElem = document.getElementById('dailyChallenge');
-    challengeElem.style.opacity = 0;
-    setTimeout(() => {
-      challengeElem.textContent = challenge;
-      challengeElem.style.opacity = 1;
-    }, 250);
+    const challenge = list[Math.floor(Math.random() * list.length)]; //
+    const challengeElem = document.getElementById('dailyChallenge'); //
+    challengeElem.style.opacity = 0; //
+    setTimeout(() => { //
+      challengeElem.textContent = challenge; //
+      challengeElem.style.opacity = 1; //
+    }, 250); //
 
-    document.getElementById('challengeAnswer').value = '';
-    document.getElementById('answerFeedback').textContent = '';
-    document.getElementById('scoreBar').style.width = '0%';
-    document.getElementById('scoreBar').textContent = '0%';
+    document.getElementById('challengeAnswer').value = ''; //
+    document.getElementById('answerFeedback').textContent = ''; //
+    document.getElementById('scoreBar').style.width = '0%'; //
+    document.getElementById('scoreBar').textContent = '0%'; //
   }
 
-  function submitChallengeAnswer() {
-    const answer = document.getElementById('challengeAnswer').value.trim();
-    if (!answer) return showToast('Write your response first.', 'error');
-    let score = 0; 
-    const ansLower = answer.toLowerCase(); 
-    if (answer.length > 50) score += 40;
-    if (ansLower.includes('plan') || ansLower.includes('strategy') || ansLower.includes('approach')) score += 30;
-    if (ansLower.includes('team') || ansLower.includes('solution') || ansLower.includes('collaborate')) score += 20;
-    if (ansLower.includes('risk') || ansLower.includes('improve') || ansLower.includes('analyze')) score += 10;
-    if (score > 100) score = 100;
-    let msg = '';
-    if (score >= 80) msg = `🌟 Excellent! Scored ${score}/100. Smart & clear plan.`;
-    else if (score >= 50) msg = `👍 Good try! Scored ${score}/100. Keep improving.`;
-    else msg = `✨ Scored ${score}/100. Add more detail, plans, and reasoning.`;
-    document.getElementById('answerFeedback').textContent = msg;
-    document.getElementById('scoreBar').style.width = score + '%';
-    document.getElementById('scoreBar').textContent = score + '%';
+  function submitChallengeAnswer() { // Function from comprehensive main.html
+    const answer = document.getElementById('challengeAnswer').value.trim(); //
+    if (!answer) return showToast('Write your response first.', 'error'); //
+    let score = 0;  //
+    const ansLower = answer.toLowerCase();  //
+    if (answer.length > 50) score += 40; //
+    if (ansLower.includes('plan') || ansLower.includes('strategy') || ansLower.includes('approach')) score += 30; //
+    if (ansLower.includes('team') || ansLower.includes('solution') || ansLower.includes('collaborate')) score += 20; //
+    if (ansLower.includes('risk') || ansLower.includes('improve') || ansLower.includes('analyze')) score += 10; //
+    if (score > 100) score = 100; //
+    let msg = ''; //
+    if (score >= 80) msg = `🌟 Excellent! Scored ${score}/100. Smart & clear plan.`; //
+    else if (score >= 50) msg = `👍 Good try! Scored ${score}/100. Keep improving.`; //
+    else msg = `✨ Scored ${score}/100. Add more detail, plans, and reasoning.`; //
+    document.getElementById('answerFeedback').textContent = msg; //
+    document.getElementById('scoreBar').style.width = score + '%'; //
+    document.getElementById('scoreBar').textContent = score + '%'; //
   }
 
-  function showToast(message, type = 'info') {
-    const toast = document.createElement('div');
-    toast.className = 'toast ' + type;
-    toast.textContent = message;
-    document.body.appendChild(toast);
-    setTimeout(() => toast.remove(), 2500);
+  function showToast(message, type = 'info') { // Function from comprehensive main.html
+    const toast = document.createElement('div'); //
+    toast.className = 'toast ' + type; //
+    toast.textContent = message; //
+    document.body.appendChild(toast); //
+    setTimeout(() => toast.remove(), 2500); //
   }
 
-  document.addEventListener('DOMContentLoaded', () => {
-    document.querySelectorAll('input[name="interest"]').forEach(checkbox => {
-        checkbox.addEventListener('change', updateDynamicSuggestions);
-    });
-    const otherInterestsInput = document.getElementById('otherInterests');
-    if (otherInterestsInput) { 
-        otherInterestsInput.addEventListener('input', updateDynamicSuggestions);
-    }
-    // Initial call to set the placeholder or initial state if any interests were pre-checked (not current case)
-    updateDynamicSuggestions(); 
-  });
-
+  // Removed DOMContentLoaded listener related to interests
 </script>
 <footer style="
   text-align: center;
   margin-top: 40px;
   color: #6b7280;
   font-size: 14px;
-">
-  &copy; 2025 All rights reserved to LifePath AI
-</footer>
+"> &copy; 2025 All rights reserved to LifePath AI </footer>
 
 </body>
 </html>
