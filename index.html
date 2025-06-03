@@ -548,8 +548,10 @@
 <script type="module">
     // Import Firebase modular SDK functions
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getDatabase, ref, push, set, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
-    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+    // --- Firestore Imports ---
+    import { getFirestore, collection, doc, setDoc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    // --- Auth Imports ---
+    import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // --- Firebase Configuration ---
     // IMPORTANT: Ensure these are your actual Firebase project's credentials for LifePath AI.
@@ -567,7 +569,7 @@
 
     // Initialize Firebase services
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app); // Get Realtime Database instance
+    const firestore = getFirestore(app); // Get Firestore instance
     const auth = getAuth(app);         // Get Auth instance
     const googleProvider = new GoogleAuthProvider(); // Google Auth provider
 
@@ -675,33 +677,27 @@
     }
 
     /**
-     * Saves user data to Firebase Realtime Database.
-     * This function is called after successful email/password signup or Google Sign-In.
-     * It checks if the user (by UID) already exists to prevent overwriting.
+     * Saves user profile data to Firestore.
+     * This function is called after successful Firebase Authentication (email/password or Google Sign-In).
+     * It checks if the user's document (by UID) already exists to prevent overwriting during subsequent logins.
      * @param {string} uid - The Firebase Authentication User ID.
      * @param {string} name - The user's display name.
      * @param {string} email - The user's email address.
-     * @param {string|null} password - The user's password (only for email/password signup, null for Google).
      */
-    async function saveUserToDatabase(uid, name, email, password = null) {
-        const userRef = ref(database, 'users/' + uid); // Reference to the user's specific node
-        const snapshot = await get(userRef); // Check if user already exists
+    async function saveUserToFirestore(uid, name, email) {
+        const userDocRef = doc(firestore, 'users', uid); // Reference to the user's specific document
+        const snapshot = await getDoc(userDocRef); // Check if user document already exists
 
         if (!snapshot.exists()) {
-            // User does not exist, create new entry
-            await set(userRef, {
+            // User document does not exist, create new entry
+            await setDoc(userDocRef, {
                 name: name,
                 email: email,
-                // WARNING: Storing plain text passwords in Realtime Database is INSECURE.
-                // In a real application, rely solely on Firebase Authentication's built-in
-                // email/password methods which handle hashing securely, and do NOT store
-                // passwords in the Realtime Database. This is for demonstration purposes only.
-                password: password,
                 createdAt: Date.now() // Timestamp of creation
             });
-            console.log("User data saved to Realtime Database.");
+            console.log("User data saved to Firestore.");
         } else {
-            console.log("User already exists in Realtime Database, skipping data save.");
+            console.log("User already exists in Firestore, skipping data save.");
         }
     }
 
@@ -733,30 +729,12 @@
             }
 
             try {
-                // Check if user with this email already exists in our 'users' node
-                // This is a manual check as we're not using Firebase Auth's email/password creation directly.
-                const usersRef = ref(database, 'users');
-                const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
-                const snapshot = await get(emailQuery);
+                // Use Firebase Authentication to create user with email and password securely
+                const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-                if (snapshot.exists()) {
-                    alert('User with this email already exists. Please log in or use a different email.');
-                    return;
-                }
-
-                // If email does not exist, create a new user record in Realtime Database.
-                // Firebase Realtime Database does not have a built-in user creation for email/password like Auth.
-                // We generate a unique key using push() and then set the data.
-                const newRef = push(usersRef); // Generates a unique key
-                await set(newRef, {
-                    name: name,
-                    email: email,
-                    // WARNING: Storing plain text passwords is INSECURE.
-                    // In a real application, use Firebase Authentication's createUserWithEmailAndPassword()
-                    // and then store additional profile data (name, etc.) linked by the user's UID.
-                    password: password,
-                    createdAt: Date.now()
-                });
+                // Save additional user profile data (name, email) to Firestore
+                await saveUserToFirestore(user.uid, name, user.email);
 
                 alert('Account created successfully! Please log in.');
                 this.reset(); // Clear the form
@@ -764,7 +742,15 @@
 
             } catch (error) {
                 console.error("Error creating user:", error);
-                alert('Failed to create account: ' + error.message);
+                let errorMessage = 'Failed to create account. Please try again.';
+                if (error.code === 'auth/email-already-in-use') {
+                    errorMessage = 'This email is already in use. Please log in or use a different email.';
+                } else if (error.code === 'auth/weak-password') {
+                    errorMessage = 'The password is too weak. Please choose a stronger password.';
+                } else if (error.code === 'auth/invalid-email') {
+                    errorMessage = 'The email address is not valid.';
+                }
+                alert(errorMessage);
             }
         });
     }
@@ -791,38 +777,29 @@
             }
 
             try {
-                // Query Realtime Database to find user by email
-                const usersRef = ref(database, 'users');
-                const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
-                const snapshot = await get(emailQuery);
+                // Use Firebase Authentication to sign in user with email and password securely
+                const userCredential = await signInWithEmailAndPassword(auth, email, password);
+                const user = userCredential.user;
 
-                if (!snapshot.exists()) {
-                    alert('Invalid email or password.');
-                    return;
-                }
+                // Fetch user's name from Firestore for the welcome message
+                const userDocRef = doc(firestore, 'users', user.uid);
+                const userDocSnap = await getDoc(userDocRef);
+                const userName = userDocSnap.exists() ? userDocSnap.data().name : user.email; // Fallback to email
 
-                let userFound = false;
-                let loggedInUser = null;
-                snapshot.forEach(childSnapshot => {
-                    const user = childSnapshot.val();
-                    // IMPORTANT: In a real application, you would compare hashed passwords
-                    // using a secure method (e.g., Firebase Auth's signInWithEmailAndPassword).
-                    if (user.password === password) {
-                        loggedInUser = {name: user.name, email: user.email, uid: childSnapshot.key};
-                        userFound = true;
-                    }
-                });
+                alert(`Welcome back, ${userName}! Redirecting to the LifePath AI app...`);
+                // Store logged-in user info in sessionStorage for access on homepage.html
+                sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify({name: userName, email: user.email, uid: user.uid}));
+                window.location.href = 'homepage.html'; // Redirect to the main application
 
-                if (userFound) {
-                    alert(`Welcome back, ${loggedInUser.name}! Redirecting to the LifePath AI app...`);
-                    sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify(loggedInUser));
-                    window.location.href = 'homepage.html'; // Redirect to the main application
-                } else {
-                    alert('Invalid email or password.');
-                }
             } catch (error) {
                 console.error("Error during login:", error);
-                alert('An error occurred during login. Please try again.');
+                let errorMessage = 'An error occurred during login. Please try again.';
+                if (error.code === 'auth/invalid-email' || error.code === 'auth/wrong-password' || error.code === 'auth/user-not-found') {
+                    errorMessage = 'Invalid email or password.';
+                } else if (error.code === 'auth/user-disabled') {
+                    errorMessage = 'This account has been disabled.';
+                }
+                alert(errorMessage);
             }
         });
     }
@@ -841,8 +818,8 @@
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user; // The signed-in user info from Firebase Auth
 
-            // Save user data to Realtime Database. This function checks if user exists.
-            await saveUserToDatabase(user.uid, user.displayName, user.email);
+            // Save user data to Firestore. This function checks if user exists.
+            await saveUserToFirestore(user.uid, user.displayName, user.email);
 
             alert(`Welcome, ${user.displayName}! Redirecting to the LifePath AI app...`);
             // Store logged-in user info in sessionStorage for access on homepage.html
