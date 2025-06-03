@@ -546,14 +546,18 @@
 </footer>
 
 <script type="module">
+    // Import Firebase modular SDK functions
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
     import { getDatabase, ref, push, set, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
     import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
     // --- Firebase Configuration ---
+    // IMPORTANT: Ensure these are your actual Firebase project's credentials for LifePath AI.
+    // You can find them in your Firebase Console -> Project settings -> Your apps -> Web app config.
     const firebaseConfig = {
         apiKey: "AIzaSyCmHkG2U9rT_Lfou4KVbl6iZUv8_A7l1aU",
         authDomain: "lifepath-ai-709dc.firebaseapp.com",
+        databaseURL: "https://lifepath-ai-709dc-default-rtdb.firebaseio.com", // Ensure this matches your project ID
         projectId: "lifepath-ai-709dc",
         storageBucket: "lifepath-ai-709dc.firebasestorage.app",
         messagingSenderId: "860840836658",
@@ -561,13 +565,13 @@
         measurementId: "G-DZ1YF2CJRE"
     };
 
-    // Initialize Firebase
+    // Initialize Firebase services
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
-    const auth = getAuth(app);
-    const googleProvider = new GoogleAuthProvider();
+    const database = getDatabase(app); // Get Realtime Database instance
+    const auth = getAuth(app);         // Get Auth instance
+    const googleProvider = new GoogleAuthProvider(); // Google Auth provider
 
-    // Section navigation
+    // --- DOM Elements for Section Navigation ---
     const aboutSection = document.getElementById('about');
     const loginSection = document.getElementById('login');
     const signupSection = document.getElementById('signup');
@@ -577,29 +581,38 @@
     const navLinkSignup = document.getElementById('link-signup');
     const allNavLinks = [navLinkAbout, navLinkLogin, navLinkSignup];
 
-
+    /**
+     * Shows a specific section and highlights its corresponding navigation link.
+     * @param {HTMLElement} sectionToShow - The section element to make active.
+     * @param {HTMLElement} activeNavLink - The navigation link element to highlight.
+     */
     function showSection(sectionToShow, activeNavLink) {
+        // Hide all sections
         [aboutSection, loginSection, signupSection].forEach(s => {
             if (s) {
                 s.style.display = 'none';
                 s.classList.remove('active');
             }
         });
+        // Remove active class from all nav links
         allNavLinks.forEach(link => {
             if (link) link.classList.remove('active-nav-link');
         });
 
+        // Show the target section and add active class for animation
         if (sectionToShow) {
             sectionToShow.style.display = 'block';
-            // Trigger reflow for animation
+            // Trigger reflow to ensure CSS transition applies
             void sectionToShow.offsetWidth;
             sectionToShow.classList.add('active');
         }
+        // Highlight the active nav link
         if (activeNavLink) {
             activeNavLink.classList.add('active-nav-link');
         }
     }
 
+    // --- Event Listeners for Navigation Links ---
     if (navLinkAbout) {
         navLinkAbout.addEventListener('click', (e) => {
             e.preventDefault();
@@ -619,59 +632,92 @@
         });
     }
 
-    // Dark mode toggle
+    // --- Dark Mode Toggle Logic ---
     const darkToggle = document.getElementById('darkToggle');
 
+    /**
+     * Applies or removes dark mode based on the boolean parameter.
+     * Stores the preference in localStorage.
+     * @param {boolean} isDark - True to enable dark mode, false to disable.
+     */
     function applyDarkMode(isDark) {
         if (isDark) {
             document.body.classList.add('dark');
+            // Ensure 'light' class is removed if it exists from previous state
+            document.body.classList.remove('light');
             if (darkToggle) darkToggle.checked = true;
-            localStorage.setItem('darkMode', 'enabled'); // Changed key to 'darkMode' as per your original code
+            localStorage.setItem('darkMode', 'enabled'); // Store preference
         } else {
             document.body.classList.remove('dark');
+            document.body.classList.add('light'); // Add 'light' class for explicit light mode styling if needed
             if (darkToggle) darkToggle.checked = false;
-            localStorage.removeItem('darkMode');
+            localStorage.removeItem('darkMode'); // Remove 'darkMode' item for 'disabled' or default
         }
     }
 
-    // Initialize toggle state from localStorage on page load
-    applyDarkMode(localStorage.getItem('darkMode') === 'enabled');
+    // Initialize dark mode state on page load based on localStorage or system preference
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const storedMode = localStorage.getItem('darkMode');
 
+    if (storedMode === 'enabled') {
+        applyDarkMode(true);
+    } else if (storedMode === 'disabled') { // If you explicitly save 'disabled'
+        applyDarkMode(false);
+    } else { // If no stored preference, use system preference
+        applyDarkMode(prefersDark);
+    }
+
+    // Listen for changes on the dark mode toggle switch
     if (darkToggle) {
         darkToggle.addEventListener('change', () => {
             applyDarkMode(darkToggle.checked);
         });
     }
 
-    // Function to handle user data saving to Firebase Realtime Database
+    /**
+     * Saves user data to Firebase Realtime Database.
+     * This function is called after successful email/password signup or Google Sign-In.
+     * It checks if the user (by UID) already exists to prevent overwriting.
+     * @param {string} uid - The Firebase Authentication User ID.
+     * @param {string} name - The user's display name.
+     * @param {string} email - The user's email address.
+     * @param {string|null} password - The user's password (only for email/password signup, null for Google).
+     */
     async function saveUserToDatabase(uid, name, email, password = null) {
-        const userRef = ref(database, 'users/' + uid);
-        const snapshot = await get(userRef);
+        const userRef = ref(database, 'users/' + uid); // Reference to the user's specific node
+        const snapshot = await get(userRef); // Check if user already exists
 
         if (!snapshot.exists()) {
             // User does not exist, create new entry
             await set(userRef, {
                 name: name,
                 email: email,
-                password: password, // Only for email/password signup. For Google, this will be null.
-                createdAt: Date.now() // Use client-side timestamp for simplicity, Firebase ServerValue.TIMESTAMP is better for server-side
+                // WARNING: Storing plain text passwords in Realtime Database is INSECURE.
+                // In a real application, rely solely on Firebase Authentication's built-in
+                // email/password methods which handle hashing securely, and do NOT store
+                // passwords in the Realtime Database. This is for demonstration purposes only.
+                password: password,
+                createdAt: Date.now() // Timestamp of creation
             });
             console.log("User data saved to Realtime Database.");
         } else {
-            console.log("User already exists in Realtime Database.");
+            console.log("User already exists in Realtime Database, skipping data save.");
         }
     }
 
-    // Signup form logic (Email/Password)
+    // --- Email/Password Signup Form Logic ---
     const signupForm = document.getElementById('signupForm');
     if (signupForm) {
         signupForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
             const nameInput = document.getElementById('signupName');
             const emailInput = document.getElementById('signupEmail');
             const passwordInput = document.getElementById('signupPassword');
 
-            if (!nameInput || !emailInput || !passwordInput) return;
+            if (!nameInput || !emailInput || !passwordInput) {
+                console.error("Signup form elements not found.");
+                return;
+            }
 
             const name = nameInput.value.trim();
             const email = emailInput.value.trim().toLowerCase();
@@ -688,25 +734,33 @@
 
             try {
                 // Check if user with this email already exists in our 'users' node
-                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+                // This is a manual check as we're not using Firebase Auth's email/password creation directly.
+                const usersRef = ref(database, 'users');
+                const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
+                const snapshot = await get(emailQuery);
+
                 if (snapshot.exists()) {
                     alert('User with this email already exists. Please log in or use a different email.');
                     return;
                 }
 
-                // For simplicity, we're directly storing password. In a real app, use Firebase Auth's createUserWithEmailAndPassword
-                // and then store additional profile data in Realtime DB linked by UID.
-                const newRef = push(ref(database, 'users'));
+                // If email does not exist, create a new user record in Realtime Database.
+                // Firebase Realtime Database does not have a built-in user creation for email/password like Auth.
+                // We generate a unique key using push() and then set the data.
+                const newRef = push(usersRef); // Generates a unique key
                 await set(newRef, {
                     name: name,
                     email: email,
-                    password: password, // WARNING: In a real application, hash passwords!
+                    // WARNING: Storing plain text passwords is INSECURE.
+                    // In a real application, use Firebase Authentication's createUserWithEmailAndPassword()
+                    // and then store additional profile data (name, etc.) linked by the user's UID.
+                    password: password,
                     createdAt: Date.now()
                 });
 
                 alert('Account created successfully! Please log in.');
-                this.reset();
-                showSection(loginSection, navLinkLogin);
+                this.reset(); // Clear the form
+                showSection(loginSection, navLinkLogin); // Redirect to login section
 
             } catch (error) {
                 console.error("Error creating user:", error);
@@ -715,15 +769,18 @@
         });
     }
 
-    // Login form logic with redirect (Email/Password)
+    // --- Email/Password Login Form Logic ---
     const loginForm = document.getElementById('loginForm');
     if (loginForm) {
         loginForm.addEventListener('submit', async function(e) {
-            e.preventDefault();
+            e.preventDefault(); // Prevent default form submission
             const emailInput = document.getElementById('loginEmail');
             const passwordInput = document.getElementById('loginPassword');
 
-            if (!emailInput || !passwordInput) return;
+            if (!emailInput || !passwordInput) {
+                console.error("Login form elements not found.");
+                return;
+            }
 
             const email = emailInput.value.trim().toLowerCase();
             const password = passwordInput.value;
@@ -734,8 +791,10 @@
             }
 
             try {
-                // Authenticate user against Firebase Realtime Database
-                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+                // Query Realtime Database to find user by email
+                const usersRef = ref(database, 'users');
+                const emailQuery = query(usersRef, orderByChild('email'), equalTo(email));
+                const snapshot = await get(emailQuery);
 
                 if (!snapshot.exists()) {
                     alert('Invalid email or password.');
@@ -743,18 +802,22 @@
                 }
 
                 let userFound = false;
+                let loggedInUser = null;
                 snapshot.forEach(childSnapshot => {
                     const user = childSnapshot.val();
-                    // IMPORTANT: In a real application, compare hashed passwords
+                    // IMPORTANT: In a real application, you would compare hashed passwords
+                    // using a secure method (e.g., Firebase Auth's signInWithEmailAndPassword).
                     if (user.password === password) {
-                        alert(`Welcome back, ${user.name}! Redirecting to the LifePath AI app...`);
-                        sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify({name: user.name, email: user.email, uid: childSnapshot.key}));
-                        window.location.href = 'homepage.html'; // Redirect to the main application
+                        loggedInUser = {name: user.name, email: user.email, uid: childSnapshot.key};
                         userFound = true;
                     }
                 });
 
-                if (!userFound) {
+                if (userFound) {
+                    alert(`Welcome back, ${loggedInUser.name}! Redirecting to the LifePath AI app...`);
+                    sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify(loggedInUser));
+                    window.location.href = 'homepage.html'; // Redirect to the main application
+                } else {
                     alert('Invalid email or password.');
                 }
             } catch (error) {
@@ -764,38 +827,41 @@
         });
     }
 
-    // Google Sign-In/Sign-Up Logic
+    // --- Google Sign-In/Sign-Up Logic ---
     // Get both Google sign-in buttons by their unique IDs
     const googleSignInBtnLogin = document.getElementById('googleSignInBtnLogin');
     const googleSignInBtnSignup = document.getElementById('googleSignInBtnSignup');
 
-    // Function to handle Google sign-in/sign-up
+    /**
+     * Handles Google Sign-In/Sign-Up using Firebase Authentication.
+     * Automatically creates a new user or logs in an existing one.
+     */
     async function handleGoogleAuth() {
         try {
             const result = await signInWithPopup(auth, googleProvider);
-            // The signed-in user info.
-            const user = result.user;
+            const user = result.user; // The signed-in user info from Firebase Auth
 
             // Save user data to Realtime Database. This function checks if user exists.
             await saveUserToDatabase(user.uid, user.displayName, user.email);
 
             alert(`Welcome, ${user.displayName}! Redirecting to the LifePath AI app...`);
+            // Store logged-in user info in sessionStorage for access on homepage.html
             sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify({name: user.displayName, email: user.email, uid: user.uid}));
             window.location.href = 'homepage.html'; // Redirect to the main application
 
         } catch (error) {
-            // Handle Errors here.
+            // Handle various Firebase Auth errors
             const errorCode = error.code;
             const errorMessage = error.message;
-            // The email of the user's account used.
-            const email = error.email;
-            // The AuthCredential type that was used.
-            const credential = GoogleAuthProvider.credentialFromError(error);
+            console.error("Google Sign-In Error:", errorCode, errorMessage, error);
 
-            console.error("Google Sign-In Error:", errorCode, errorMessage, email, credential);
             if (errorCode === 'auth/popup-closed-by-user') {
-                // User closed the popup, do nothing or show a subtle message
                 console.log("Google Sign-In popup closed by user.");
+            } else if (errorCode === 'auth/cancelled-popup-request') {
+                // Occurs if popup is opened too quickly after another
+                console.log("Google Sign-In popup request cancelled.");
+            } else if (errorCode === 'auth/network-request-failed') {
+                alert('Google Sign-In failed: Network error. Please check your internet connection.');
             } else {
                 alert('Google Sign-In failed: ' + errorMessage);
             }
@@ -810,10 +876,11 @@
         googleSignInBtnSignup.addEventListener('click', handleGoogleAuth);
     }
 
-    // Show about section on load by default
+    // --- Initial Load Actions ---
+    // Show the "About Us" section by default when the page loads
     showSection(aboutSection, navLinkAbout);
 
-    // Update footer year
+    // Update the footer year dynamically
     document.getElementById('footerYear').textContent = new Date().getFullYear();
 </script>
 </body>
