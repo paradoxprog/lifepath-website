@@ -22,6 +22,9 @@
             --shadow-dark: rgba(0, 0, 0, 0.5);
             --header-bg-light: #ffffff;
             --header-bg-dark: #2a2a2a;
+            /* Changed Google button colors to dark gray for better visibility of logo */
+            --google-button-bg: #4a4a4a; /* Dark gray */
+            --google-button-hover: #333333; /* Even darker gray on hover */
         }
 
         body {
@@ -51,6 +54,9 @@
             --shadow-dark: rgba(0, 0, 0, 0.9);
             --header-bg-light: #2c2c2c;
             --header-bg-dark: #1a1a1a;
+            /* Adjusted Google button colors for dark mode */
+            --google-button-bg: #666666; /* Slightly lighter gray for dark mode */
+            --google-button-hover: #555555;
         }
 
         /* Global Styles */
@@ -89,6 +95,9 @@
             margin: 0;
             font-weight: 700;
         }
+        body.dark header h1 {
+            color: var(--text-color-dark);
+        }
 
         nav {
             display: flex;
@@ -104,6 +113,9 @@
             transition: color 0.3s ease;
             position: relative;
         }
+        body.dark nav a {
+            color: var(--text-color-dark);
+        }
 
         nav a::after {
             content: '';
@@ -117,12 +129,12 @@
             transition: width 0.3s ease;
         }
 
-        nav a:hover::after {
+        nav a:hover::after, nav a.active-nav-link::after { /* Added .active-nav-link */
             width: 100%;
             left: 0;
             background: var(--primary-color);
         }
-        nav a:hover {
+        nav a:hover, nav a.active-nav-link { /* Added .active-nav-link */
             color: var(--primary-color);
         }
 
@@ -147,11 +159,13 @@
             padding: 20px;
             max-width: 700px; /* Limit text width for readability */
             margin: 0 auto; /* Center content */
+            display: none; /* Hidden by default */
         }
 
         section.active {
             opacity: 1;
             transform: translateY(0);
+            display: block; /* Show active section */
         }
 
         h2 {
@@ -168,6 +182,9 @@
             margin-bottom: 15px;
             font-weight: 600;
         }
+        body.dark h3, body.dark h4 {
+            color: var(--text-color-dark);
+        }
         h3 { font-size: 24px; }
         h4 { font-size: 20px; }
 
@@ -176,6 +193,9 @@
             line-height: 1.7;
             margin-bottom: 15px;
             color: var(--text-color-light);
+        }
+        body.dark p {
+            color: var(--text-color-dark);
         }
 
         ul {
@@ -193,6 +213,9 @@
             font-weight: 500;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
             border-left: 4px solid var(--primary-color);
+        }
+        body.dark ul li {
+            background-color: var(--card-bg-dark); /* Match card bg in dark */
         }
         ul li:hover {
             transform: translateY(-3px);
@@ -218,6 +241,14 @@
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
             width: 100%;
         }
+        body.dark input[type="text"],
+        body.dark input[type="email"],
+        body.dark input[type="password"] {
+            background-color: var(--bg-dark);
+            color: var(--text-color-dark);
+            border-color: var(--border-color-dark);
+        }
+
 
         input[type="text"]:focus,
         input[type="email"]:focus,
@@ -246,6 +277,63 @@
             transform: translateY(-2px);
         }
 
+        /* Google Sign-In Button Styling */
+        .button-google-auth {
+            background-color: var(--google-button-bg); /* Use new variable */
+            color: white;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 18px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            width: 100%;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px; /* Space between logo and text */
+        }
+
+        .button-google-auth:hover {
+            background-color: var(--google-button-hover); /* Use new variable */
+            transform: translateY(-2px);
+        }
+
+        .button-google-auth img {
+            height: 28px; /* Increased size of Google logo */
+            width: 28px;
+            background-color: white; /* White background for the logo itself */
+            border-radius: 50%; /* Make the logo background round */
+            padding: 2px; /* Small padding around the logo */
+            box-shadow: 0 1px 3px rgba(0,0,0,0.2); /* Subtle shadow for depth */
+        }
+
+        /* OR divider */
+        .or-divider {
+            text-align: center;
+            margin: 20px 0;
+            color: var(--text-color-light);
+            font-size: 14px;
+            position: relative;
+        }
+        .or-divider::before,
+        .or-divider::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40%;
+            height: 1px;
+            background-color: var(--border-color-light);
+        }
+        .or-divider::before { left: 0; }
+        .or-divider::after { right: 0; }
+        body.dark .or-divider { color: var(--text-color-dark); }
+        body.dark .or-divider::before,
+        body.dark .or-divider::after { background-color: var(--border-color-dark); }
+
+
         /* Dark Mode Toggle */
         .toggle-dark {
             position: relative;
@@ -260,6 +348,9 @@
             margin-left: 20px;
             border: none;
             box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+        body.dark .toggle-dark {
+            background-color: var(--border-color-dark);
         }
 
         .toggle-dark input {
@@ -281,15 +372,19 @@
             transition: left 0.3s ease, background-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        body.dark .toggle-thumb {
+            background-color: #f0f0f0; /* Light thumb on dark checked */
+        }
+
 
         .toggle-dark input:checked + .toggle-thumb {
             left: 28px; /* Adjusted position for larger thumb */
-            background-color: #f0f0f0;
             transform: rotate(360deg);
         }
         .toggle-dark input:checked {
-            background-color: var(--primary-color);
+            background-color: var(--primary-color); /* This line seems redundant if thumb changes color */
         }
+
 
         /* Footer */
         footer {
@@ -303,6 +398,12 @@
             box-shadow: 0 -2px 8px var(--shadow-light);
             border-top: 1px solid var(--border-color-light);
         }
+        body.dark footer {
+            background-color: var(--header-bg-dark);
+            color: var(--text-color-dark);
+            border-top-color: var(--border-color-dark);
+        }
+
 
         /* Responsive Design */
         @media (max-width: 768px) {
@@ -335,6 +436,10 @@
             ul li {
                 padding: 12px 18px;
             }
+            .or-divider::before,
+            .or-divider::after {
+                width: 35%; /* Adjust width for smaller screens */
+            }
         }
 
         @media (max-width: 480px) {
@@ -358,9 +463,13 @@
             p, ul li, input {
                 font-size: 15px;
             }
-            input[type="submit"] {
+            input[type="submit"], .button-google-auth {
                 padding: 12px;
                 font-size: 16px;
+            }
+            .or-divider::before,
+            .or-divider::after {
+                width: 30%; /* Further adjust width for very small screens */
             }
         }
     </style>
@@ -373,7 +482,7 @@
         <h1>LifePath AI</h1>
     </div>
     <nav>
-        <a href="#" id="link-about">About Us</a>
+        <a href="#" id="link-about" class="active-nav-link">About Us</a>
         <a href="#" id="link-login">Log In</a>
         <a href="#" id="link-signup">Sign Up</a>
         <label class="toggle-dark" for="darkToggle" aria-label="Toggle dark mode">
@@ -409,6 +518,11 @@
             <input type="password" id="loginPassword" placeholder="Password" required />
             <input type="submit" value="Log In" />
         </form>
+        <div class="or-divider">OR</div>
+        <button type="button" class="button-google-auth" id="googleSignInBtnLogin">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+            Sign in with Google
+        </button>
     </section>
 
     <section id="signup" style="display:none;">
@@ -416,47 +530,95 @@
         <form id="signupForm" autocomplete="off">
             <input type="text" id="signupName" placeholder="Full Name" required />
             <input type="email" id="signupEmail" placeholder="Email" required />
-            <input type="password" id="signupPassword" placeholder="Password" required />
+            <input type="password" id="signupPassword" placeholder="Password (min. 6 characters)" required />
             <input type="submit" value="Sign Up" />
         </form>
+        <div class="or-divider">OR</div>
+        <button type="button" class="button-google-auth" id="googleSignInBtnSignup">
+            <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google logo">
+            Sign up with Google
+        </button>
     </section>
 </main>
 
-<script>
+<footer>
+    &copy; <span id="footerYear"></span> All rights reserved to LifePath AI
+</footer>
+
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getDatabase, ref, push, set, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
+
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyDBk9RhQxpGoDHFk9v9mNPoPH5oDgPrHcE", // Replace with your actual Firebase API Key
+        authDomain: "bloodlink-8cb77.firebaseapp.com", // Replace with your actual Firebase Auth Domain
+        databaseURL: "https://bloodlink-8cb77-default-rtdb.firebaseio.com", // Replace with your actual Firebase Database URL
+        projectId: "bloodlink-8cb77", // Replace with your actual Firebase Project ID
+        storageBucket: "bloodlink-8cb77.firebasestorage.app", // Replace with your actual Firebase Storage Bucket
+        messagingSenderId: "586538652483", // Replace with your actual Firebase Messaging Sender ID
+        appId: "1:586538652483:web:a0c6ae24399167555695f6", // Replace with your actual Firebase App ID
+        measurementId: "G-9Z3F1P4DMR" // Replace with your actual Firebase Measurement ID
+    };
+
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
+
     // Section navigation
     const aboutSection = document.getElementById('about');
     const loginSection = document.getElementById('login');
     const signupSection = document.getElementById('signup');
 
-    const linkAbout = document.getElementById('link-about');
-    const linkLogin = document.getElementById('link-login');
-    const linkSignup = document.getElementById('link-signup');
+    const navLinkAbout = document.getElementById('link-about');
+    const navLinkLogin = document.getElementById('link-login');
+    const navLinkSignup = document.getElementById('link-signup');
+    const allNavLinks = [navLinkAbout, navLinkLogin, navLinkSignup];
 
-    function showSection(section) {
+
+    function showSection(sectionToShow, activeNavLink) {
         [aboutSection, loginSection, signupSection].forEach(s => {
-            s.style.display = 'none';
-            s.classList.remove('active');
+            if (s) {
+                s.style.display = 'none';
+                s.classList.remove('active');
+            }
         });
-        section.style.display = 'block';
-        // Trigger reflow for animation
-        void section.offsetWidth;
-        section.classList.add('active');
+        allNavLinks.forEach(link => {
+            if (link) link.classList.remove('active-nav-link');
+        });
+
+        if (sectionToShow) {
+            sectionToShow.style.display = 'block';
+            // Trigger reflow for animation
+            void sectionToShow.offsetWidth;
+            sectionToShow.classList.add('active');
+        }
+        if (activeNavLink) {
+            activeNavLink.classList.add('active-nav-link');
+        }
     }
 
-    linkAbout.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection(aboutSection);
-    });
-
-    linkLogin.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection(loginSection);
-    });
-
-    linkSignup.addEventListener('click', (e) => {
-        e.preventDefault();
-        showSection(signupSection);
-    });
+    if (navLinkAbout) {
+        navLinkAbout.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(aboutSection, navLinkAbout);
+        });
+    }
+    if (navLinkLogin) {
+        navLinkLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(loginSection, navLinkLogin);
+        });
+    }
+    if (navLinkSignup) {
+        navLinkSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(signupSection, navLinkSignup);
+        });
+    }
 
     // Dark mode toggle
     const darkToggle = document.getElementById('darkToggle');
@@ -464,11 +626,11 @@
     function applyDarkMode(isDark) {
         if (isDark) {
             document.body.classList.add('dark');
-            darkToggle.checked = true;
-            localStorage.setItem('darkMode', 'enabled');
+            if (darkToggle) darkToggle.checked = true;
+            localStorage.setItem('darkMode', 'enabled'); // Changed key to 'darkMode' as per your original code
         } else {
             document.body.classList.remove('dark');
-            darkToggle.checked = false;
+            if (darkToggle) darkToggle.checked = false;
             localStorage.removeItem('darkMode');
         }
     }
@@ -476,52 +638,184 @@
     // Initialize toggle state from localStorage on page load
     applyDarkMode(localStorage.getItem('darkMode') === 'enabled');
 
-    darkToggle.addEventListener('change', () => {
-        applyDarkMode(darkToggle.checked);
-    });
+    if (darkToggle) {
+        darkToggle.addEventListener('change', () => {
+            applyDarkMode(darkToggle.checked);
+        });
+    }
 
-    // Signup form logic
-    document.getElementById('signupForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const name = document.getElementById('signupName').value.trim();
-        const email = document.getElementById('signupEmail').value.trim().toLowerCase();
-        const password = document.getElementById('signupPassword').value;
+    // Function to handle user data saving to Firebase Realtime Database
+    async function saveUserToDatabase(uid, name, email, password = null) {
+        const userRef = ref(database, 'users/' + uid);
+        const snapshot = await get(userRef);
 
-        if(localStorage.getItem(email)) {
-            alert('User with this email already exists.');
-            return;
-        }
-
-        const user = { name, email, password };
-        localStorage.setItem(email, JSON.stringify(user));
-        alert('Account created successfully! Please log in.');
-        this.reset();
-        showSection(loginSection);
-    });
-
-    // Login form logic with redirect
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('loginEmail').value.trim().toLowerCase();
-        const password = document.getElementById('loginPassword').value;
-
-        const user = JSON.parse(localStorage.getItem(email));
-
-        if(user && user.password === password) {
-            alert(`Welcome back, ${user.name}!`);
-            // Redirect to main.html
-            window.location.href = 'homepage.html';
+        if (!snapshot.exists()) {
+            // User does not exist, create new entry
+            await set(userRef, {
+                name: name,
+                email: email,
+                password: password, // Only for email/password signup. For Google, this will be null.
+                createdAt: Date.now() // Use client-side timestamp for simplicity, Firebase ServerValue.TIMESTAMP is better for server-side
+            });
+            console.log("User data saved to Realtime Database.");
         } else {
-            alert('Invalid email or password.');
+            console.log("User already exists in Realtime Database.");
         }
-    });
+    }
 
-    // Show about section on load
-    showSection(aboutSection);
+    // Signup form logic (Email/Password)
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('signupName');
+            const emailInput = document.getElementById('signupEmail');
+            const passwordInput = document.getElementById('signupPassword');
+
+            if (!nameInput || !emailInput || !passwordInput) return;
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+
+            if (!name || !email || !password) {
+                alert('All fields are required.');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            try {
+                // Check if user with this email already exists in our 'users' node
+                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+                if (snapshot.exists()) {
+                    alert('User with this email already exists. Please log in or use a different email.');
+                    return;
+                }
+
+                // For simplicity, we're directly storing password. In a real app, use Firebase Auth's createUserWithEmailAndPassword
+                // and then store additional profile data in Realtime DB linked by UID.
+                const newRef = push(ref(database, 'users'));
+                await set(newRef, {
+                    name: name,
+                    email: email,
+                    password: password, // WARNING: In a real application, hash passwords!
+                    createdAt: Date.now()
+                });
+
+                alert('Account created successfully! Please log in.');
+                this.reset();
+                showSection(loginSection, navLinkLogin);
+
+            } catch (error) {
+                console.error("Error creating user:", error);
+                alert('Failed to create account: ' + error.message);
+            }
+        });
+    }
+
+    // Login form logic with redirect (Email/Password)
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+
+            if (!emailInput || !passwordInput) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                alert('Email and password are required.');
+                return;
+            }
+
+            try {
+                // Authenticate user against Firebase Realtime Database
+                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+
+                if (!snapshot.exists()) {
+                    alert('Invalid email or password.');
+                    return;
+                }
+
+                let userFound = false;
+                snapshot.forEach(childSnapshot => {
+                    const user = childSnapshot.val();
+                    // IMPORTANT: In a real application, compare hashed passwords
+                    if (user.password === password) {
+                        alert(`Welcome back, ${user.name}! Redirecting to the LifePath AI app...`);
+                        sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify({name: user.name, email: user.email, uid: childSnapshot.key}));
+                        window.location.href = 'homepage.html'; // Redirect to the main application
+                        userFound = true;
+                    }
+                });
+
+                if (!userFound) {
+                    alert('Invalid email or password.');
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert('An error occurred during login. Please try again.');
+            }
+        });
+    }
+
+    // Google Sign-In/Sign-Up Logic
+    // Get both Google sign-in buttons by their unique IDs
+    const googleSignInBtnLogin = document.getElementById('googleSignInBtnLogin');
+    const googleSignInBtnSignup = document.getElementById('googleSignInBtnSignup');
+
+    // Function to handle Google sign-in/sign-up
+    async function handleGoogleAuth() {
+        try {
+            const result = await signInWithPopup(auth, googleProvider);
+            // The signed-in user info.
+            const user = result.user;
+
+            // Save user data to Realtime Database. This function checks if user exists.
+            await saveUserToDatabase(user.uid, user.displayName, user.email);
+
+            alert(`Welcome, ${user.displayName}! Redirecting to the LifePath AI app...`);
+            sessionStorage.setItem('lifePathLoggedInUser', JSON.stringify({name: user.displayName, email: user.email, uid: user.uid}));
+            window.location.href = 'homepage.html'; // Redirect to the main application
+
+        } catch (error) {
+            // Handle Errors here.
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            // The email of the user's account used.
+            const email = error.email;
+            // The AuthCredential type that was used.
+            const credential = GoogleAuthProvider.credentialFromError(error);
+
+            console.error("Google Sign-In Error:", errorCode, errorMessage, email, credential);
+            if (errorCode === 'auth/popup-closed-by-user') {
+                // User closed the popup, do nothing or show a subtle message
+                console.log("Google Sign-In popup closed by user.");
+            } else {
+                alert('Google Sign-In failed: ' + errorMessage);
+            }
+        }
+    }
+
+    // Attach event listeners to both Google buttons
+    if (googleSignInBtnLogin) {
+        googleSignInBtnLogin.addEventListener('click', handleGoogleAuth);
+    }
+    if (googleSignInBtnSignup) {
+        googleSignInBtnSignup.addEventListener('click', handleGoogleAuth);
+    }
+
+    // Show about section on load by default
+    showSection(aboutSection, navLinkAbout);
+
+    // Update footer year
+    document.getElementById('footerYear').textContent = new Date().getFullYear();
 </script>
-<footer>
-    &copy; 2025 All rights reserved to LifePath AI
-</footer>
-
 </body>
 </html>
