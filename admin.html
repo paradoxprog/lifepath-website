@@ -351,189 +351,267 @@
 </footer>
 
 <script type="module">
-    // Import Firebase modular SDK functions
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    // --- Firestore Imports ---
-    import { getFirestore, collection, doc, deleteDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
+    import { getDatabase, ref, push, set, get, query, orderByChild, equalTo } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+    import { getAuth, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
-    // --- Firebase Configuration ---
-    // IMPORTANT: Replace these with your actual Firebase project's credentials for LifePath AI
-    const firebaseConfig = {
-      apiKey: "AIzaSyDdUyQ9HF3y2fDIyrHaPy8188rUSyIgt9s",
-      authDomain: "lifepathai-4f0d4.firebaseapp.com",
-      projectId: "lifepathai-4f0d4",
-      storageBucket: "lifepathai-4f0d4.firebasestorage.app",
-      messagingSenderId: "630090635019",
-      appId: "1:630090635019:web:524958abee985e867df40e",
-      measurementId: "G-T9Y1KS2LEN"
-    };
+    // --- Firebase Configuration ---
+    const firebaseConfig = {
+        apiKey: "AIzaSyCWjeZwrqCwe5NWN-Pdm5GPkp1_qJrCuSU",
+        authDomain: "bloodlink-278a4.firebaseapp.com",
+        databaseURL: "https://bloodlink-278a4-default-rtdb.firebaseio.com", // Updated this line for Realtime Database URL
+        projectId: "bloodlink-278a4",
+        storageBucket: "bloodlink-278a4.firebasestorage.app",
+        messagingSenderId: "88657445618",
+        appId: "1:88657445618:web:90999baf48e9718ff5466b",
+        measurementId: "G-XQGB69C3TP"
+    };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const firestore = getFirestore(app); // Get Firestore instance
+    // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+    const auth = getAuth(app);
+    const googleProvider = new GoogleAuthProvider();
 
-    // --- Global variables ---
-    let allAdminUsersData = [];
-    let usersLoaded = false;
+    // Section navigation
+    const aboutSection = document.getElementById('about');
+    const loginSection = document.getElementById('login');
+    const signupSection = document.getElementById('signup');
 
-    // --- DOM Elements ---
-    const adminUsersListContainer = document.getElementById('adminUsersListContainer');
-    const messageContainer = document.getElementById('messageContainer');
-    const clearAllUsersBtn = document.getElementById('clearAllUsersBtn');
-    const loadingIndicator = document.getElementById('loadingIndicator');
-
-    // --- UI & Dark Mode ---
-    const darkToggle = document.getElementById('darkToggle');
-    function applyDarkMode(isDark) {
-        if (isDark) {
-            document.body.classList.add('dark');
-            if(darkToggle) darkToggle.checked = true;
-            localStorage.setItem('lifePathDarkMode', 'enabled'); // Unique key for LifePath AI
-        } else {
-            document.body.classList.remove('dark');
-            if(darkToggle) darkToggle.checked = false;
-            localStorage.removeItem('lifePathDarkMode');
-        }
-    }
-    if(darkToggle) {
-        darkToggle.addEventListener('change', () => { applyDarkMode(darkToggle.checked); });
-    }
-    applyDarkMode(localStorage.getItem('lifePathDarkMode') === 'enabled');
-    document.getElementById('currentYear').textContent = new Date().getFullYear();
-
-    function displayMessage(message, type = 'success') {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message ${type}`;
-        msgDiv.textContent = message;
-        messageContainer.innerHTML = '';
-        messageContainer.appendChild(msgDiv);
-        setTimeout(() => { if (messageContainer.contains(msgDiv)) { messageContainer.removeChild(msgDiv); }}, 6000);
-    }
-
-    function updateLoadingIndicator() {
-        if (usersLoaded) {
-            if (loadingIndicator) loadingIndicator.style.display = 'none';
-        } else {
-            if (loadingIndicator) loadingIndicator.style.display = 'block';
-        }
-    }
-
-    // --- Firebase Admin User Management (Firestore) ---
-    async function deleteUserFromFirebase(userId) {
-        if (confirm('Delete this user? This will permanently remove their record from Firestore. IMPORTANT: You MUST also delete this user from Firebase Authentication in the Firebase Console or via a secure Cloud Function.')) {
-            try {
-                const userDocRef = doc(firestore, 'users', userId);
-                await deleteDoc(userDocRef);
-                displayMessage('User deleted successfully from Firestore!', 'success');
-                console.warn("Manual action required: User was only deleted from Firestore. Also delete from Firebase Authentication if needed.");
-            } catch (error) {
-                console.error("Error deleting user from Firestore:", error);
-                displayMessage('Failed to delete user from Firestore. ' + error.message, 'error');
-            }
-        }
-    }
-
-    async function clearAllUsersFromFirebase() {
-        if (confirm('WARNING: Are you absolutely sure you want to DELETE ALL USER CREDENTIALS from Firestore? This is irreversible! This operation should ideally be handled by a secure backend function (e.g., Firebase Cloud Function) in a production app. IMPORTANT: You MUST also delete these users from Firebase Authentication in the Firebase Console or via a secure Cloud Function.')) {
-            try {
-                const usersCollectionRef = collection(firestore, 'users');
-                const querySnapshot = await getDocs(usersCollectionRef); // Get all documents
-                const deletePromises = [];
-
-                if (querySnapshot.empty) {
-                    displayMessage('No users to clear.', 'success');
-                    return;
-                }
-
-                querySnapshot.forEach((doc) => {
-                    deletePromises.push(deleteDoc(doc.ref)); // Add each delete operation to an array of promises
-                });
-
-                await Promise.all(deletePromises); // Wait for all delete operations to complete
-                displayMessage('All user credentials have been cleared from Firestore!', 'success');
-                console.warn("Manual action required: Users were only deleted from Firestore. Also delete from Firebase Authentication in the Firebase Console or via a secure Cloud Function.");
-
-            } catch (error) {
-                console.error("Error clearing users from Firestore:", error);
-                displayMessage('Failed to clear users from Firestore. ' + error.message, 'error');
-            }
-        }
-    }
-
-    function loadAdminUsersFromFirebase() {
-        usersLoaded = false;
-        updateLoadingIndicator();
-        const usersCollectionRef = collection(firestore, 'users');
-
-        // Use onSnapshot for real-time updates from Firestore
-        const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
-            allAdminUsersData = [];
-            if (!snapshot.empty) {
-                snapshot.forEach(doc => {
-                    const user = doc.data();
-                    user.id = doc.id; // The document ID is the UID from Firebase Auth
-                    allAdminUsersData.push(user);
-                });
-            }
-            renderAdminUsers();
-            usersLoaded = true;
-            updateLoadingIndicator();
-        }, (error) => {
-            console.error("Error loading users from Firestore:", error);
-            displayMessage("Error fetching user credentials: " + error.message, "error");
-            usersLoaded = true;
-            updateLoadingIndicator();
-            renderAdminUsers();
-        });
-
-        // You might want to store 'unsubscribe' if you need to stop listening later, e.g., on logout.
-        // For an admin panel that's always listening, it might not be strictly necessary,
-        // but good practice for resource management.
-        // return unsubscribe;
-    }
-
-    function renderAdminUsers() {
-        if (!adminUsersListContainer) return;
-        adminUsersListContainer.innerHTML = '';
-
-        if (allAdminUsersData.length === 0) {
-            adminUsersListContainer.innerHTML = `<p style="text-align:center;">No user credentials found.</p>`;
-            return;
-        }
-        // Sort users by creation timestamp (assuming 'createdAt' exists and is a number)
-        allAdminUsersData.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0)); // Newest first
-
-        allAdminUsersData.forEach(user => {
-            const card = document.createElement('div');
-            card.className = 'admin-card admin-user-card'; // Use specific class for styling
-            let regDate = user.createdAt ? new Date(user.createdAt).toLocaleString() : 'N/A';
-
-            // Displaying 'password' for demo purposes. REMINDER: This should NOT be stored or displayed in production.
-            card.innerHTML = `
-                <h4>User: ${user.name || 'N/A'}</h4>
-                <p><strong>UID:</strong> ${user.id}</p>
-                <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
-                <p class="timestamp">Registered: ${regDate}</p>
-                <div class="admin-actions">
-                    <button class="btn-danger" data-user-id="${user.id}">Delete User</button>
-                </div>`;
-            adminUsersListContainer.appendChild(card);
-        });
-
-        adminUsersListContainer.querySelectorAll('.btn-danger').forEach(button => {
-            button.addEventListener('click', (event) => {
-                deleteUserFromFirebase(event.target.dataset.userId);
-            });
-        });
-    }
+    const navLinkAbout = document.getElementById('link-about');
+    const navLinkLogin = document.getElementById('link-login');
+    const navLinkSignup = document.getElementById('link-signup');
+    const allNavLinks = [navLinkAbout, navLinkLogin, navLinkSignup];
 
 
-    // --- Initial Load & Event Listeners ---
-    document.addEventListener('DOMContentLoaded', () => {
-        loadAdminUsersFromFirebase(); // Load user data
+    function showSection(sectionToShow, activeNavLink) {
+        [aboutSection, loginSection, signupSection].forEach(s => {
+            if (s) {
+                s.style.display = 'none';
+                s.classList.remove('active');
+            }
+        });
+        allNavLinks.forEach(link => {
+            if (link) link.classList.remove('active-nav-link');
+        });
 
-        if (clearAllUsersBtn) clearAllUsersBtn.addEventListener('click', clearAllUsersFromFirebase);
-    });
+        if (sectionToShow) {
+            sectionToShow.style.display = 'block';
+            // Trigger reflow for animation
+            void sectionToShow.offsetWidth;
+            sectionToShow.classList.add('active');
+        }
+        if (activeNavLink) {
+            activeNavLink.classList.add('active-nav-link');
+        }
+    }
+
+    if (navLinkAbout) {
+        navLinkAbout.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(aboutSection, navLinkAbout);
+        });
+    }
+    if (navLinkLogin) {
+        navLinkLogin.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(loginSection, navLinkLogin);
+        });
+    }
+    if (navLinkSignup) {
+        navLinkSignup.addEventListener('click', (e) => {
+            e.preventDefault();
+            showSection(signupSection, navLinkSignup);
+        });
+    }
+
+    // Dark mode toggle
+    const darkToggle = document.getElementById('darkToggle');
+
+    function applyDarkMode(isDark) {
+        if (isDark) {
+            document.body.classList.add('dark');
+            if (darkToggle) darkToggle.checked = true;
+            localStorage.setItem('bloodLinkDarkMode', 'enabled'); // Unique key for this app
+        } else {
+            document.body.classList.remove('dark');
+            if (darkToggle) darkToggle.checked = false;
+            localStorage.removeItem('bloodLinkDarkMode');
+        }
+    }
+
+    // Initialize toggle state from localStorage on page load
+    applyDarkMode(localStorage.getItem('bloodLinkDarkMode') === 'enabled');
+
+    if (darkToggle) {
+        darkToggle.addEventListener('change', () => {
+            applyDarkMode(darkToggle.checked);
+        });
+    }
+
+    // Function to handle user data saving to Firebase Realtime Database
+    async function saveUserToDatabase(uid, name, email, password = null) {
+        const userRef = ref(database, 'users/' + uid);
+        const snapshot = await get(userRef);
+
+        if (!snapshot.exists()) {
+            // User does not exist, create new entry
+            await set(userRef, {
+                name: name,
+                email: email,
+                password: password, // Only for email/password signup. For Google, this will be null.
+                createdAt: Date.now() // Use client-side timestamp for simplicity, Firebase ServerValue.TIMESTAMP is better for server-side
+            });
+            console.log("User data saved to Realtime Database.");
+        } else {
+            console.log("User already exists in Realtime Database.");
+        }
+    }
+
+    // Signup form logic (Email/Password)
+    const signupForm = document.getElementById('signupForm');
+    if (signupForm) {
+        signupForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('signupName');
+            const emailInput = document.getElementById('signupEmail');
+            const passwordInput = document.getElementById('signupPassword');
+
+            if (!nameInput || !emailInput || !passwordInput) return;
+
+            const name = nameInput.value.trim();
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+
+            if (!name || !email || !password) {
+                alert('All fields are required.');
+                return;
+            }
+            if (password.length < 6) {
+                alert('Password must be at least 6 characters long.');
+                return;
+            }
+
+            try {
+                // Check if user with this email already exists in our 'users' node
+                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+                if (snapshot.exists()) {
+                    alert('User with this email already exists. Please log in or use a different email.');
+                    return;
+                }
+
+                // For simplicity, we're directly storing password. In a real app, use Firebase Auth's createUserWithEmailAndPassword
+                // and then store additional profile data in Realtime DB linked by UID.
+                const newRef = push(ref(database, 'users'));
+                await set(newRef, {
+                    name: name,
+                    email: email,
+                    password: password, // WARNING: In a real application, hash passwords!
+                    createdAt: Date.now()
+                });
+
+                alert('Account created successfully! Please log in.');
+                this.reset();
+                showSection(loginSection, navLinkLogin);
+
+            } catch (error) {
+                console.error("Error creating user:", error);
+                alert('Failed to create account: ' + error.message);
+            }
+        });
+    }
+
+    // Login form logic with redirect (Email/Password)
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+
+            if (!emailInput || !passwordInput) return;
+
+            const email = emailInput.value.trim().toLowerCase();
+            const password = passwordInput.value;
+
+            if (!email || !password) {
+                alert('Email and password are required.');
+                return;
+            }
+
+            try {
+                // Authenticate user against Firebase Realtime Database
+                const snapshot = await get(query(ref(database, 'users'), orderByChild('email'), equalTo(email)));
+
+                if (!snapshot.exists()) {
+                    alert('Invalid email or password.');
+                    return;
+                }
+
+                let userFound = false;
+                snapshot.forEach(childSnapshot => {
+                    const user = childSnapshot.val();
+                    // IMPORTANT: In a real application, compare hashed passwords
+                    if (user.password === password) {
+                        alert(`Welcome back, ${user.name}! Redirecting to the Blood Link app...`);
+                        sessionStorage.setItem('bloodLinkLoggedInUser', JSON.stringify({name: user.name, email: user.email, uid: childSnapshot.key}));
+                        window.location.href = 'homepage.html'; // Redirect to the main application
+                        userFound = true;
+                    }
+                });
+
+                if (!userFound) {
+                    alert('Invalid email or password.');
+                }
+            } catch (error) {
+                console.error("Error during login:", error);
+                alert('An error occurred during login. Please try again.');
+            }
+        });
+    }
+
+    // Google Sign-In/Sign-Up Logic
+    // Select all buttons with the class 'button-google-auth'
+    const googleAuthButtons = document.querySelectorAll('.button-google-auth');
+
+    googleAuthButtons.forEach(button => {
+        button.addEventListener('click', async () => {
+            try {
+                const result = await signInWithPopup(auth, googleProvider);
+                // The signed-in user info.
+                const user = result.user;
+
+                // Save user data to Realtime Database. This function checks if user exists.
+                await saveUserToDatabase(user.uid, user.displayName, user.email);
+
+                alert(`Welcome, ${user.displayName}! Redirecting to the Blood Link app...`);
+                sessionStorage.setItem('bloodLinkLoggedInUser', JSON.stringify({name: user.displayName, email: user.email, uid: user.uid}));
+                window.location.href = 'homepage.html'; // Redirect to the main application
+
+            } catch (error) {
+                // Handle Errors here.
+                const errorCode = error.code;
+                const errorMessage = error.message;
+                // The email of the user's account used.
+                const email = error.email;
+                // The AuthCredential type that was used.
+                const credential = GoogleAuthProvider.credentialFromError(error);
+
+                console.error("Google Sign-In Error:", errorCode, errorMessage, email, credential);
+                if (errorCode === 'auth/popup-closed-by-user') {
+                    // User closed the popup, do nothing or show a subtle message
+                    console.log("Google Sign-In popup closed by user.");
+                } else {
+                    alert('Google Sign-In failed: ' + errorMessage);
+                }
+            }
+        });
+    });
+
+
+    // Show about section on load by default
+    showSection(aboutSection, navLinkAbout);
+</script>
 </script>
 </body>
 </html>
