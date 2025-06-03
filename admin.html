@@ -351,25 +351,26 @@
 </footer>
 
 <script type="module">
+    // Import Firebase modular SDK functions
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    import { getDatabase, ref, remove, onValue } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
+    // --- Firestore Imports ---
+    import { getFirestore, collection, doc, deleteDoc, getDocs, onSnapshot } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
 
     // --- Firebase Configuration ---
     // IMPORTANT: Replace these with your actual Firebase project's credentials for LifePath AI
     const firebaseConfig = {
-      apiKey: "AIzaSyCmHkG2U9rT_Lfou4KVbl6iZUv8_A7l1aU",
-      authDomain: "lifepath-ai-709dc.firebaseapp.com",
-      databaseURL: "https://lifepath-ai-709dc-default-rtdb.firebaseio.com",
-      projectId: "lifepath-ai-709dc",
-      storageBucket: "lifepath-ai-709dc.firebasestorage.app",
-      messagingSenderId: "860840836658",
-      appId: "1:860840836658:web:3f2e578f633517b6b6062b",
-      measurementId: "G-S69JQVKG46"
+      apiKey: "AIzaSyDdUyQ9HF3y2fDIyrHaPy8188rUSyIgt9s",
+      authDomain: "lifepathai-4f0d4.firebaseapp.com",
+      projectId: "lifepathai-4f0d4",
+      storageBucket: "lifepathai-4f0d4.firebasestorage.app",
+      messagingSenderId: "630090635019",
+      appId: "1:630090635019:web:524958abee985e867df40e",
+      measurementId: "G-T9Y1KS2LEN"
     };
 
     // Initialize Firebase
     const app = initializeApp(firebaseConfig);
-    const database = getDatabase(app);
+    const firestore = getFirestore(app); // Get Firestore instance
 
     // --- Global variables ---
     let allAdminUsersData = [];
@@ -417,35 +418,60 @@
         }
     }
 
-    // --- Firebase Admin User Management ---
-    function deleteUserFromFirebase(userId) {
-        // IMPORTANT: In a real app, you'd also delete the user from Firebase Authentication!
-        if (confirm('Delete this user? This will permanently remove their record from the database.')) {
-            remove(ref(database, 'users/' + userId))
-                .then(() => displayMessage('User deleted successfully!', 'success'))
-                .catch(error => { console.error("Error deleting user:", error); displayMessage('Failed to delete user. ' + error.message, 'error'); });
+    // --- Firebase Admin User Management (Firestore) ---
+    async function deleteUserFromFirebase(userId) {
+        if (confirm('Delete this user? This will permanently remove their record from Firestore. IMPORTANT: You MUST also delete this user from Firebase Authentication in the Firebase Console or via a secure Cloud Function.')) {
+            try {
+                const userDocRef = doc(firestore, 'users', userId);
+                await deleteDoc(userDocRef);
+                displayMessage('User deleted successfully from Firestore!', 'success');
+                console.warn("Manual action required: User was only deleted from Firestore. Also delete from Firebase Authentication if needed.");
+            } catch (error) {
+                console.error("Error deleting user from Firestore:", error);
+                displayMessage('Failed to delete user from Firestore. ' + error.message, 'error');
+            }
         }
     }
 
-    function clearAllUsersFromFirebase() {
-        // IMPORTANT: In a real app, you'd also need to delete users from Firebase Authentication!
-        if (confirm('WARNING: Are you absolutely sure you want to DELETE ALL USER CREDENTIALS? This is irreversible!')) {
-            remove(ref(database, 'users'))
-                .then(() => displayMessage('All user credentials have been cleared!', 'success'))
-                .catch(error => { console.error("Error clearing users:", error); displayMessage('Failed to clear users. ' + error.message, 'error'); });
+    async function clearAllUsersFromFirebase() {
+        if (confirm('WARNING: Are you absolutely sure you want to DELETE ALL USER CREDENTIALS from Firestore? This is irreversible! This operation should ideally be handled by a secure backend function (e.g., Firebase Cloud Function) in a production app. IMPORTANT: You MUST also delete these users from Firebase Authentication in the Firebase Console or via a secure Cloud Function.')) {
+            try {
+                const usersCollectionRef = collection(firestore, 'users');
+                const querySnapshot = await getDocs(usersCollectionRef); // Get all documents
+                const deletePromises = [];
+
+                if (querySnapshot.empty) {
+                    displayMessage('No users to clear.', 'success');
+                    return;
+                }
+
+                querySnapshot.forEach((doc) => {
+                    deletePromises.push(deleteDoc(doc.ref)); // Add each delete operation to an array of promises
+                });
+
+                await Promise.all(deletePromises); // Wait for all delete operations to complete
+                displayMessage('All user credentials have been cleared from Firestore!', 'success');
+                console.warn("Manual action required: Users were only deleted from Firestore. Also delete from Firebase Authentication in the Firebase Console or via a secure Cloud Function.");
+
+            } catch (error) {
+                console.error("Error clearing users from Firestore:", error);
+                displayMessage('Failed to clear users from Firestore. ' + error.message, 'error');
+            }
         }
     }
 
     function loadAdminUsersFromFirebase() {
         usersLoaded = false;
         updateLoadingIndicator();
-        const usersRef = ref(database, 'users');
-        onValue(usersRef, (snapshot) => {
+        const usersCollectionRef = collection(firestore, 'users');
+
+        // Use onSnapshot for real-time updates from Firestore
+        const unsubscribe = onSnapshot(usersCollectionRef, (snapshot) => {
             allAdminUsersData = [];
-            if (snapshot.exists()) {
-                snapshot.forEach(childSnapshot => {
-                    const user = childSnapshot.val();
-                    user.id = childSnapshot.key; // The key is the UID for Google users, or Firebase push key for email/password
+            if (!snapshot.empty) {
+                snapshot.forEach(doc => {
+                    const user = doc.data();
+                    user.id = doc.id; // The document ID is the UID from Firebase Auth
                     allAdminUsersData.push(user);
                 });
             }
@@ -453,12 +479,17 @@
             usersLoaded = true;
             updateLoadingIndicator();
         }, (error) => {
-            console.error("Error loading users:", error);
+            console.error("Error loading users from Firestore:", error);
             displayMessage("Error fetching user credentials: " + error.message, "error");
             usersLoaded = true;
             updateLoadingIndicator();
             renderAdminUsers();
         });
+
+        // You might want to store 'unsubscribe' if you need to stop listening later, e.g., on logout.
+        // For an admin panel that's always listening, it might not be strictly necessary,
+        // but good practice for resource management.
+        // return unsubscribe;
     }
 
     function renderAdminUsers() {
@@ -477,11 +508,12 @@
             card.className = 'admin-card admin-user-card'; // Use specific class for styling
             let regDate = user.createdAt ? new Date(user.createdAt).toLocaleString() : 'N/A';
 
+            // Displaying 'password' for demo purposes. REMINDER: This should NOT be stored or displayed in production.
             card.innerHTML = `
                 <h4>User: ${user.name || 'N/A'}</h4>
-                <p><strong>ID:</strong> ${user.id}</p>
+                <p><strong>UID:</strong> ${user.id}</p>
                 <p><strong>Email:</strong> ${user.email || 'N/A'}</p>
-                <p><strong>Password (for demo):</strong> ${user.password || 'N/A'}</p> <p class="timestamp">Registered: ${regDate}</p>
+                <p class="timestamp">Registered: ${regDate}</p>
                 <div class="admin-actions">
                     <button class="btn-danger" data-user-id="${user.id}">Delete User</button>
                 </div>`;
