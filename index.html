@@ -548,8 +548,8 @@
 <script type="module">
     // Import Firebase modular SDK functions
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-app.js";
-    // --- Firestore Imports ---
-    import { getFirestore, collection, doc, setDoc, getDoc, query, where } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore.js";
+    // --- Realtime Database Imports ---
+    import { getDatabase, ref, set, get, child } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-database.js";
     // --- Auth Imports ---
     import { getAuth, GoogleAuthProvider, signInWithPopup, createUserWithEmailAndPassword, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/9.6.1/firebase-auth.js";
 
@@ -559,6 +559,7 @@
     const firebaseConfig = {
       apiKey: "AIzaSyDdUyQ9HF3y2fDIyrHaPy8188rUSyIgt9s",
       authDomain: "lifepathai-4f0d4.firebaseapp.com",
+      databaseURL: "https://lifepathai-4f0d4-default-rtdb.firebaseio.com", // Added for Realtime Database
       projectId: "lifepathai-4f0d4",
       storageBucket: "lifepathai-4f0d4.firebasestorage.app",
       messagingSenderId: "630090635019",
@@ -569,7 +570,7 @@
 
     // Initialize Firebase services
     const app = initializeApp(firebaseConfig);
-    const firestore = getFirestore(app); // Get Firestore instance
+    const database = getDatabase(app); // Get Realtime Database instance
     const auth = getAuth(app);         // Get Auth instance
     const googleProvider = new GoogleAuthProvider(); // Google Auth provider
 
@@ -677,27 +678,27 @@
     }
 
     /**
-     * Saves user profile data to Firestore.
+     * Saves user profile data to Realtime Database.
      * This function is called after successful Firebase Authentication (email/password or Google Sign-In).
      * It checks if the user's document (by UID) already exists to prevent overwriting during subsequent logins.
      * @param {string} uid - The Firebase Authentication User ID.
      * @param {string} name - The user's display name.
      * @param {string} email - The user's email address.
      */
-    async function saveUserToFirestore(uid, name, email) {
-        const userDocRef = doc(firestore, 'users', uid); // Reference to the user's specific document
-        const snapshot = await getDoc(userDocRef); // Check if user document already exists
+    async function saveUserToRealtimeDatabase(uid, name, email) {
+        const userRef = ref(database, 'users/' + uid); // Reference to the user's specific document in RTDB
+        const snapshot = await get(userRef); // Check if user document already exists
 
         if (!snapshot.exists()) {
             // User document does not exist, create new entry
-            await setDoc(userDocRef, {
+            await set(userRef, { // Use set(ref, data) for Realtime Database
                 name: name,
                 email: email,
                 createdAt: Date.now() // Timestamp of creation
             });
-            console.log("User data saved to Firestore.");
+            console.log("User data saved to Realtime Database.");
         } else {
-            console.log("User already exists in Firestore, skipping data save.");
+            console.log("User already exists in Realtime Database, skipping data save.");
         }
     }
 
@@ -733,8 +734,8 @@
                 const userCredential = await createUserWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Save additional user profile data (name, email) to Firestore
-                await saveUserToFirestore(user.uid, name, user.email);
+                // Save additional user profile data (name, email) to Realtime Database
+                await saveUserToRealtimeDatabase(user.uid, name, user.email);
 
                 alert('Account created successfully! Please log in.');
                 this.reset(); // Clear the form
@@ -781,10 +782,10 @@
                 const userCredential = await signInWithEmailAndPassword(auth, email, password);
                 const user = userCredential.user;
 
-                // Fetch user's name from Firestore for the welcome message
-                const userDocRef = doc(firestore, 'users', user.uid);
-                const userDocSnap = await getDoc(userDocRef);
-                const userName = userDocSnap.exists() ? userDocSnap.data().name : user.email; // Fallback to email
+                // Fetch user's name from Realtime Database for the welcome message
+                const userRef = ref(database, 'users/' + user.uid);
+                const userSnapshot = await get(userRef);
+                const userName = userSnapshot.exists() ? userSnapshot.val().name : user.email; // Use .val() for RTDB data
 
                 alert(`Welcome back, ${userName}! Redirecting to the LifePath AI app...`);
                 // Store logged-in user info in sessionStorage for access on homepage.html
@@ -818,8 +819,8 @@
             const result = await signInWithPopup(auth, googleProvider);
             const user = result.user; // The signed-in user info from Firebase Auth
 
-            // Save user data to Firestore. This function checks if user exists.
-            await saveUserToFirestore(user.uid, user.displayName, user.email);
+            // Save user data to Realtime Database. This function checks if user exists.
+            await saveUserToRealtimeDatabase(user.uid, user.displayName, user.email);
 
             alert(`Welcome, ${user.displayName}! Redirecting to the LifePath AI app...`);
             // Store logged-in user info in sessionStorage for access on homepage.html
