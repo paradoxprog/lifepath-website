@@ -152,7 +152,7 @@
       0% {opacity: 0;} 10% {opacity: 0.95;}
       90% {opacity: 0.95;} 100% {opacity: 0;}
     }
-     @media (max-width: 600px) {
+      @media (max-width: 600px) {
       h2, h4 { font-size: 18px; }
       .interest-category h3 { font-size: 17px; }
       #interestsContainer label, label[for="otherInterests"] { font-size: 14px;}
@@ -320,7 +320,7 @@
     });
 
     if (suggestedCareersFromInterests.size === 0) {
-        dynamicSuggestionsOutput.textContent = 'No specific career suggestions for these interests yet. Explore more or add details in "Other Interests"!\n\n(Final suggestions in Step 3 will consider your stream and study level.)';
+        dynamicSuggestionsOutput.textContent = 'No specific career suggestions for these interests yet. Explore more or add details in "Other Interests"!';
         return;
     }
 
@@ -333,20 +333,15 @@
         return a.localeCompare(b); 
     });
     
-    const topN = 5; 
     let outputText = "";
     if (sortedSuggestions.length > 0) {
         outputText = "Consider these based on your current selections:\n";
-        sortedSuggestions.slice(0, topN).forEach(career => {
+        sortedSuggestions.forEach(career => { // Iterate through all sorted suggestions
             outputText += `- ${career}\n`;
         });
-        if (sortedSuggestions.length > topN) {
-            outputText += `\n...and ${sortedSuggestions.length - topN} more.`;
-        }
     } else {
         outputText = "No specific career suggestions for these interests yet. Explore more!";
     }
-    outputText += "\n\n(Final suggestions in Step 3 will also consider your stream and study level.)";
     dynamicSuggestionsOutput.textContent = outputText;
   }
 
