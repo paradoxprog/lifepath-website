@@ -294,7 +294,7 @@
 
   const careerChallenges = { // From comprehensive main.html
     'Doctor': ["Handle a patient with conflicting symptoms.", "Decide priority cases in ER.", "Explain complex diagnosis in simple terms."],
-    'Engineer': ["Design a solution for a real-world problem.", "Debug complex code under a deadline.", "Work with a multidisciplinary team."],
+    'Engineer': ["Design a solution for a real-world problem.", "Debug complex code under a deadline.", "Work with a multidis-ciplinary team."],
     'Data Scientist': ["Clean messy datasets effectively.", "Explain ML model outcomes to a non-tech client.", "Deploy a data model into production."],
     'Psychologist': ["Help a patient through severe anxiety.", "Conduct group therapy.", "Handle ethical dilemmas in patient care."],
     'Accountant': ["Close annual financial statements.", "Manage tax planning for a client.", "Interpret new tax amendments quickly."],
@@ -355,7 +355,7 @@
     'Sound Engineer': ["Achieve the perfect live sound mix for a band in a challenging venue.", "Design and implement the sound effects for a feature film or video game.", "Troubleshoot complex audio system failures under pressure."],
     'DJ': ["Curate and mix a seamless set that keeps a diverse crowd energized for hours.", "Adapt your music selection in real-time based on the audience's reaction.", "Build a unique brand and following as a DJ in a competitive market."],
     'Actor': ["Deliver a compelling and emotionally resonant performance for a challenging role.", "Master a difficult accent or physical skill required for a part.", "Navigate the audition process and handle rejection with resilience."],
-    'Dancer': ["Learn and perfect complex choreography for a lead role in a production.", "Convey a story or emotion purely through movement and expression.", "Maintain peak physical condition and prevent injuries throughout a demanding performance schedule."],
+    'Dancer': ["Learn and perfect complex choreography for a lead role in a a production.", "Convey a story or emotion purely through movement and expression.", "Maintain peak physical condition and prevent injuries throughout a demanding performance schedule."],
     'Performer': ["Create and deliver a captivating solo show that engages the audience from start to finish.", "Improvise effectively when unexpected issues arise during a live performance.", "Adapt your performance style for different venues and audiences."],
     'Choreographer': ["Create an original and innovative dance piece for a company of dancers.", "Effectively teach and communicate your choreographic vision to performers.", "Secure funding and manage the production aspects of a new dance work."],
     'Textile Designer': ["Develop a new and innovative textile pattern that is both aesthetically pleasing and manufacturable.", "Select sustainable materials and processes for a new textile collection.", "Collaborate with fashion designers to create custom textiles for their garments."],
@@ -436,50 +436,55 @@
     showToast('Info saved successfully!', 'success'); //
   }
 
-  function showCareerSuggestions() { // Adapted logic, similar to original begmain.html, using new data
-    if (!user.studyLevel || !user.stream) return showToast('Save your info first.', 'error'); //
-    
-    let baseCareers = careerOptions[user.stream] || []; //
-    let combinedCareers = [...new Set([...baseCareers, ...generalCareers])]; //
+  // --- MODIFIED FUNCTION ---
+  function showCareerSuggestions() {
+    if (!user.studyLevel || !user.stream) return showToast('Save your info first.', 'error');
 
-    if (user.careerIdea) { //
-      const ci = user.careerIdea; //
-      const ciLower = ci.toLowerCase(); //
+    // 1. Get base careers from the selected stream and combine with general careers.
+    // This list is for the "Career Suggestions" box.
+    const baseCareers = careerOptions[user.stream] || [];
+    const suggestedCareersList = [...new Set([...baseCareers, ...generalCareers])];
 
-      // Check if careerIdea is already present (case-insensitive)
-      let found = combinedCareers.some(c => c.toLowerCase() === ciLower); //
+    // 2. Limit the number of suggestions and store them.
+    const numberOfSuggestions = Math.min(suggestedCareersList.length, 5);
+    user.suggestedCareers = suggestedCareersList.slice(0, numberOfSuggestions);
+
+    // 3. Display the clean, AI-generated suggestions.
+    if (user.suggestedCareers.length === 0) {
+        user.suggestedCareers = generalCareers.slice(0, 3); // Fallback
+        document.getElementById('careerSuggestions').textContent =
+        'Could not find specific suggestions. Here are some general ideas:\n- ' + user.suggestedCareers.join('\n- ');
+    } else {
+        document.getElementById('careerSuggestions').textContent =
+        '✨ Based on your profile & interests, top careers for you:\n- ' + user.suggestedCareers.join('\n- ');
+    }
+
+    // 4. Prepare a separate list for the dropdown menu. Start with the suggested careers.
+    let dropdownOptions = [...user.suggestedCareers];
+
+    // 5. Intelligently add the user's custom career idea to the dropdown list.
+    if (user.careerIdea) {
+      const ci = user.careerIdea;
+      const ciLower = ci.toLowerCase();
       
-      if(!found) { //
-          combinedCareers.unshift(ci); // Add to beginning if not found //
-      } else {
-          // Move to beginning if found
-          combinedCareers = combinedCareers.filter(c => c.toLowerCase() !== ciLower); //
-          combinedCareers.unshift(ci); //
+      // Check if the user's idea is already in the dropdown list (case-insensitive).
+      const found = dropdownOptions.some(c => c.toLowerCase() === ciLower);
+
+      if (!found) {
+        // If not found, add it to the top of the dropdown list.
+        dropdownOptions.unshift(ci);
       }
     }
     
-    // Suggest a limited number of careers, e.g., 5, can be randomized or sorted
-    // For simplicity, using slice on the potentially reordered list.
-    const numberOfSuggestions = Math.min(combinedCareers.length, 5); //
-    user.suggestedCareers = combinedCareers.slice(0, numberOfSuggestions); //
-
-
-    if (user.suggestedCareers.length === 0) { //
-        user.suggestedCareers = generalCareers.slice(0,3);  // Fallback to general careers //
-         document.getElementById('careerSuggestions').textContent =
-        'Could not find specific suggestions. Here are some general ideas:\n- ' + user.suggestedCareers.join('\n- '); //
-    } else {
-        document.getElementById('careerSuggestions').textContent =
-        '✨ Based on your profile & interests, top careers for you:\n- ' + user.suggestedCareers.join('\n- '); //
-    }
-
-    let dropdownHTML = '<option value="">-- Choose your career --</option>'; //
-    user.suggestedCareers.forEach(career => { //
-      dropdownHTML += `<option value="${career}">${career}</option>`; //
+    // 6. Build and populate the dropdown with the potentially expanded list.
+    let dropdownHTML = '<option value="">-- Choose your career --</option>';
+    dropdownOptions.forEach(career => {
+      dropdownHTML += `<option value="${career}">${career}</option>`;
     });
-    document.getElementById('careerDropdown').innerHTML = dropdownHTML; //
-    if (user.suggestedCareers.length > 0) { //
-        showToast('Career suggestions updated!', 'success'); //
+    document.getElementById('careerDropdown').innerHTML = dropdownHTML;
+    
+    if (user.suggestedCareers.length > 0) {
+        showToast('Career suggestions updated!', 'success');
     }
   }
 
